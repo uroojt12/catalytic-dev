@@ -94,6 +94,8 @@
                             <label for="banner_detail" class="control-label"> Text Block <span class="symbol required">*</span></label>
                             <textarea name="banner_detail" rows="3" class="form-control ckeditor" id="editor"><?= $row['banner_detail'] ?></textarea>
                         </div>
+                        <div class="clearfix"></div>
+
                         <div class="col-md-6">
                             <label for="banner_btn_text" class="control-label">Button text <span class="symbol required">*</span></label>
                             <input type="text" name="banner_btn_text" value="<?= $row['banner_btn_text'] ?>" class="form-control" required>
@@ -104,7 +106,28 @@
                             <input type="text" name="banner_btn_url" value="<?= $row['banner_btn_url'] ?>" class="form-control" required>
                         </div>
                         <div class="clearfix"></div>
+                        <?php $sec_banner = 0;
+                        for ($i = 1; $i <= 3; $i++) : ++$sec_banner; ?>
+                            <div class="col-md-4">
+                                <label for="ban_title<?= $i ?>" class="control-label"> Genere Title <?= $sec_banner ?><span class="symbol required">*</span></label>
+                                <input type="text" name="ban_title<?= $i ?>" class="form-control" value="<?= $row['ban_title' . $i] ?>" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ban_price<?= $i ?>" class="control-label"> Price <?= $sec_banner ?><span class="symbol required">*</span></label>
+                                <input type="text" name="ban_price<?= $i ?>" class="form-control" value="<?= $row['ban_price' . $i] ?>" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ban_fullness<?= $i ?>" class="control-label"> Fullness <?= $sec_banner ?><span class="symbol required">*</span></label>
+                                <input type="text" name="ban_fullness<?= $i ?>" class="form-control" value="<?= $row['ban_fullness' . $i] ?>" />
+                            </div>
+
+                        <?php endfor ?>
+
+                        <div class="clearfix"></div>
+
                         <br>
+
+
 
                     </div>
                 </div>

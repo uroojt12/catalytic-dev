@@ -73,7 +73,7 @@ class Page extends MY_Controller
                         <img src="' . base_url('uploads/images/' . $this->data["site_settings"]->site_logo) . '" alt="' . $this->data['site_settings']->site_name . '" alt="">
                         </div>
                         <div class="content">
-                            <h5><a href="' . base_url('code-detail/' . urlencode(doEncode($code_p->id))) . '">' . $code_p->title . '</a></h5>
+                            <h5><a href="' . base_url('code-detail/' . doEncode($code_p->id)) . '">' . $code_p->title . '</a></h5>
                             <p>' . $code_p->code . '</p>
                             
                             <div class="cta_price">
@@ -113,7 +113,7 @@ class Page extends MY_Controller
                             <img src="' . base_url('uploads/images/' . $this->data["site_settings"]->site_logo) . '" alt="' . $this->data['site_settings']->site_name . '" alt="">
                         </div>
                         <div class="content">
-                            <h5><a href="' . base_url('code-detail/' . urlencode(doEncode($code_p->id))) . '">' . $code_p->title . '</a></h5>
+                            <h5><a href="' . base_url('code-detail/' . doEncode($code_p->id)) . '">' . $code_p->title . '</a></h5>
                             <p>' . $code_p->code . '</p>
                             
                             <div class="cta_price">
@@ -132,7 +132,7 @@ class Page extends MY_Controller
     }
     function code_detail($id)
     {
-        $id = urldecode($id);
+        // $id = urldecode($id);
         $id = doDecode($id);
         $id = intval($id);
 
@@ -167,7 +167,7 @@ class Page extends MY_Controller
 
     function inventory_detail($id)
     {
-        $id = urldecode($id);
+        // $id = urldecode($id);
         $id = doDecode($id);
         $id = intval($id);
         if (!empty($id) && $this->data['inventory_detail'] = $this->master->getRow('lot_name', array('id' => $id, 'mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id))) {
@@ -254,7 +254,7 @@ class Page extends MY_Controller
     }
     function generic_detail($id)
     {
-        $id = urldecode($id);
+        // $id = urldecode($id);
         $id = doDecode($id);
         $id = intval($id);
 
@@ -287,7 +287,7 @@ class Page extends MY_Controller
     }
     function photo_detail($id)
     {
-        $id = urldecode($id);
+        // $id = urldecode($id);
         $id = doDecode($id);
         $id = intval($id);
 
@@ -302,6 +302,16 @@ class Page extends MY_Controller
         } else {
             show_404();
         }
+    }
+
+    function photo_grade_view()
+    {
+
+        $this->data['content_row'] = $this->master->getRow('sitecontent', array('ckey' => 'new_photo_grade', 'site_id' => $this->session->web_id));
+        $this->data['site_content'] = unserialize($this->data['content_row']->code);
+        $this->data['pageView'] = 'pages/new_photo';
+        $this->data['footer'] = true;
+        $this->load->view("includes/site-master", $this->data);
     }
 
 
@@ -372,8 +382,6 @@ class Page extends MY_Controller
 
         $this->data['content_row'] = $this->master->getRow('sitecontent', array('ckey' => 'forgot_password', 'site_id' => $this->session->web_id));
         $this->data['site_content'] = unserialize($this->data['content_row']->code);
-        $this->data['meta_keywords'] = 'Forgot Password';
-        $this->data['meta_description'] = 'Forgot Password';
         $this->data['pageView'] = 'pages/forgot-password';
         $this->data['footer'] = true;
         $this->load->view("includes/site-master", $this->data);
@@ -383,25 +391,10 @@ class Page extends MY_Controller
 
         $this->data['content_row'] = $this->master->getRow('sitecontent', array('ckey' => 'change_password', 'site_id' => $this->session->web_id));
         $this->data['site_content'] = unserialize($this->data['content_row']->code);
-        $this->data['meta_keywords'] = 'Reset Password';
-        $this->data['meta_description'] = 'Reset Password';
         $this->data['pageView'] = 'pages/reset-password';
         $this->data['footer'] = true;
         $this->load->view("includes/site-master", $this->data);
     }
-
-
-
-
-    function photo_grade_view()
-    {
-
-        $this->data['page_title'] = 'Add Photo Grade';
-        $this->data['pageView'] = 'pages/new_photo';
-        $this->data['footer'] = true;
-        $this->load->view("includes/site-master", $this->data);
-    }
-
 
 
     function error()

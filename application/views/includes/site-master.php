@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/responsive.css?v=<?= $site_settings->site_version ?>">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/colors.css?v=<?= $site_settings->site_version ?>">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css?v=<?= $site_settings->site_version ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+
 
     <!-- Media-Query Css -->
 

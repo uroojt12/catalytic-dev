@@ -80,7 +80,10 @@
                                                                 <?php endif; ?>
                                                             </div>
                                                             <?php if ($inventory_detail->status == 0) : ?>
-                                                                <a href="<?= base_url('delete-cart/' . $code_row->row_id . "/" . urlencode(doEncode($inventory_detail->id))) ?>" class="delete">
+                                                                <!-- <a href="</?= base_url('delete-cart/' . $code_row->row_id . "/" . urlencode(doEncode($inventory_detail->id))) ?>" class="delete">
+                                                                    <img src="</?= base_url() ?>assets/images/delete.svg" alt="">
+                                                                </a> -->
+                                                                <a href="javascript:void(0)" class="delete" id="del_row" data-row_id="<?= $code_row->row_id ?>">
                                                                     <img src="<?= base_url() ?>assets/images/delete.svg" alt="">
                                                                 </a>
                                                             <?php endif; ?>

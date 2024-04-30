@@ -13,7 +13,7 @@
                         <img src="<?= base_url() ?>assets/images/logo-2.svg" alt="">
                     </div>
                     <div class="content">
-                        <h5><a href="<?= base_url('code-detail/' . urlencode(doEncode($code_p->id))) ?>"><?= $code_p->title ?></a></h5>
+                        <h5><a href="<?= base_url('code-detail/' . doEncode($code_p->id)) ?>"><?= $code_p->title ?></a></h5>
                         <p><?= $code_p->code ?></p>
                         <?php $chk_price = chk_code_price($this->session->web_id, $code_p->id); ?>
                         <div class="cta_price">

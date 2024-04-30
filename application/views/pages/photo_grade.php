@@ -44,13 +44,13 @@
                                     <div class="content">
                                         <!-- <p><?= $photo->code ?></p> -->
                                         <h4>
-                                             <?= $p_photo->status ?>
+                                            <?= $p_photo->status ?>
                                         </h4>
                                         <div class="total_flex">
                                             <div><strong>Fullness</strong></div>
-                                             <div><?= $p_photo->grade_fullness ?></div>
+                                            <div><?= $p_photo->grade_fullness ?></div>
                                         </div>
-                                        
+
                                         <!-- <div class="cta-1">
                                             <a href="javascript:void(0)" class="style_it popBtn" data-popup="add_new_lot">Add</a>
                                         </div> -->
@@ -79,17 +79,17 @@
                                         </h4>
                                         <div class="total_flex">
                                             <div><strong>Fullness</strong></div>
-                                             <div><?= $c_photo->grade_fullness ?></div>
+                                            <div><?= $c_photo->grade_fullness ?></div>
                                         </div>
                                         <div class="devide_line"></div>
                                         <div class="total_flex">
                                             <div><strong>Amount</strong></div>
-                                             <div><?= format_amount($c_photo->price) ?></div>
+                                            <div><?= format_amount($c_photo->price) ?></div>
                                         </div>
                                         <div class="devide_line"></div>
                                         <div class="total_flex">
                                             <div><strong>Notes</strong></div>
-                                             <div><?= $c_photo->grade_notes ?></div>
+                                            <div><?= $c_photo->grade_notes ?></div>
                                         </div>
                                     </div>
 
@@ -114,12 +114,12 @@
                                         <!-- <p><?= $photo->code ?></p> -->
                                         <h4>
                                             <?= $r_photo->grade_fullness ?> | <?= $r_photo->status ?>
-                                            <!-- <a href="<?= base_url('photo-detail/' . urlencode(doEncode($photo->id))) ?>"><?= format_amount($photo->price) ?> | <?= $photo->percentage ?>
+                                            <!-- <a href="<?= base_url('photo-detail/' . doEncode($photo->id)) ?>"><?= format_amount($photo->price) ?> | <?= $photo->percentage ?>
                                             </a> -->
                                         </h4>
                                         <div class="total_flex">
                                             <div><strong>Fullness</strong></div>
-                                             <div><?= $r_photo->grade_fullness ?></div>
+                                            <div><?= $r_photo->grade_fullness ?></div>
                                         </div>
                                     </div>
 

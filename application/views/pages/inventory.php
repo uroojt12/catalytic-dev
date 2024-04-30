@@ -30,22 +30,22 @@
             <div class="tab-content">
                 <div id="active" class="tab-pane fade a active in">
                     <div class="flex">
-                        <?php if(!empty($inventory)):?>
-                        <?php foreach ($inventory as $invent) : ?>
-                            <div class="cols">
-                                <div class="inner">
-                                    <div class="content">
-                                        <h4><a href="<?= base_url('inventory-detail/' . urlencode(doEncode($invent->id))) ?>"><?= $invent->lot_name ?></a></h4>
-                                        <p><?= format_date($invent->created_date, 'M d, Y') ?></p>
-                                    </div>
+                        <?php if (!empty($inventory)) : ?>
+                            <?php foreach ($inventory as $invent) : ?>
+                                <div class="cols">
+                                    <div class="inner">
+                                        <div class="content">
+                                            <h4><a href="<?= base_url('inventory-detail/' . doEncode($invent->id)) ?>"><?= $invent->lot_name ?></a></h4>
+                                            <p><?= format_date($invent->created_date, 'M d, Y') ?></p>
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endforeach ?>
-                    <?php else:?>
-                        <div class="alert alert-danger">No active inventory added yet!</div>
-                    <?php endif; ?>
-                        
+                            <?php endforeach ?>
+                        <?php else : ?>
+                            <div class="alert alert-danger">No active inventory added yet!</div>
+                        <?php endif; ?>
+
                     </div>
                     <div class="cta">
                         <a href="javascript:void(0)" class="webBtn popBtn" data-popup="inventory_new_lot">Create A
@@ -55,21 +55,21 @@
                 </div>
                 <div id="closed" class="tab-pane fade b">
                     <div class="flex">
-                    <?php if(!empty($closed_inventory)):?>
-                    <?php foreach ($closed_inventory as $invent) : ?>
-                            <div class="cols">
-                                <div class="inner">
-                                    <div class="content">
-                                        <h4><a href="<?= base_url('inventory-detail/' . urlencode(doEncode($invent->id))) ?>"><?= $invent->lot_name ?></a></h4>
-                                        <p><?= format_date($invent->created_date, 'M d, Y') ?></p>
-                                    </div>
+                        <?php if (!empty($closed_inventory)) : ?>
+                            <?php foreach ($closed_inventory as $invent) : ?>
+                                <div class="cols">
+                                    <div class="inner">
+                                        <div class="content">
+                                            <h4><a href="<?= base_url('inventory-detail/' . doEncode($invent->id)) ?>"><?= $invent->lot_name ?></a></h4>
+                                            <p><?= format_date($invent->created_date, 'M d, Y') ?></p>
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endforeach ?>
-                    <?php else:?>
-                        <div class="alert alert-danger">No closed inventory added yet!</div>
-                    <?php endif; ?>
+                            <?php endforeach ?>
+                        <?php else : ?>
+                            <div class="alert alert-danger">No closed inventory added yet!</div>
+                        <?php endif; ?>
                     </div>
                     <div class="cta">
                         <a href="javascript:void(0)" class="webBtn popBtn" data-popup="inventory_new_lot">Create A

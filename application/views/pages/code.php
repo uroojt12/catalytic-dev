@@ -17,7 +17,7 @@
                     </form>
                 </div>
                 <div class="cta">
-                    <a href="<?= $site_content['banner_btn_url'] ?>" class="style_it"><?= $site_content['banner_btn_text'] ?></a>
+                    <a href="<?= base_url('generics') ?>" class="style_it"><?= $site_content['banner_btn_text'] ?></a>
                 </div>
             </div>
         </div>
@@ -51,8 +51,8 @@
 
                 <?php if (!empty($find_code)) : ?>
 
-                    <?php foreach ($find_code as $code_p) : 
-                        ?>
+                    <?php foreach ($find_code as $code_p) :
+                    ?>
                         <div class="cols">
                             <div class="inner">
                                 <!-- <div class="photo">
@@ -65,7 +65,7 @@
                                         <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>" alt="<?= $site_settings->site_name ?>" alt="">
                                     </div>
                                     <div class="content">
-                                        <h5><a href="<?= base_url('code-detail/' . urlencode(doEncode($code_p->id))) ?>"><?= $code_p->title ?></a></h5>
+                                        <h5><a href="<?= base_url('code-detail/' . doEncode($code_p->id)) ?>"><?= $code_p->title ?></a></h5>
                                         <p><?= $code_p->code ?></p>
                                         <div class="cta_price">
                                             <h5><strong><?= format_amount(number_format($code_p->total_price, 2, '.', '')) ?></strong></h5>
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                     <?php endforeach ?>
-                    
+
 
 
                 <?php else : ?>
@@ -86,12 +86,16 @@
                     <div class="alert alert-danger">No Code Available!!!</div>
 
                 <?php endif; ?>
-                
+
             </div>
             <div id="loading_codes" class="hidden">
-                    <div class="loadingio-spinner-rolling-2by998twmg8"><div class="ldio-yzaezf3dcmj"><div></div></div></div>
+                <div class="loadingio-spinner-rolling-2by998twmg8">
+                    <div class="ldio-yzaezf3dcmj">
+                        <div></div>
+                    </div>
                 </div>
-            
+            </div>
+
         </div>
     </section>
 </main>

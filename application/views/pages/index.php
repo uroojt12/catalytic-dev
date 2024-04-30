@@ -18,7 +18,7 @@
                             <li>
                                 <a href="" class="inside">
                                     <h3><?= $site_content['ban_title1'] ?></h3>
-                                    <h4><?= $site_content['ban_price1'] ?></h4>
+                                    <h4>$<?= $site_content['ban_price1'] ?></h4>
                                     <p><strong>+<?= $site_content['ban_fullness1'] ?>%</strong></p>
 
                                 </a>

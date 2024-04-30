@@ -663,6 +663,68 @@ class Sitecontent extends SUBADMIN_Controller
     }
 
 
+    public function new_photo_grade()
+    {
+
+        $check = $this->page_model->num_rows(array('ckey' => $this->uri->segment(3), 'site_id' => $this->subadmin->site_id));
+        // pr($this->db->last_query());
+        if (!$check) {
+            $this->page_model->save(array('ckey' => $this->uri->segment(3), 'site_id' => $this->subadmin->site_id));
+        }
+        $this->data['enable_editor'] = TRUE;
+        $this->data['pageView'] = SUBADMIN . '/site_new_photo_grade';
+        if ($vals = $this->input->post()) {
+            $content_row = $this->page_model->get_row_where(array('ckey' => $this->uri->segment(3), 'site_id' => $this->subadmin->site_id));
+            if ($content_row && $content_row->code !== null) {
+                $content_row = unserialize($content_row->code);
+            } else {
+                $content_row = array();
+            }
+
+
+            if (!is_array($content_row))
+                $content_row = array();
+            for ($i = 1; $i <= 10; $i++) {
+
+                if (isset($_FILES["image" . $i]["name"]) && $_FILES["image" . $i]["name"] != "") {
+
+                    $image = upload_file(UPLOAD_PATH . 'images/', 'image' . $i);
+                    // pr($image);
+                    if (!empty($image['file_name'])) {
+                        // pr($image);
+
+                        // if ($i == 1) {
+                        //     generate_thumb(UPLOAD_PATH . "images/", UPLOAD_PATH . "images/", $image['file_name'], 1000, 'thumb_');
+                        // } else {
+                        //     generate_thumb(UPLOAD_PATH . "images/", UPLOAD_PATH . "images/", $image['file_name'], 400, 'thumb_');
+                        // }
+                        // pr($image);
+
+
+                        if (isset($content_row['image' . $i]))
+                            $this->remove_file(UPLOAD_PATH . "images/" . $content_row['image' . $i]);
+                        $vals['image' . $i] = $image['file_name'];
+                    }
+                }
+            }
+
+            $data = serialize(array_merge($content_row, $vals));
+            $this->page_model->save(array('code' => $data, 'site_id' => $this->subadmin->site_id), 'ckey', $this->uri->segment(3), $this->subadmin->site_id);
+            setMsg('success', 'Settings updated successfully !');
+            redirect(SUBADMIN . "/sitecontent/" . $this->uri->segment(3));
+            exit;
+        }
+
+        $this->data['row'] = $this->page_model->get_row_where(array('ckey' => $this->uri->segment(3), 'site_id' => $this->subadmin->site_id));
+        if ($this->data['row'] && isset($this->data['row']->code) && $this->data['row']->code !== null) {
+            $this->data['row'] = unserialize($this->data['row']->code);
+        } else {
+            $this->data['row'] = array();
+        }
+        // $this->data['row'] = unserialize($this->data['row']->code);
+        $this->load->view(SUBADMIN . '/includes/siteMaster', $this->data);
+    }
+
 
     public function signup()
     {
@@ -808,29 +870,7 @@ class Sitecontent extends SUBADMIN_Controller
 
             if (!is_array($content_row))
                 $content_row = array();
-            for ($i = 1; $i <= 10; $i++) {
 
-                if (isset($_FILES["image" . $i]["name"]) && $_FILES["image" . $i]["name"] != "") {
-
-                    $image = upload_file(UPLOAD_PATH . 'images/', 'image' . $i);
-                    // pr($image);
-                    if (!empty($image['file_name'])) {
-                        // pr($image);
-
-                        // if ($i == 1) {
-                        //     generate_thumb(UPLOAD_PATH . "images/", UPLOAD_PATH . "images/", $image['file_name'], 1000, 'thumb_');
-                        // } else {
-                        //     generate_thumb(UPLOAD_PATH . "images/", UPLOAD_PATH . "images/", $image['file_name'], 400, 'thumb_');
-                        // }
-                        // pr($image);
-
-
-                        if (isset($content_row['image' . $i]))
-                            $this->remove_file(UPLOAD_PATH . "images/" . $content_row['image' . $i]);
-                        $vals['image' . $i] = $image['file_name'];
-                    }
-                }
-            }
 
             $data = serialize(array_merge($content_row, $vals));
             $this->page_model->save(array('code' => $data, 'site_id' => $this->subadmin->site_id), 'ckey', $this->uri->segment(3), $this->subadmin->site_id);
@@ -931,29 +971,7 @@ class Sitecontent extends SUBADMIN_Controller
 
             if (!is_array($content_row))
                 $content_row = array();
-            for ($i = 1; $i <= 10; $i++) {
 
-                if (isset($_FILES["image" . $i]["name"]) && $_FILES["image" . $i]["name"] != "") {
-
-                    $image = upload_file(UPLOAD_PATH . 'images/', 'image' . $i);
-                    // pr($image);
-                    if (!empty($image['file_name'])) {
-                        // pr($image);
-
-                        // if ($i == 1) {
-                        //     generate_thumb(UPLOAD_PATH . "images/", UPLOAD_PATH . "images/", $image['file_name'], 1000, 'thumb_');
-                        // } else {
-                        //     generate_thumb(UPLOAD_PATH . "images/", UPLOAD_PATH . "images/", $image['file_name'], 400, 'thumb_');
-                        // }
-                        // pr($image);
-
-
-                        if (isset($content_row['image' . $i]))
-                            $this->remove_file(UPLOAD_PATH . "images/" . $content_row['image' . $i]);
-                        $vals['image' . $i] = $image['file_name'];
-                    }
-                }
-            }
 
             $data = serialize(array_merge($content_row, $vals));
             $this->page_model->save(array('code' => $data, 'site_id' => $this->subadmin->site_id), 'ckey', $this->uri->segment(3), $this->subadmin->site_id);

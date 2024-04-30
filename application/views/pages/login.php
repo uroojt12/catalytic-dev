@@ -8,8 +8,8 @@
                         <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>" alt="<?= $site_settings->site_name ?>">
                     </div>
                     <div class="up_cntent">
-                        <h3>Let’s Sign in</h3>
-                        <p>Use credentials to access your account</p>
+                        <h3><?= $site_content['sec_heading'] ?></h3>
+                        <p><?= $site_content['sec_tagline'] ?></p>
                     </div>
                     <form action="<?= base_url('register/signin') ?>" method="POST" class="frmAjax">
                         <div class="row">

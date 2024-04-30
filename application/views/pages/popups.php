@@ -15,11 +15,13 @@
                         <form action="<?= base_url('ajax/add_generics_to_lot') ?>" method="POST" class="frmAjax" id="frmContact">
 
                             <input type="hidden" name="generics_id" id="generics_id" value="">
+                            <input type="hidden" name="generics_fullness" id="generics_fullness" value="">
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="txtGrp">
                                         <label for="">Lot Name</label>
-                                        <select name="lot_id" id="" class="txtBox">
+                                        <select name="lot_id" id="" class="txtBox" required>
                                             <option value=""> Select Lot </option>
                                             <?= get_lot_name_options('id') ?>
 
@@ -29,13 +31,14 @@
 
                                 <div class="col-md-12">
                                     <div class="txtGrp">
-                                        <label for="">Item Fullness %</label>
+                                        <label for="">Item Fullness % <span id="generic_slider_price"></span></label>
                                         <div class="inner_block">
                                             <div class="first_value">
                                                 <p>0</p>
                                             </div>
                                             <!-- <div class="example"></div> -->
-                                            <input type="range" name="generics_fullness" id="generics_fullness" min="0" max="100" value="0" class="fullness-range">
+                                            <div id="generic_price_slider"></div>
+                                            <!-- <input type="range" name="generics_fullness" id="generics_fullness" min="0" max="100" value="0" class="fullness-range"> -->
 
                                             <div class="last_value">
                                                 <p>100</p>
@@ -89,11 +92,13 @@
                             <!-- <input type="hidden" name="code_id" id="code_id" value=""> -->
                             <input type="hidden" name="inventory_id" id="inventory_id" value="">
                             <input type="hidden" name="lot_type" id="lot_type" value="">
+                            <input type="hidden" name="fullness" id="fullness" value="">
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="txtGrp">
                                         <label for="">Lot Name</label>
-                                        <select name="lot_id" id="" class="txtBox">
+                                        <select name="lot_id" id="" class="txtBox" required>
                                             <option value=""> Select Lot </option>
                                             <?= get_lot_name_options('id') ?>
 
@@ -103,14 +108,15 @@
 
                                 <div class="col-md-12">
                                     <div class="txtGrp">
-                                        <label for="">Item Fullness %</label>
+                                        <label for="">Item Fullness % <span id="code_slider_price"></span></label>
                                         <div class="inner_block">
                                             <div class="first_value">
                                                 <p>0</p>
                                             </div>
+                                            <div id="code_price_slider"></div>
                                             <!-- <div class="example"></div> -->
                                             <!-- <input type="range" name="code_fullness" id="code_fullness" min="0" max="100" value="0" class="fullness-range"> -->
-                                            <input type="range" name="fullness" id="fullness" min="0" max="100" value="0" class="fullness-range">
+                                            <!-- <input type="range" name="fullness" id="fullness" min="0" max="100" value="0" class="fullness-range"> -->
 
                                             <div class="last_value">
                                                 <p>100</p>

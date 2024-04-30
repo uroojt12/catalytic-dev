@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="cta">
-                                    <button class="webBtn"><?= $site_content['submit_text'] ?><i class="spinner hidden"></i></button>
+                                    <button class="webBtn" type="submit"><?= $site_content['submit_text'] ?><i class="spinner hidden"></i></button>
                                 </div>
                             </div>
 

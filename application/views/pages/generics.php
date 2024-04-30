@@ -55,10 +55,10 @@
                             </div> -->
                             <div class="bottom_content">
                                 <div class="image_2">
-                                        <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>" alt="<?= $site_settings->site_name ?>" alt="">
-                                    </div>
+                                    <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>" alt="<?= $site_settings->site_name ?>" alt="">
+                                </div>
                                 <div class="content">
-                                    <h5><a href="<?= base_url('generic-detail/' . urlencode(doEncode($generic->id))) ?>"><?= $generic->title ?></a></h5>
+                                    <h5><a href="<?= base_url('generic-detail/' . doEncode($generic->id)) ?>"><?= $generic->title ?></a></h5>
                                     <p><?= $generic->code ?></p>
                                     <div class="cta_price">
                                         <h5><strong><?= format_amount($generic->total_price) ?></strong></h5>
@@ -75,8 +75,12 @@
                 <?php endforeach ?>
             </div>
             <div id="loading_generics" class="hidden">
-                    <div class="loadingio-spinner-rolling-2by998twmg8"><div class="ldio-yzaezf3dcmj"><div></div></div></div>
+                <div class="loadingio-spinner-rolling-2by998twmg8">
+                    <div class="ldio-yzaezf3dcmj">
+                        <div></div>
+                    </div>
                 </div>
+            </div>
         </div>
     </section>
 </main>

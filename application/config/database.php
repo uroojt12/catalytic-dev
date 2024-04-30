@@ -81,7 +81,7 @@ if ($_SERVER['HTTP_HOST'] != 'localhost') {
 		'hostname' => 'localhost',
 		'username' => 'herosol_talal',
 		'password' => 'An~$!o#M]Q6$',
-		'database' => 'hero_aziz_catalytic'
+		'database' => 'herosol_catalytic'
 	);
 } else {
 	$db['default'] = array(
@@ -89,7 +89,7 @@ if ($_SERVER['HTTP_HOST'] != 'localhost') {
 		'hostname' => 'localhost',
 		'username' => 'root',
 		'password' => '',
-		'database' => 'hero_aziz_catalytic'
+		'database' => 'herosol_catalytic'
 	);
 }
 

@@ -216,14 +216,17 @@ $(document).on("click", ".faqBlk > .up_grid", function () {
 });
 
 // =======
-$(function () {
-  $(".example").createSlide({
-    maxvalue: 100,
-    firstvalue: "0",
-    progress: true,
-    // output: ".output",
-  });
-});
+// $(function () {
+//   $(".example").createSlide({
+//     maxvalue: 100,
+//     firstvalue: "0",
+//     progress: true,
+//     // output: ".output",
+//   });
+// });
+
+
+
 // ======
 $(document).ready(function () {
   // upload file
