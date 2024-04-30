@@ -1,0 +1,86 @@
+﻿/*========== Autocomplete ==========*/
+
+.ui-menu.ui-widget-content {
+    border: 1px solid #eee;
+    background: #fff;
+    color: #444;
+    -webkit-box-shadow: #000 1px 1px 5px -3px;
+    box-shadow: #000 1px 1px 5px -3px;
+}
+
+.ui-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: block;
+    outline: 0;
+}
+
+.ui-autocomplete {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: default;
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.ui-front {
+    z-index: 100;
+}
+
+.ui-menu .ui-menu-item {
+    display: block;
+    margin: 0;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.ui-menu .ui-menu-item-wrapper {
+    position: relative;
+    padding: 4px 10px 4px 4px;
+}
+
+.ui-menu .ui-menu-item-wrapper:hover {
+    background: #eeeeee;
+    color: #222;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+    border: 1px solid #eeeeee;
+    background: #eeeeee;
+    color: #222;
+}
+
+.ui-icon-background,
+.ui-state-active .ui-icon-background {
+    border: #eeeeee;
+    background-color: #222;
+}
+
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+    color: #222;
+    text-decoration: none;
+}
+.visHide{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    visibility: hidden;
+    height: 0;
+    width: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}

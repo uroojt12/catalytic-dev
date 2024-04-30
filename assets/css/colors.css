@@ -1,0 +1,598 @@
+/* ================== */
+:root {
+  --body_bg: var(--section_bg);
+  --primary-color: #6e6efd;
+  --secondary-color: #11ceb0;
+  --teritary-color: #a02666;
+  --dark_bg: #181547;
+  --light-color: #fff;
+  --section_bg: rgba(5, 3, 43, 0.95);
+  --p-color: #b7b7b7;
+  --dark-a: #05032b;
+  --testi-linear-1: rgba(110, 110, 253, 0.17);
+  --testi-linear-2: rgba(110, 110, 253, 0.32);
+  --section-linear-1: rgba(110, 110, 253, 0.02);
+  --textbox-bg: rgba(23, 21, 57, 0.73);
+  --textbox-border: #2a2759;
+  --light-btn-bg: #cfcfd7;
+  --readBtn-bg: #121035;
+  --dropdown-bg: #26286a;
+  --inner-bg: rgba(110, 110, 253, 0.16);
+  --qty-bg: #1c194f;
+  --dark-color: #000;
+}
+
+/* ================ */
+body {
+  background-color: var(--body_bg);
+  color: var(--light-color);
+}
+
+body a {
+  color: var(--primary-color);
+}
+
+body a:hover {
+  color: var(--secondary-color);
+}
+
+.toggle span,
+.toggle span:before,
+.toggle span:after {
+  background: var(--primary-color);
+}
+
+.webBtn {
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color) !important;
+  color: var(--light-color);
+}
+
+.webBtn:hover {
+  background: transparent;
+  color: var(--primary-color);
+}
+
+.colorBtn {
+  background: transparent;
+  color: var(--primary-color);
+}
+
+.colorBtn:hover {
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color) !important;
+  color: var(--light-color);
+}
+
+/* ===== */
+
+header {
+  background: var(--dark_bg);
+}
+
+nav ul>li {
+  color: var(--light-color);
+}
+
+nav ul>li:not(.btnLi)>a {
+  color: var(--light-color);
+}
+
+/* ====== */
+
+#banner:before {
+  background: var(--section_bg);
+}
+
+#banner .listing li .inside {
+  background-color: var(--dark_bg);
+  border: 1px solid var(--dark_bg);
+}
+
+#banner .listing li .inside:hover {
+  border: 1px solid var(--teritary-color);
+}
+
+#banner .listing li .inside:hover h3 {
+  color: var(--teritary-color);
+}
+
+#banner .listing li .inside h3 {
+  color: var(--light-color);
+}
+
+#banner .listing li .inside h4 {
+  color: #a3a2a9;
+}
+
+#banner .listing li .inside strong {
+  color: var(--secondary-color);
+}
+
+/* ======== */
+
+.sec_heading .title strong {
+  color: var(--secondary-color);
+}
+
+.sec_sell_products .cols .inner {
+  background: linear-gradient(to right top,
+      rgba(110, 110, 253, 0.66),
+      rgba(24, 21, 71, 0));
+}
+
+.sec_sell_products .cols .image {
+  background: var(--dark_bg);
+}
+
+.sec_sell_products .cols h5,
+.sec_sell_products .cols h5 a,
+.sec_sell_products .cols p {
+  color: var(--p-color);
+}
+
+.sec_sell_products .cta_price strong {
+  color: #c2c1ce;
+}
+
+.sec_sell_products .order ul li.active a {
+  background: var(--primary-color);
+}
+
+/* ==== */
+
+.sec_cta:before {
+  background: var(--section_bg);
+}
+
+.sec_cta .image>img {
+  border-right: 5px solid var(--primary-color);
+}
+
+/* ====== */
+.sec_app .cta li a img {
+  border: 1px solid #7b7b7b;
+}
+
+/* ===== */
+.testimonials .inner {
+  background: linear-gradient(to right,
+      var(--testi-linear-1),
+      var(--testi-linear-2));
+}
+
+.testimonials .inner .image img {
+  box-shadow: 0px 0px 14px var(--primary-color);
+}
+
+.testimonials .inner .scale {
+  color: #d0d0d0;
+}
+
+.testimonials .owl-dots button span {
+  background: var(--light-color);
+}
+
+.testimonials .owl-dots button.active span {
+  background: var(--secondary-color);
+}
+
+.testimonials .inner .name-profession .name {
+  color: var(--secondary-color);
+}
+
+/* ==== */
+footer h4:after {
+  background: var(--primary-color);
+}
+
+footer button.style_it {
+  color: var(--light-color);
+}
+
+/* ===== */
+.small_banner:before {
+  background: var(--section_bg);
+}
+
+.style_it {
+  color: var(--secondary-color);
+}
+
+/* ==== */
+.sec_code select {
+  border-bottom: 1px solid var(--light-color) !important;
+  color: var(--light-color);
+}
+
+.sec_code .top_bar ul li a {
+  background: var(--dark-a);
+}
+
+.sec_code .top_bar ul li a:hover {
+  background: var(--primary-color);
+}
+
+/* ======= */
+.sec_code_detail {
+  background: linear-gradient(to right top,
+      var(--section-linear-1),
+      var(--testi-linear-1));
+}
+
+.sec_code_detail .inner {
+  background: rgba(96, 118, 247, 0.17);
+}
+
+.sec_code_detail .image {
+  background: var(--dark_bg);
+}
+
+.sec_code_detail .content li {
+  border-bottom: 1px dashed rgba(207, 207, 215, 0.43);
+}
+
+.sec_code_detail .content p {
+  color: var(--p-color);
+}
+
+/* ======== */
+.sec_login .inner:before {
+  background: var(--section_bg);
+}
+
+.sec_login {
+  background: linear-gradient(to right top,
+      var(--section-linear-1),
+      var(--testi-linear-1));
+}
+
+.sec_login a {
+  color: var(--primary-color);
+}
+
+.sec_login a:hover {
+  color: var(--secondary-color);
+}
+
+.sec_login .txtBox {
+  background: var(--textbox-bg);
+  border: 1px solid var(--textbox-border);
+  color: #a3a2a9;
+}
+
+.sec_login .up_cntent p {
+  color: #b3b3b3;
+}
+
+/* ======== */
+.sec_inventory {
+  background: linear-gradient(to right top,
+      var(--section-linear-1),
+      var(--testi-linear-1));
+}
+
+.sec_inventory .nav-tabs>li>a {
+  background: #c3c3c3;
+  color: rgba(5, 3, 43, 0.54);
+}
+
+.sec_inventory .nav-tabs>li.active>a {
+  border: 0.1rem solid var(--primary-color);
+  color: var(--primary-color);
+  background: transparent;
+}
+
+.sec_inventory .flex .cols .inner {
+  background: var(--inner-bg);
+}
+
+.sec_inventory .cols .image {
+  background: var(--dark_bg);
+}
+
+.sec_inventory .cols strong {
+  color: var(--secondary-color);
+}
+
+.sec_inventory .content li {
+  border-bottom: 1px dashed rgba(207, 207, 215, 0.43);
+}
+
+.sec_inventory .content p {
+  color: var(--p-color);
+}
+
+.sec_inventory .style_it {
+  background: var(--teritary-color);
+  color: var(--light-color);
+}
+
+.sec_inventory .cols h4 a {
+  color: var(--light-color);
+}
+
+.sec_inventory .cols h4 a:hover {
+  color: var(--primary-color);
+}
+
+.sec_inventory .content li {
+  border-bottom: 1px dashed rgba(207, 207, 215, 0.43);
+}
+
+/* ============ */
+.sec_two_btn .col1 li {
+  border-bottom: 1px dashed rgba(207, 207, 215, 0.43);
+}
+
+.sec_two_btn .col1 li p {
+  color: var(--p-color);
+}
+
+.sec_two_btn .col1 li strong {
+  color: var(--secondary-color);
+}
+
+.brightBtn {
+  background: var(--secondary-color);
+}
+
+.sec_inventory_detail .image {
+  background: #c3c3c3;
+}
+
+.sec_inventory_detail .in_listing {
+  border-bottom: 1px dashed rgba(207, 207, 215, 0.43);
+}
+
+.sec_inventory_detail .in_listing strong {
+  color: rgba(240, 240, 240, 0.76);
+  margin-bottom: 10px;
+}
+
+.sec_inventory_detail .in_listing p {
+  color: rgba(240, 240, 240, 0.76);
+}
+
+.sec_inventory_detail .logo_detail p {
+  color: var(--p-color);
+}
+
+.sec_inventory_detail .faqBlk .up_grid {
+  border-bottom: 1px solid var(--dark-a);
+}
+
+.sec_inventory_detail .faqBlk {
+  background: var(--dark_bg);
+}
+
+.sec_photo_grade .cols p,
+.sec_photo_grade .cols h4 a {
+  color: rgba(240, 240, 240, 0.76);
+}
+
+.sec_photo_grade .cta-1 .style_it {
+  background: var(--primary-color);
+}
+
+.sec_photo_grade .cta-1 {
+  border-top: 1px dashed rgba(207, 207, 215, 0.43);
+}
+
+/* ===== */
+.sec_photo_details .col2 li strong {
+  color: var(--primary-color);
+}
+
+.sec_photo_details .content li {
+  border-bottom: 1px dashed rgba(207, 207, 215, 0.43);
+}
+
+.sec_photo_details .content p {
+  color: var(--p-color);
+}
+
+.sec_photo_details .inner {
+  background: var(--inner-bg);
+}
+
+.sec_photo_details {
+  background: linear-gradient(to right top,
+      var(--section-linear-1),
+      var(--testi-linear-1));
+}
+
+/* =========== */
+.lightBtn {
+  background: var(--light-btn-bg);
+  color: var(--dark-color);
+  border: 1px solid var(--light-btn-bg) !important;
+}
+
+.lightBtn:hover {
+  border: 1px solid var(--primary-color) !important;
+}
+
+.progress {
+  background-color: var(--secondary-color);
+}
+
+/* ======= */
+.sec_two_btn {
+  background: var(--dark_bg);
+  box-shadow: 0 5px 20px rgb(1 1 1);
+}
+
+/* ==== */
+.sec_inventory_detail .qtyBtn .readBtn {
+  background: var(--readBtn-bg);
+  color: var(--light-color);
+}
+
+.sec_inventory_detail .qtyBtn .qty {
+  background: var(--qty-bg);
+  color: var(--light-color);
+}
+
+.sec_inventory_detail .logo_detail p {
+  color: var(--p-color);
+}
+
+.sec_inventory_detail .colr {
+  background: rgba(96, 118, 247, 0.25);
+}
+
+/* ====== */
+.popup .inside {
+  background: var(--light-color);
+  color: var(--dark-color);
+}
+
+.popup label {
+  color: rgba(0, 0, 0, 0.67);
+}
+
+::placeholder {
+  color: #a3a2a9;
+}
+
+.popup .txtBox {
+  background: rgb(163 162 169 / 28%);
+}
+
+.inventory_new .inner_block .example {
+  background: #e5e5e7;
+}
+
+.dragger {
+  background-color: #dedee6;
+  color: var(--dark-color);
+}
+
+.uploadImg {
+  background: #e6e6ea;
+  color: #4d4d4d;
+}
+
+/* ====== */
+.new_photo {
+  background: linear-gradient(to right top,
+      var(--section-linear-1),
+      var(--testi-linear-1));
+}
+
+.new_photo .inside {
+  background: linear-gradient(to right top,
+      rgb(96 118 247 / 11%),
+      rgb(96 118 247 / 18%));
+}
+
+.txtArea {
+  background: #e6e6ea;
+}
+
+/* ====== */
+.marin_page .inner {
+  background: rgba(96, 118, 247, 0.25);
+}
+
+.marin_page .inner p {
+  color: #9e9e9e;
+}
+
+.marin_page {
+  background: linear-gradient(to right top,
+      var(--section-linear-1),
+      var(--testi-linear-1));
+}
+
+.marin_page .inner .txtGrp p {
+  color: var(--light-color);
+}
+
+/* ====== */
+.sec_profile {
+  background: linear-gradient(to right top,
+      var(--section-linear-1),
+      var(--testi-linear-1));
+}
+
+.sec_profile .inner {
+  background: #6076f71f;
+}
+
+/* ======= */
+.dash_header .ico {
+  background: rgba(96, 118, 247, 0.2);
+}
+
+.dash_header nav .name h6 {
+  color: var(--light-color);
+}
+
+.dash_header nav .name i {
+  color: var(--light-color);
+}
+
+._dropCnt {
+  background: var(--dropdown-bg);
+  box-shadow: 0 13px 27px -5px rgb(50 50 93 / 25%),
+    0 8px 16px -8px rgb(0 0 0 / 30%), 0 -6px 16px -6px rgb(0 0 0 / 3%);
+}
+
+.notification_listing ul li .notify_header {
+  border-bottom: 1px dashed hsla(0, 0%, 95%, 0.26);
+}
+
+.notification_listing ul li .inner {
+  border-bottom: 1px dashed hsla(0, 0%, 95%, 0.26);
+}
+
+.notification_listing ul li .inner .color_icon_notify {
+  background-color: var(--primary-color);
+}
+
+.notification_listing ul li .inner .notify_cntnt p {
+  color: #717579;
+}
+
+.notification_listing ul li .inner .notify_cntnt .para {
+  color: #d8d8d8;
+}
+
+header .notify_cntnt .time-ago {
+  color: var(--light-color) fff;
+}
+
+header .notify_footer a {
+  color: var(--light-color);
+}
+
+header .notify_footer i {
+  color: var(--teritary-color);
+}
+
+header .profileCnt li {
+  border-bottom: 1px dashed hsla(0, 0%, 95%, 0.26);
+}
+
+/* ======= */
+.noti_detail .image {
+  background-color: var(--primary-color);
+}
+
+.noti_detail .content p {
+  color: var(--light-color);
+}
+
+.noti_detail .content p span {
+  color: var(--primary-color);
+}
+
+.noti_detail .top_area {
+  border-bottom: 1px dashed #6f6f6f;
+}
+
+.noti_detail .inner .crosBtn {
+  color: var(--teritary-color);
+}

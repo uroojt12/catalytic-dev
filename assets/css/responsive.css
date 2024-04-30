@@ -1,0 +1,533 @@
+@media (max-width: 1025px) {
+  #banner .contain h1 {
+    font-size: 35px;
+  }
+  #banner .contain .col1 {
+    padding-right: 0;
+  }
+  #banner .contain .flex {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  footer .contain .flexRow > .col {
+    flex: unset;
+    width: calc(100% / 2);
+    padding: 25px 20px;
+  }
+  footer .contain .flexRow {
+    flex-flow: nowrap;
+    flex-wrap: wrap;
+  }
+  header .toggle {
+    display: flex;
+  }
+  [nav].active {
+    opacity: 1;
+    visibility: visible;
+  }
+  [nav] {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    align-content: space-between;
+    flex-flow: wrap;
+    width: auto;
+    background: #181547f5;
+    margin: 0;
+    padding: 2rem 5rem;
+    /* border-top: 0.2rem solid #eee; */
+    visibility: hidden;
+    opacity: 0;
+    overflow: auto;
+    z-index: 3;
+    height: 100%;
+  }
+  header [nav] ul {
+    width: 100%;
+    flex-flow: wrap;
+    margin-top: 50px;
+  }
+  header [nav] ul li {
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+  }
+  header [nav] .webBtn {
+    min-width: 149px !important;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .small_banner .contain .sec_heading {
+    width: 70%;
+  }
+  .small_banner .contain .content {
+    width: 65%;
+  }
+  .sec_code_detail .flex {
+    flex-wrap: nowrap;
+  }
+  .sec_inventory .contain .flex .cols {
+    width: calc(100% / 2);
+  }
+  .sec_inventory .contain .flex .cols .image {
+    height: unset;
+  }
+  .marin_page .contain .inner {
+    width: 74%;
+  }
+  body .small_banner:before {
+    height: 101%;
+    bottom: -1px;
+  }
+}
+
+@media (max-width: 991px) {
+  #banner.two_cols .cols {
+    width: 100%;
+  }
+  #banner .contain .col2 {
+    padding-left: 0;
+  }
+  #banner .contain .image {
+    padding-bottom: 61%;
+    margin-top: 28px;
+  }
+  .sec_sell_products .contain .cols {
+    width: calc(100% / 2);
+  }
+  .sec_sell_products .contain .cols .image {
+    width: 100%;
+    margin-bottom: 29px;
+    height: unset;
+  }
+
+  .sec_sell_products .contain .cols .image_2 {
+    width: 53%;
+  }
+
+  .testimonials .flex .col1 {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-self: center;
+  }
+  .testimonials .flex .col2 {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .sec_sell_products .contain .horizontal_code .cols .image {
+    height: 144px;
+    margin-bottom: 0;
+  }
+
+  .sec_login .contain .inner {
+    width: 65%;
+  }
+  .sec_inventory_detail .contain .content {
+    width: 77%;
+  }
+  .sec_inventory_detail .contain .image {
+    width: 23%;
+  }
+  .sec_inventory_detail .contain .logo_detail {
+    width: 76%;
+  }
+  .popup .contain .inside {
+    width: 73%;
+  }
+  .inventory_new .contain .example {
+    width: 463px;
+  }
+  .sec_sell_products .contain .horizontal_code .cols {
+    width: 50%;
+    padding: 10px;
+  }
+  .sec_sell_products .contain .horizontal_code .cols .cta {
+    margin-top: 22px;
+  }
+  .sec_sell_products .contain .horizontal_code .cta_price {
+    display: block;
+  }
+  .sec_sell_products .contain .horizontal_code .cols .image {
+    height: 178px;
+  }
+  .sec_code .order form {
+    margin-bottom: 9px;
+  }
+  .sec_sell_products .contain .horizontal_code .bottom_content {
+    width: 100%;
+    padding-left: 0;
+  }
+  .inventory_new .contain .example {
+    width: 412px;
+  }
+  .dash_header ._dropCnt {
+    left: unset;
+    right: 0;
+  }
+}
+@media (max-width: 769px) {
+}
+
+@media (max-width: 512px) {
+  .sec_sell_products .contain .horizontal_code .cols {
+    width: 100%;
+    padding: 10px 0;
+  }
+  #banner .contain .listing li {
+    padding: 4px;
+  }
+  #banner .contain .listing li .inside h3 {
+    font-size: 17px;
+  }
+
+  #banner .contain .listing li .inside h4 {
+    font-size: 17;
+  }
+
+  #banner .contain .image {
+    padding-bottom: 75%;
+  }
+
+  .sec_heading h2 {
+    font-size: 27px !important;
+  }
+
+  .sec_sell_products .contain .cols {
+    width: 100%;
+    padding: 7px 0;
+  }
+
+  .two_cols .cols {
+    width: 100% !important;
+  }
+  .sec_cta .image {
+    display: none !important;
+  }
+  .sec_cta .flex .col2 {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  body section {
+    padding: 3.5rem 0;
+  }
+  .sec_app .contain .image {
+    padding-bottom: 69%;
+  }
+  .sec_app .contain .sec_content {
+    margin-bottom: 30px;
+  }
+  .sec_login .contain .inner {
+    width: 100%;
+    padding: 20px 20px;
+  }
+  .sec_login .contain .up_cntent h3 {
+    font-size: 21px;
+  }
+  .small_banner .contain .sec_heading {
+    width: 100%;
+  }
+  .sec_code .contain .order {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .sec_code .contain .order form {
+    margin-bottom: 5;
+  }
+  .sec_sell_products .contain .horizontal_code .bottom_content {
+    width: 100%;
+    padding-left: 0;
+  }
+  .sec_code .contain .searches {
+    width: 100%;
+  }
+  .sec_code .contain .top_bar {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .sec_code .contain .searches {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .small_banner .contain .search {
+    width: 100%;
+  }
+  .sec_code_detail .flex {
+    flex-wrap: wrap;
+  }
+  .sec_code_detail .flex .content {
+    padding-left: 0;
+    width: 100%;
+  }
+  .sec_code_detail .flex .photo {
+    width: 100%;
+  }
+  .sec_code_detail .flex .image {
+    width: 100%;
+    padding: 57px;
+    margin-bottom: 29px;
+  }
+  .small_banner .contain .content {
+    width: 100%;
+  }
+  .sec_inventory .contain .flex .cols {
+    width: 100%;
+    padding: 10px 0;
+  }
+  .sec_inventory .contain .nav-tabs {
+    border-bottom: none;
+    margin-bottom: 17px;
+  }
+  .sec_inventory_detail .contain .image {
+    width: 100%;
+  }
+  .sec_inventory_detail .contain .content {
+    width: 100%;
+    padding-left: 0;
+    margin-top: 20px;
+  }
+  .sec_inventory_detail .in_listing {
+    flex-wrap: wrap;
+  }
+  .sec_inventory_detail .in_listing li {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .sec_inventory_detail .contain .delete {
+    margin-left: 12px;
+  }
+  .sec_photo_details .contain .col1 {
+    width: 100%;
+  }
+  .sec_photo_details .contain .col2 {
+    width: 100%;
+    padding-left: 0;
+    padding-top: 29px;
+  }
+  .marin_page .contain .inner {
+    width: 100%;
+    padding: 19px;
+  }
+  .inventory_new .contain .example {
+    width: 262px;
+  }
+  .sec_two_btn .contain .cols {
+    width: 100%;
+  }
+  .sec_two_btn .contain .cols.col2 {
+    padding-left: 0;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .popup .contain .inside {
+    width: 100%;
+  }
+  .dash_header nav .name h6 {
+    display: none !important;
+  }
+  header .profileCnt li.mobile_view {
+    display: block !important;
+  }
+  .dash_header .contain ._dropCnt.lg_drop {
+    left: auto;
+    right: -102px;
+    top: 50px;
+  }
+  .desk_view {
+    display: none !important;
+  }
+  .noti_detail .contain .photo {
+    width: 13%;
+  }
+  .noti_detail .contain .content {
+    width: 87%;
+  }
+  .sec_inventory .contain .nav-tabs > li {
+    margin-right: 0;
+    width: 100%;
+    margin-bottom: 17px;
+  }
+  .sec_inventory .contain .nav-tabs > li > a {
+    text-align: center;
+  }
+  .new_photo .contain .inside {
+    width: 100%;
+  }
+  #banner .contain h1 {
+    font-size: 28px;
+  }
+  #banner .contain .col2 {
+    display: none !important;
+  }
+  body #banner {
+    padding: 2rem 0;
+  }
+  header .logo {
+    height: 84px;
+    padding: 0;
+  }
+  header .toggle {
+    top: 21px;
+  }
+  .sec_sell_products .contain .cols .inner {
+    display: flex;
+    align-items: center;
+  }
+  .sec_sell_products .contain .cols .image_2 {
+    width: 28%;
+    margin-bottom: 0px;
+    margin-top: 0;
+  }
+
+  .sec_sell_products .contain .cols .content {
+    width: 72%;
+    padding-left: 56px;
+  }
+  /* .sec_sell_products .contain .cols .content p {
+    line-height: 17px;
+  } */
+  .sec_sell_products .contain .cols .content h5 {
+    display: none;
+  }
+  .sec_sell_products .cols p {
+    margin-bottom: 0;
+  }
+  .sec_sell_products .contain .cols .content .cta_price h5 {
+    display: block !important;
+    padding-right: 16px;
+    margin-bottom: 0;
+  }
+  .sec_sell_products .contain .cols .content .cta_price h5 strong {
+    font-size: 16px;
+  }
+  .sec_sell_products .contain .cta_price .cta {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+  }
+  .sec_sell_products .contain .cta_price .webBtn {
+    height: 100%;
+    min-width: unset;
+    border-radius: 0 10px 10px 0;
+  }
+  .small_banner .sec_heading h2 {
+    font-size: 22px !important;
+  }
+  .sec_sell_products.sec_code .contain .cols {
+    width: 50%;
+    padding: 10px;
+  }
+  .sec_sell_products.sec_code .contain .cols .content {
+    display: block;
+    width: 100%;
+    padding-left: 0;
+    justify-content: space-between;
+  }
+  .sec_sell_products.sec_code .contain .cols .image_2 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .sec_sell_products.sec_code .contain .cta_price {
+    display: block;
+    padding-top: 12px;
+    padding-left: 0;
+  }
+  .sec_sell_products.sec_code .contain .cols .content p {
+    position: relative;
+    top: unset;
+    left: unset;
+  }
+  .sec_sell_products.sec_code .contain .cta_price .cta {
+    margin-top: 20px;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .inner {
+    display: flex !important;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .cols {
+    width: 100%;
+    padding: 10px 0;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .cols .content {
+    display: flex;
+    width: 78%;
+    padding-left: 27px;
+    justify-content: space-between;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .cols .image_2 {
+    width: 28%;
+    margin-bottom: 30px;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .bottom_content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .cta_price {
+    display: flex;
+    padding-top: 0;
+    width: 100%;
+    padding-left: 30px;
+  }
+  .sec_sell_products.sec_code .contain .cta_price .cta {
+    position: relative;
+  }
+  .sec_sell_products.sec_code .contain .cta_price .cta .webBtn {
+    border-radius: 40px;
+    height: 35px;
+    min-width: 91px;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .cta_price .cta {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    margin-top: 0;
+  }
+
+  .sec_sell_products.sec_code
+    .contain
+    .horizontal_code
+    .cta_price
+    .cta
+    .webBtn {
+    height: 100%;
+    min-width: unset;
+    border-radius: 0 10px 10px 0;
+  }
+  body .small_banner {
+    padding: 2.5rem 0;
+  }
+  .small_banner .contain .txtBox {
+    height: 47px;
+  }
+  .small_banner .contain button {
+    right: 4px;
+    top: 4px;
+    width: 40px;
+    height: 40px;
+  }
+  header nav ul > li:not(.btnLi) > a {
+    font-size: 19px;
+  }
+  .sec_sell_products .contain .cols .inner {
+    padding: 9px;
+    position: relative;
+  }
+
+  .sec_sell_products .contain .cta_price {
+    display: flex;
+    width: 100%;
+  }
+  .sec_sell_products.sec_code .contain .horizontal_code .cols .content p {
+    position: absolute;
+    top: 43px;
+    left: 13px;
+  }
+}

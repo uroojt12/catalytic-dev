@@ -1,0 +1,120 @@
+/*! =========================================================
+                        Datepicker Css
+                Asad Rehan Front-End-Developer
+========================================================= */
+
+.ui-datepicker {
+    background: #fff;
+    width: auto !important;
+    text-align: center;
+    -webkit-box-shadow: #000 2px 2px 10px -4px;
+    box-shadow: #000 2px 2px 10px -4px;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    border: 1px solid #ccc;
+    border-bottom: transparent;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    padding: 10px;
+    background: #fff;
+    color: #4e73ca;
+    font-size: 15px;
+}
+
+.ui-datepicker th {
+    padding: 5px 10px;
+}
+
+.ui-datepicker td,
+.ui-datepicker th {
+    border: 1px solid #ddd;
+    font-weight: normal !important;
+    min-width: 42px;
+}
+
+.ui-datepicker .ui-state-highlight {
+    border: 1px solid #dce2e6;
+    background: #dce2e6;
+    color: #333;
+}
+
+.ui-datepicker .ui-state-active,
+.ui-datepicker .ui-state-active:hover {
+    border: 1px solid #4e73ca;
+    background: #4e73ca;
+    color: #fff;
+}
+
+.ui-datepicker td span,
+.ui-datepicker td a {
+    display: block;
+    padding: 4px 8px;
+    text-align: right;
+    background: #f5f8fa;
+    color: #454545;
+    font-size: 13px;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    position: absolute;
+    top: 11px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font: normal normal normal 14px/1 FontAwesome;
+    background: #fff;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #ccc;
+    font-size: 13px;
+    padding: 2px 0px 0px 0px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+    left: 7px;
+}
+
+.ui-datepicker .ui-datepicker-prev:before {
+    content: "\f104";
+}
+
+.ui-datepicker .ui-datepicker-next {
+    right: 7px;
+}
+
+.ui-datepicker .ui-datepicker-next:before {
+    content: "\f105";
+}
+
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+    opacity: 0;
+}
+
+.ui-state-disabled {
+    cursor: default !important;
+    pointer-events: none;
+}
+
+.ui-state-disabled,
+.ui-widget-content .ui-state-disabled,
+.ui-widget-header .ui-state-disabled {
+    opacity: .15;
+    filter: Alpha(Opacity=15);
+    background-image: none;
+}
+
+.ui-state-disabled .ui-icon {
+    filter: Alpha(Opacity=15);
+}
+
+@media screen and (max-width:380px) {
+    .ui-datepicker td,
+    .ui-datepicker th {
+        min-width: 38px;
+        max-width: 40px;
+    }
+}
