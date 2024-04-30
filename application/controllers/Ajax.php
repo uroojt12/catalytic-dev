@@ -18,7 +18,6 @@ class Ajax extends MY_Controller
         // $this->isMemLogged($this->session->id);
     }
 
-
     function upload_editor_attach()
     {
         if ($_FILES['upload']['name'] != '') {
