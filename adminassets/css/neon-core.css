@@ -10586,6 +10586,41 @@ body.page-fade-only-init > .page-container {
   .page-container .main-content {
     position: relative;
   }
+  .page-container #table-1_info {
+    text-align: left;
+  }
+  .mobile_botton .mobile_botton_main {
+    display: block !important;
+    flex-wrap: wrap;
+  }
+  .mobile_botton .mobile_botton_main form {
+    display: block !important;
+    flex-wrap: wrap;
+  }
+  .mobile_botton .mobile_botton_main form input {
+    width: 100%;
+    margin-top: 15px;
+  }
+  .mobile_botton .mobile_botton_main .btn-lg {
+    width: 100%;
+    margin: 0 !important;
+    margin-top: 15px !important;
+  }
+  /* div#table-1_wrapper {
+    overflow-x: auto;
+    max-width: 1000%;
+  } */
+  .page-container #table-1_wrapper .dataTable.table {
+    overflow-x: auto;
+    width: 186% !important;
+    max-width: unset !important;
+  }
+  .page-container #table-1_wrapper .row {
+    width: 195%;
+  }
+  .page-container #table-1_wrapper {
+    overflow-x: auto;
+  }
 }
 @media (max-width: 768px) {
   .page-container .sidebar-menu.fixed .sidebar-menu-inner {

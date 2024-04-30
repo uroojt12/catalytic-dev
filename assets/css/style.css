@@ -2232,7 +2232,9 @@ body span {
 .gene_banner .search {
   margin-bottom: 0;
 }
-
+.sec_mobile_form {
+  display: none;
+}
 /* ======= */
 .sec_code .top_bar {
   display: flex;

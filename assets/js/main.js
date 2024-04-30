@@ -274,3 +274,19 @@ $(document).ready(function () {
     }
   });
 });
+$(document).ready(function () {
+  var scrollThreshold = 30; // Adjust this value as needed
+
+  $(window).scroll(function () {
+    if ($(window).width() <= 512) {
+      // Check if screen width is less than or equal to 768px (assuming mobile screen)
+      if ($(this).scrollTop() >= scrollThreshold) {
+        $(".small_banner .sec_heading, .small_banner .cta").hide();
+        $(".small_banner .search").addClass("fixed_search");
+      } else {
+        $(".small_banner .sec_heading, .small_banner .cta").show();
+        $(".small_banner .search").removeClass("fixed_search");
+      }
+    }
+  });
+});
