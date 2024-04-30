@@ -17,7 +17,7 @@ class Ajax extends MY_Controller
         $this->member = $this->getActiveMem();
         // $this->isMemLogged($this->session->id);
     }
-
+//  dfd
 
     function upload_editor_attach()
     {
