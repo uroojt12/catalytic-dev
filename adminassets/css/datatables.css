@@ -1952,4 +1952,11 @@ table.dataTable td {
   .page-container div.dataTables_wrapper {
     overflow-x: auto;
   }
+  .page-container .members_data table.dataTable.table {
+    overflow-x: auto;
+    width: 151.3% !important;
+  }
+  .page-container .members_data div.dataTables_wrapper .row {
+    width: 276.3%;
+  }
 }

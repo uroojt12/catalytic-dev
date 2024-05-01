@@ -2232,7 +2232,9 @@ body span {
 .gene_banner .search {
   margin-bottom: 0;
 }
-
+.sec_mobile_form {
+  display: none;
+}
 /* ======= */
 .sec_code .top_bar {
   display: flex;
@@ -3339,24 +3341,4 @@ header .profileCnt li.mobile_view {
 
 .hidden {
   display: none !important;
-}
-
-#code_price_slider {
-  width: 80%;
-  margin: 50px auto;
-}
-
-#generic_price_slider {
-  width: 80%;
-  margin: 50px auto;
-}
-
-#photo_price_slider {
-  width: 80%;
-  margin: 50px auto;
-}
-#code_price_slider .ui-slider-range,
-#generic_price_slider .ui-slider-range,
-#photo_price_slider .ui-slider-range {
-  background: #6e6efd;
 }
