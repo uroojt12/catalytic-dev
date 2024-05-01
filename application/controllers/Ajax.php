@@ -18,7 +18,6 @@ class Ajax extends MY_Controller
         // $this->isMemLogged($this->session->id);
     }
 
-
     function upload_editor_attach()
     {
         if ($_FILES['upload']['name'] != '') {
@@ -144,62 +143,62 @@ class Ajax extends MY_Controller
         if ($this->input->post()) {
             $vals = html_escape($this->input->post());
             $row_id = $vals['row_id'];
-            $res['vals']=$vals;
+            $res['vals'] = $vals;
             $qty = $vals['qty'];
             if ($inventory_code = $this->master->getRow('add_code_to_lot', array('mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id, 'id' => $row_id))) {
                 $id = $this->master->save("add_code_to_lot", array('qty' => $qty), 'id', $inventory_code->id);
                 if ($id > 0) {
-                    
+
                     $inventory_codes = $this->master->getRows('add_code_to_lot', array('mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id, 'lot_id' => $inventory_code->lot_id));
 
                     $count_avg = count($inventory_codes);
                     $grand_total = 0;
-                    $html_markup='';
+                    $html_markup = '';
 
                     $sub_admin_row = $site_settings = $this->master->getRow("add_domains", array('site_id' => $this->session->web_id));
-                    $admin_site_settings=$this->master->getRow("siteadmin", array('site_id' => '1'));
+                    $admin_site_settings = $this->master->getRow("siteadmin", array('site_id' => '1'));
                     foreach ($inventory_codes as $inventory_code) {
                         if ($code_row = $this->master->getRow('code', array('id' => $inventory_code->inventory_id))) {
                             $price_pump = !empty($sub_admin_row->price_pump) ? $sub_admin_row->price_pump :  2;
                             $cal_price = calculatedPrice($admin_site_settings->site_o_pt_price, $admin_site_settings->site_live_pt_price, $admin_site_settings->site_o_pd_price, $admin_site_settings->site_live_pd_price, $admin_site_settings->site_o_rh_price, $admin_site_settings->site_live_rh_price, $code_row->o_price, $code_row->pt_price, $code_row->pd_price, $code_row->rh_price);
                             $cal_price = $cal_price + (($cal_price * $price_pump) / 100);
-                            $amount = $cal_price;
-                                        // pr($code_row);
+                            // $amount = $cal_price;
+                            // pr($code_row);
                             $price = $cal_price * $inventory_code->qty;
                             $grand_total += $price;
-                            if ($inventory_detail->status == 0){
-                                $minus_btn='<input type="button" value="-" class="qtyminus readBtn">';
-                                $plus_btn='<input type="button" value="+" class="qtyplus readBtn">';
-                                $anchor_tag='<a href="'.base_url('delete-cart/' . $inventory_code->id . "/" . urlencode(doEncode($inventory_code->lot_id))).'" class="delete">
-                                <img src="'.base_url().'assets/images/delete.svg" alt="">
+                            if ($inventory_detail->status == 0) {
+                                $minus_btn = '<input type="button" value="-" class="qtyminus readBtn">';
+                                $plus_btn = '<input type="button" value="+" class="qtyplus readBtn">';
+                                $anchor_tag = '<a href="javascript:void(0)" class="delete" id="del_row" data-row_id="' . $inventory_code->id . '">
+                                <img src="' . base_url() . 'assets/images/delete.svg" alt="">
                             </a>';
                             }
-                            $html_markup.='
+                            $html_markup .= '
                             <div class="flex">
                                 <div class="content">
                                     <ul class="in_listing">
                                         <li>
                                             <p><strong>Title</strong></p>
-                                            <p>'.$code_row->title.'<br />'.$inventory_code->lot_type.'</p>
+                                            <p>' . $code_row->title . '<br />' . $inventory_code->lot_type . '</p>
                                         </li>
                                         <li>
                                             <p><strong>Fullness</strong></p>
-                                            <p>'.$inventory_code->fullness.'%</p>
+                                            <p>' . $inventory_code->fullness . '%</p>
                                         </li>
                                         <li>
                                             <p><strong>Price</strong></p>
-                                            <p>'.format_amount(number_format($price, 2, '.', '')).'</p>
+                                            <p>' . format_amount(number_format($price, 2, '.', '')) . '</p>
                                         </li>
                                         <li>
                                             <p><strong>Quantity</strong></p>
                                             <div class="qty_cart">
                                                 <div class="qtyBtn">
-                                                    '.$minus_btn.'
-                                                    <input type="text" name="quantity" value="'.$inventory_code->qty.'" class="qty">
-                                                    '.$plus_btn.'
-                                                    <input type="hidden" name="row_id" class="row_id" value="'.$inventory_code->id.'">
+                                                    ' . $minus_btn . '
+                                                    <input type="text" name="quantity" value="' . $inventory_code->qty . '" class="qty">
+                                                    ' . $plus_btn . '
+                                                    <input type="hidden" name="row_id" class="row_id" value="' . $inventory_code->id . '">
                                                 </div>
-                                                '.$anchor_tag.'
+                                                ' . $anchor_tag . '
                                             </div>
                                         </li>
                                     </ul>
@@ -208,134 +207,109 @@ class Ajax extends MY_Controller
                             ';
                         }
                     }
-                    $avg_price=$count_avg > 0 ? $grand_total / $count_avg : 0;
-                    $res['html']=$html_markup;
-                    $res['grand_total']=format_amount(number_format($grand_total, 2, '.', ''));
-                    $res['average_price']=format_amount(number_format($avg_price, 2, '.', ''));
+                    $avg_price = $count_avg > 0 ? $grand_total / $count_avg : 0;
+                    $res['html'] = $html_markup;
+                    $res['grand_total'] = format_amount(number_format($grand_total, 2, '.', ''));
+                    $res['average_price'] = format_amount(number_format($avg_price, 2, '.', ''));
                     $res['status'] = 1;
                     $res['msg'] = 'Updated successfully!';
                 }
+            } else {
+                $res['msg'] = 'no inventory code';
             }
-            else{
-                $res['msg']='no inventory code';
-            }
-        }
-        else{
+        } else {
             $vals = html_escape($this->input->post());
-            $res['vals']=$vals;
+            $res['vals'] = $vals;
         }
         exit(json_encode($res));
     }
 
-    // public function update_cart()
-    // {
-    //     $res = array();
-    //     $res['status'] = 0;
-    //     if ($this->input->post()) {
-    //         $vals = html_escape($this->input->post());
-    //         $lot_id = $vals['lot_id'];
-    //         $qty = $vals['qty'];
-    //         if ($inventory_code = $this->master->getRow('add_code_to_lot', array('mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id, 'id' => $lot_id))) {
-    //             $id = $this->master->save("add_code_to_lot", array('qty' => $qty), 'id', $inventory_code->id);
-    //             if ($id > 0) {
-    //                 $total_price = 0;
-    //                 $inventory_codes = $this->master->getRows('add_code_to_lot', array('mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id, 'lot_id' => $inventory_code->lot_id));
-    //                 $codes_arr = array();
-    //                 // pr($inventory_codes);
-    //                 foreach ($inventory_codes as $inventory_code) {
-    //                     // if ($inventory_code->lot_type === 'Code') {
-    //                     if ($code_row = $this->master->getRow('code', array('id' => $inventory_code->inventory_id))) {
-    //                         // pr($code_row);
-    //                         $total_price += $inventory_code->amount;
-    //                         $code_row->amount = $inventory_code->amount;
-    //                         $code_row->fullness = $inventory_code->fullness;
-    //                         $code_row->created_date = $inventory_code->created_date;
-    //                         $code_row->qty = $inventory_code->qty;
-    //                         $code_row->lot_id = $inventory_code->id;
-    //                         $code_row->lot_type = $inventory_code->lot_type;
-    //                         $codes_arr[] = $code_row;
-    //                     }
-    //                 }
-    //                 $this->data['codes_arr'] = $codes_arr;
-    //                 pr($this->data['codes_arr']);
-    //                 $this->data['total_price'] = $total_price;
-
-    //                 $sub_admin_row = $this->master->getRow("add_domains", array('site_id' => $this->session->web_id));
-    //                 $price_pump = !empty($sub_admin_row->price_pump) ? $sub_admin_row->price_pump :  2;
-    //                 $admin_site_settings = $this->master->getRow("siteadmin", array('site_id' => '1'));
-
-    //                 $html = '';
-    //                 if (!empty($codes_arr)) {
-    //                     pr($codes_arr);
-    //                     foreach ($codes_arr as $code_row) {
-
-    //                         $cal_price = calculatedPrice($admin_site_settings->site_o_pt_price, $admin_site_settings->site_live_pt_price, $admin_site_settings->site_o_pd_price, $admin_site_settings->site_live_pd_price, $admin_site_settings->site_o_rh_price, $admin_site_settings->site_live_rh_price, $code_row->o_price, $code_row->pt_price, $code_row->pd_price, $code_row->rh_price);
-    //                         $cal_price = $cal_price + (($cal_price * $price_pump) / 100);
-    //                         $price = $cal_price * $code_row->qty;
-    //                         // $grand_total += $price;
-
-    //                         $html .= '<div class="flex">' .
-    //                             '<div class="content">' .
-    //                             '<ul class="in_listing">' .
-    //                             '<li>' .
-    //                             '<p><strong>Title</strong></p>' .
-    //                             '<p>' . $code_row->title . '<br />' . $code_row->lot_type . '</p>' .
-    //                             '</li>' .
-    //                             '<li>' .
-    //                             '<p><strong>Fullness</strong></p>' .
-    //                             '<p>' . $code_row->fullness . '%</p>' .
-    //                             '</li>' .
-    //                             '<li>' .
-    //                             '<p><strong>Price</strong></p>' .
-    //                             '<p>' . format_amount($price) . '</p>' .
-    //                             '</li>' .
-    //                             '<li>' .
-    //                             '<p><strong>Quantity</strong></p>' .
-    //                             '<div class="qty_cart">' .
-    //                             '<div class="qtyBtn">' .
-    //                             '<input type="button" value="-" class="qtyminus readBtn">' .
-    //                             '<input type="text" name="quantity" value="' . $code_row->qty . '" class="qty">' .
-    //                             '<input type="button" value="+" class="qtyplus readBtn">' .
-    //                             '<input type="hidden" name="lot_id" class="lot_id" value="' . $code_row->lot_id . '">' .
-    //                             '</div>' .
-    //                             '<img src="' . base_url() . 'assets/images/delete.svg" alt="">' .
-    //                             '</a>' .
-    //                             '</div>' .
-    //                             '</li>' .
-    //                             '</ul>' .
-    //                             '</div>' .
-    //                             '</div>';
-    //                     }
-    //                 } else {
-    //                     $html = '<div class="alert alert-danger">No Code Available!!!</div>';
-    //                 }
-
-    //                 // pr($html);
-    //                 echo json_encode(array(
-    //                     'html' => $html,
-    //                     'status' => 1,
-    //                     'msg' => 'Updated successfully!',
-    //                 ));
-
-    //                 // $res['status'] = 1;
-    //                 // $res['msg'] = 'Updated successfully!';
-    //             }
-    //         }
-    //     }
-    //     // exit(json_encode($res));
-    // }
-
-
-
-
-    public function delete_cart($lot_id, $inventor_id)
+    public function delete_cart()
     {
-        if ($inventory_code = $this->master->getRow('add_code_to_lot', array('mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id, 'id' => $lot_id))) {
-            $this->master->delete('add_code_to_lot', 'id', $lot_id);
-            redirect('/inventory-detail/' . $inventor_id, 'refresh');
+        $res = array();
+        $res['status'] = 0;
+        if ($this->input->post()) {
+            $vals = html_escape($this->input->post());
+            $row_id = $vals['row_id'];
+            $res['vals'] = $vals;
+            if ($inventory_code = $this->master->getRow('add_code_to_lot', array('mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id, 'id' => $row_id))) {
+
+                $id = $this->master->delete_where('add_code_to_lot', array('id' => $inventory_code->id));
+                if ($id > 0) {
+
+                    $inventory_codes = $this->master->getRows('add_code_to_lot', array('mem_id' => $this->session->mem_id, 'site_id' => $this->session->web_id, 'lot_id' => $inventory_code->lot_id));
+
+                    $count_avg = count($inventory_codes);
+                    $grand_total = 0;
+                    $html_markup = '';
+
+                    $sub_admin_row = $site_settings = $this->master->getRow("add_domains", array('site_id' => $this->session->web_id));
+                    $admin_site_settings = $this->master->getRow("siteadmin", array('site_id' => '1'));
+                    foreach ($inventory_codes as $inventory_code) {
+                        if ($code_row = $this->master->getRow('code', array('id' => $inventory_code->inventory_id))) {
+                            $price_pump = !empty($sub_admin_row->price_pump) ? $sub_admin_row->price_pump :  2;
+                            $cal_price = calculatedPrice($admin_site_settings->site_o_pt_price, $admin_site_settings->site_live_pt_price, $admin_site_settings->site_o_pd_price, $admin_site_settings->site_live_pd_price, $admin_site_settings->site_o_rh_price, $admin_site_settings->site_live_rh_price, $code_row->o_price, $code_row->pt_price, $code_row->pd_price, $code_row->rh_price);
+                            $cal_price = $cal_price + (($cal_price * $price_pump) / 100);
+                            // $amount = $cal_price;
+                            // pr($code_row);
+                            $price = $cal_price * $inventory_code->qty;
+                            $grand_total += $price;
+                            if ($inventory_detail->status == 0) {
+                                $minus_btn = '<input type="button" value="-" class="qtyminus readBtn">';
+                                $plus_btn = '<input type="button" value="+" class="qtyplus readBtn">';
+                                $anchor_tag = '<a href="javascript:void(0)" class="delete" id="del_row" data-row_id="' . $inventory_code->id . '">
+                                <img src="' . base_url() . 'assets/images/delete.svg" alt="">
+                            </a>';
+                            }
+                            $html_markup .= '
+                            <div class="flex">
+                                <div class="content">
+                                    <ul class="in_listing">
+                                        <li>
+                                            <p><strong>Title</strong></p>
+                                            <p>' . $code_row->title . '<br />' . $inventory_code->lot_type . '</p>
+                                        </li>
+                                        <li>
+                                            <p><strong>Fullness</strong></p>
+                                            <p>' . $inventory_code->fullness . '%</p>
+                                        </li>
+                                        <li>
+                                            <p><strong>Price</strong></p>
+                                            <p>' . format_amount(number_format($price, 2, '.', '')) . '</p>
+                                        </li>
+                                        <li>
+                                            <p><strong>Quantity</strong></p>
+                                            <div class="qty_cart">
+                                                <div class="qtyBtn">
+                                                    ' . $minus_btn . '
+                                                    <input type="text" name="quantity" value="' . $inventory_code->qty . '" class="qty">
+                                                    ' . $plus_btn . '
+                                                    <input type="hidden" name="row_id" class="row_id" value="' . $inventory_code->id . '">
+                                                </div>
+                                                ' . $anchor_tag . '
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            ';
+                        }
+                    }
+                    $avg_price = $count_avg > 0 ? $grand_total / $count_avg : 0;
+                    $res['html'] = $html_markup;
+                    $res['grand_total'] = format_amount(number_format($grand_total, 2, '.', ''));
+                    $res['average_price'] = format_amount(number_format($avg_price, 2, '.', ''));
+                    $res['status'] = 1;
+                    $res['msg'] = 'Deleted successfully!';
+                }
+            } else {
+                $res['msg'] = 'no inventory code';
+            }
         } else {
-            show_404();
+            $vals = html_escape($this->input->post());
+            $res['vals'] = $vals;
         }
+        exit(json_encode($res));
     }
 
     // add code to lot ======
@@ -479,7 +453,7 @@ class Ajax extends MY_Controller
                         <img src="' . base_url('uploads/images/' . $this->data["site_settings"]->site_logo) . '" alt="' . $this->data['site_settings']->site_name . '" alt="">
                         </div>
                         <div class="content">
-                            <h5><a href="' . base_url('code-detail/' . urlencode(doEncode($code_p->id))) . '">' . $code_p->title . '</a></h5>
+                            <h5><a href="' . base_url('code-detail/' . doEncode($code_p->id)) . '">' . $code_p->title . '</a></h5>
                             <p>' . $code_p->code . '</p>
                             
                             <div class="cta_price">
@@ -551,7 +525,7 @@ class Ajax extends MY_Controller
                         <img src="' . base_url('uploads/images/' . $this->data["site_settings"]->site_logo) . '" alt="' . $this->data['site_settings']->site_name . '" alt="">
                         </div>
                         <div class="content">
-                            <h5><a href="' . base_url('generic-detail/' . urlencode(doEncode($generic->id))) . '">' . $generic->title . '</a></h5>
+                            <h5><a href="' . base_url('generic-detail/' . doEncode($generic->id)) . '">' . $generic->title . '</a></h5>
                             <p>' . $generic->code . '</p>
                             <div class="cta_price">
                                 <h5><strong>' . $amount . '</strong></h5>
@@ -595,8 +569,6 @@ class Ajax extends MY_Controller
 
         if ($this->input->post()) {
             $vals = html_escape($this->input->post());
-
-
             if (isset($_FILES["grade_image"]["name"])) {
 
                 $image1 = upload_file(UPLOAD_PATH . 'photo_grade/', 'grade_image');

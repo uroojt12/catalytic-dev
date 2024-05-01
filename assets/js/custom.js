@@ -38,13 +38,13 @@ function shareFacebook(url, title) {
 function shareLinkedin(url, title, text, site_name) {
   window.open(
     "https://www.linkedin.com/shareArticle?mini=true&url=" +
-    url +
-    "&title=" +
-    title +
-    "&summary=" +
-    text +
-    "&source=" +
-    site_name
+      url +
+      "&title=" +
+      title +
+      "&summary=" +
+      text +
+      "&source=" +
+      site_name
   );
 }
 function shareTwitter(url, title) {
@@ -60,11 +60,11 @@ function shareGoogle(url, title) {
 function sharePinterest(url, image, title) {
   window.open(
     "https://pinterest.com/pin/create/button/?url=" +
-    url +
-    "&media=" +
-    image +
-    "&description=" +
-    title,
+      url +
+      "&media=" +
+      image +
+      "&description=" +
+      title,
     "sharer",
     "toolbar=0,status=0,width=548,height=325,top=170,left=400"
   );
@@ -346,24 +346,30 @@ $(document).ready(function () {
             // button.removeClass("active");
             let progressHTML = `
                         <li class="bid-row">
-                            <div class=" remove_identification" data-file="${jsonResponse.file_name
-              }"></div>
-                            <a href="${jsonResponse.file_path
-              }" target="_blank" download>
-                                <img src="${base_url + "assets/images/glyph-plus.svg"
-              }" />
+                            <div class=" remove_identification" data-file="${
+                              jsonResponse.file_name
+                            }"></div>
+                            <a href="${
+                              jsonResponse.file_path
+                            }" target="_blank" download>
+                                <img src="${
+                                  base_url + "assets/images/glyph-plus.svg"
+                                }" />
                                 <div class="content">
                                     <div class="details">
-                                        <span class="name">${jsonResponse.name
-              }</span>
+                                        <span class="name">${
+                                          jsonResponse.name
+                                        }</span>
                                     </div>
                                 </div>
                                 <i class="fi-check"></i>
                             </a>
-                            <input type="hidden" name="identification_file" value="${jsonResponse.file_name
-              }" />
-                            <input type="hidden" name="identification_file_name" value="${jsonResponse.name
-              }" />
+                            <input type="hidden" name="identification_file" value="${
+                              jsonResponse.file_name
+                            }" />
+                            <input type="hidden" name="identification_file_name" value="${
+                              jsonResponse.name
+                            }" />
                         </li>`;
             uploadedArea.html(progressHTML);
           } else uploadedArea.append(jsonResponse.error);
@@ -418,24 +424,30 @@ $(document).on("change", "#uploadPhotoGrade", function () {
           // button.removeClass("active");
           let progressHTML = `
                         <li class="bid-row">
-                            <div class=" remove_identification" data-file="${jsonResponse.file_name
-            }"></div>
-                            <a href="${jsonResponse.file_path
-            }" target="_blank" download>
-                                <img src="${base_url + "assets/images/glyph-plus.svg"
-            }" />
+                            <div class=" remove_identification" data-file="${
+                              jsonResponse.file_name
+                            }"></div>
+                            <a href="${
+                              jsonResponse.file_path
+                            }" target="_blank" download>
+                                <img src="${
+                                  base_url + "assets/images/glyph-plus.svg"
+                                }" />
                                 <div class="content">
                                     <div class="details">
-                                        <span class="name">${jsonResponse.name
-            }</span>
+                                        <span class="name">${
+                                          jsonResponse.name
+                                        }</span>
                                     </div>
                                 </div>
                                 <i class="fi-check"></i>
                             </a>
-                            <input type="hidden" name="identification_file" value="${jsonResponse.file_name
-            }" />
-                            <input type="hidden" name="identification_file_name" value="${jsonResponse.name
-            }" />
+                            <input type="hidden" name="identification_file" value="${
+                              jsonResponse.file_name
+                            }" />
+                            <input type="hidden" name="identification_file_name" value="${
+                              jsonResponse.name
+                            }" />
                         </li>`;
           uploadedArea.html(progressHTML);
         } else uploadedArea.append(jsonResponse.error);
@@ -508,10 +520,10 @@ $(function () {
 });
 /////////////////////////////////////////////////
 // This button will increment the value
-$(document).on('click', '.qtyplus', function (e) {
+$(document).on("click", ".qtyplus", function (e) {
   e.preventDefault();
   var parnt = $(this).parent().children(".qty");
-  console.log(parnt)
+  console.log(parnt);
   let row_id = $(this).parent().children(".row_id");
   var currentVal = parnt.val();
   if (!isNaN(currentVal)) {
@@ -521,7 +533,7 @@ $(document).on('click', '.qtyplus', function (e) {
     parnt.val(0);
   }
 });
-$(document).on('click', '.qtyminus', function (e) {
+$(document).on("click", ".qtyminus", function (e) {
   // This button will decrement the value till 0
   e.preventDefault();
   var parnt = $(this).parent().children(".qty");
@@ -536,6 +548,7 @@ $(document).on('click', '.qtyminus', function (e) {
     updateCart(currentVal + 1, row_id);
   }
 });
+
 function updateCart(qty, row_id) {
   row_id = row_id.val();
   console.log(row_id);
@@ -551,9 +564,41 @@ function updateCart(qty, row_id) {
       console.log(response);
       if (response.status) {
         toastr.success(response.msg);
-        $("#inventory_update").html(response?.html)
-        $(".grand_total").html(response?.grand_total)
-        $(".average_price").html(response?.average_price)
+        $("#inventory_update").html(response?.html);
+        $(".grand_total").html(response?.grand_total);
+        $(".average_price").html(response?.average_price);
+      }
+    },
+    error: function (xhr, status, error) {
+      // Handle error response from the server
+      console.error("Error updating cart:", error);
+    },
+  });
+}
+
+$(document).on("click", "#del_row", function (e) {
+  e.preventDefault();
+
+  var row_id = $(this).data("row_id");
+  deleteCart(row_id);
+});
+
+function deleteCart(row_id) {
+  // console.log(row_id);
+  $.ajax({
+    type: "POST",
+    url: base_url + "ajax/delete_cart",
+    data: {
+      row_id: row_id,
+    },
+    dataType: "JSON",
+    success: function (response) {
+      // console.log(response);
+      if (response.status) {
+        toastr.success(response.msg);
+        $("#inventory_update").html(response?.html);
+        $(".grand_total").html(response?.grand_total);
+        $(".average_price").html(response?.average_price);
       }
     },
     error: function (xhr, status, error) {

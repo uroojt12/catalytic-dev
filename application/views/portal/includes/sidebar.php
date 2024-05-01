@@ -95,6 +95,12 @@
                             <span class="title">Photo Grade</span>
                         </a>
                     </li>
+                    <li class="opened <?= ($this->uri->segment(3) == 'new_photo_grade') ? ' active' : '' ?>">
+                        <a href="<?= site_url(SUBADMIN . '/sitecontent/new_photo_grade') ?>">
+                            <i class="entypo-doc-text  "></i>
+                            <span class="title">New Photo Grade</span>
+                        </a>
+                    </li>
                     <li class="opened <?= ($this->uri->segment(3) == 'photo_detail') ? ' active' : '' ?>">
                         <a href="<?= site_url(SUBADMIN . '/sitecontent/photo_detail') ?>">
                             <i class="entypo-doc-text  "></i>

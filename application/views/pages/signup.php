@@ -9,8 +9,8 @@
                     </div>
 
                     <div class="up_cntent">
-                        <h3>Let’s Get Started</h3>
-                        <p>Register and Explore Limitless Opportunities</p>
+                        <h3><?= $site_content['sec_heading'] ?></h3>
+                        <p><?= $site_content['sec_tagline'] ?></p>
                     </div>
                     <form action="<?= base_url('register/signup') ?>" method="POST" id="frmSignin" class="frmAjax" autocomplete="off">
                         <div class="row">

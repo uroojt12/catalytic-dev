@@ -687,23 +687,64 @@ function getPayStatus($status)
     }
 }
 
-function doEncode($data, $key = "preciousprotection")
+// function doEncode($data, $key = "preciousprotection")
+// {
+//     $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+
+//     $cipherText = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+
+//     return base64_encode($iv . $cipherText);
+// }
+
+// function doDecode($encryptedData, $key = "preciousprotection")
+// {
+//     $data = base64_decode($encryptedData);
+
+//     $iv = substr($data, 0, openssl_cipher_iv_length('aes-256-cbc'));
+//     $cipherText = substr($data, openssl_cipher_iv_length('aes-256-cbc'));
+
+//     return openssl_decrypt($cipherText, 'aes-256-cbc', $key, 0, $iv);
+// }
+
+
+function doEncode($string, $key = 'preciousprotection')
 {
-    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
-
-    $cipherText = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
-
-    return base64_encode($iv . $cipherText);
+    $string = base64_encode($string);
+    $key = sha1($key);
+    $strLen = strlen($string);
+    $keyLen = strlen($key);
+    $hash = ''; // Initialize $hash
+    $j = 0; // Initialize $j
+    for ($i = 0; $i < $strLen; $i++) {
+        $ordStr = ord(substr($string, $i, 1));
+        if ($j == $keyLen) {
+            $j = 0;
+        }
+        $ordKey = ord(substr($key, $j, 1));
+        $j++;
+        $hash .= strrev(base_convert(dechex($ordStr + $ordKey), 16, 36));
+    }
+    return $hash;
 }
 
-function doDecode($encryptedData, $key = "preciousprotection")
+function doDecode($string, $key = 'preciousprotection')
 {
-    $data = base64_decode($encryptedData);
-
-    $iv = substr($data, 0, openssl_cipher_iv_length('aes-256-cbc'));
-    $cipherText = substr($data, openssl_cipher_iv_length('aes-256-cbc'));
-
-    return openssl_decrypt($cipherText, 'aes-256-cbc', $key, 0, $iv);
+    $key = sha1($key);
+    $strLen = strlen($string);
+    $keyLen = strlen($key);
+    $hash = ''; // Initialize $hash
+    $j = 0; // Initialize $j
+    for ($i = 0; $i < $strLen; $i += 2) {
+        $ordStr = hexdec(base_convert(strrev(substr($string, $i, 2)), 36, 16));
+        if ($j == $keyLen) {
+            $j = 0;
+        }
+        $ordKey = ord(substr($key, $j, 1));
+        $j++;
+        $hash .= chr($ordStr - $ordKey);
+    }
+    $hash = base64_decode($hash);
+    return $hash;
 }
 
 function format_amount($amount, $size = 2)
@@ -1347,7 +1388,6 @@ function calculatedPrice($site_o_pt_price, $site_live_pt_price, $site_o_pd_price
         );
 
         return $result;
-
     } else {
         return 0;
     }

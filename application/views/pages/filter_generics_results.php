@@ -32,7 +32,7 @@
                             </div>
                             <div class="bottom_content">
                                 <div class="content">
-                                    <h5><a href="<?= base_url('generic-detail/' . urlencode(doEncode($generic->id))) ?>"><?= $generic->title ?></a></h5>
+                                    <h5><a href="<?= base_url('generic-detail/' . doEncode($generic->id)) ?>"><?= $generic->title ?></a></h5>
                                     <p><?= $generic->code ?></p>
                                     <?php $chk_price = chk_code_price($this->session->web_id, $generic->id); ?>
                                     <div class="cta_price">

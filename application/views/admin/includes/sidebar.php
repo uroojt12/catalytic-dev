@@ -184,12 +184,12 @@
 
 
 
-            <li class="opened<?= $this->uri->segment('2') == 'testimonials' ? ' active' : '' ?>">
+            <!-- <li class="opened<?= $this->uri->segment('2') == 'testimonials' ? ' active' : '' ?>">
                 <a href="<?= site_url(ADMIN . '/testimonials') ?>">
                     <i class="fa fa-quote-left"></i>
                     <span class="title">Manage Testimonials</span>
                 </a>
-            </li>
+            </li> -->
 
 
             <!-- <li class="opened <?= ($this->uri->segment(2) == 'contact') ? 'active' : '' ?>">

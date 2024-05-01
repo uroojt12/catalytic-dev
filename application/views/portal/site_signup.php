@@ -47,7 +47,7 @@
             <div class="form-group">
 
 
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                     <div class="form-group">
 
                         <div class="panel panel-primary" data-collapsed="0">
@@ -80,8 +80,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-10">
+                <div class="clearfix"></div> -->
+                <div class="col-md-12">
                     <div class="form-group">
                         <div class="clearfix"></div>
 

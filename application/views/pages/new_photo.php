@@ -1,14 +1,13 @@
 <main>
     <!-- ====== -->
-    <section class="small_banner">
+    <section class="small_banner" style="background-image:url('<?= get_site_image_src("images/", $site_content['image1']) ?>')">
         <div class="contain">
             <div class="inner">
                 <div class="sec_heading">
-                    <h2>Submit New Photos for Grading</h2>
+                    <h2><?= $site_content['banner_heading'] ?></h2>
                 </div>
                 <div class="content">
-                    <p>Looking to have your photos graded for authenticity, quality, or other criteria? Our photo
-                        grading service offers a convenient and efficient way to assess your images</p>
+                    <?= $site_content['banner_detail'] ?>
                 </div>
             </div>
         </div>
@@ -39,13 +38,16 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="txtGrp">
-                                    <label for="">Item Fullness %</label>
+                                    <label for="">Item Fullness % <span id="photo_slider_price"></span></label>
                                     <div class="inner_block">
                                         <div class="first_value">
                                             <p>0</p>
                                         </div>
                                         <!-- <div class="example"></div> -->
-                                        <input type="range" name="grade_fullness" id="grade_fullness" min="0" max="100" value="0" class="fullness-range">
+                                        <!-- <input type="range" name="grade_fullness" id="grade_fullness" min="0" max="100" value="0" class="fullness-range"> -->
+                                        <input type="hidden" name="grade_fullness" id="grade_fullness">
+                                        <div id="photo_price_slider"></div>
+
                                         <div class="last_value">
                                             <p>100</p>
                                         </div>
@@ -61,7 +63,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="butn">
-                                    <button type="submit" class="webBtn">Submit For Grading<i class="spinner hidden"></i></button>
+                                    <button type="submit" class="webBtn"> <?= $site_content['form_btn_txt'] ?><i class="spinner hidden"></i></button>
                                 </div>
                             </div>
                         </div>

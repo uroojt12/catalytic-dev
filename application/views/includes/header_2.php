@@ -14,9 +14,9 @@
                     <a href="<?= base_url('inventory') ?>">Inventory</a>
                 </li>
 
-                <li class="desk_view">
+                <!-- <li class="desk_view">
                     <a href="margin.php">Margin</a>
-                </li>
+                </li> -->
                 <li id="likeBtn" class="_dropDown">
                     <div class="iconBtn _dropBtn">
                         <a href="<?= base_url('notifications') ?>" class="inner">

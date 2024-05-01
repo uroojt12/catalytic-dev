@@ -65,7 +65,7 @@
                             </div>
                             <div class="content">
                                 <h5><a
-                                        href="<?= base_url('generic-detail/' . urlencode(doEncode($generic->id))) ?>"><?= $generic->title ?></a>
+                                        href="<?= base_url('generic-detail/' . doEncode($generic->id)) ?>"><?= $generic->title ?></a>
                                 </h5>
                                 <p><?= $generic->code ?></p>
                                 <div class="cta_price">
@@ -75,23 +75,48 @@
                                         <a href="javascript:void(0)" class="webBtn popBtn"
                                             data-lot_type="<?= ($generic->type) ?>"
                                             data-inventory_id="<?= ($generic->id) ?>" data-popup="add_code">Add</a>
+                                        <div class="bottom_content">
+                                            <div class="image_2">
+                                                <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>"
+                                                    alt="<?= $site_settings->site_name ?>" alt="">
+                                            </div>
+                                            <div class="content">
+                                                <h5><a
+                                                        href="<?= base_url('generic-detail/' . urlencode(doEncode($generic->id))) ?>"><?= $generic->title ?></a>
+                                                </h5>
+                                                <p><?= $generic->code ?></p>
+                                                <div class="cta_price">
+                                                    <h5><strong><?= format_amount($generic->total_price) ?></strong>
+                                                    </h5>
+                                                    <div class="cta">
+                                                        <!-- <a href="javascript:void(0)" class="webBtn popBtn" data-popup="add_code">Add</a> -->
+                                                        <a href="javascript:void(0)" class="webBtn popBtn"
+                                                            data-lot_type="<?= ($generic->type) ?>"
+                                                            data-inventory_id="<?= ($generic->id) ?>"
+                                                            data-popup="add_code">Add</a>
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                                <?php endforeach ?>
+                            </div>
+                            <div id="loading_generics" class="hidden">
+                                <div class="loadingio-spinner-rolling-2by998twmg8">
+                                    <div class="ldio-yzaezf3dcmj">
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="loadingio-spinner-rolling-2by998twmg8">
+                                <div class="ldio-yzaezf3dcmj">
+                                    <div></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <?php endforeach ?>
-            </div>
-            <div id="loading_generics" class="hidden">
-                <div class="loadingio-spinner-rolling-2by998twmg8">
-                    <div class="ldio-yzaezf3dcmj">
-                        <div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 </main>
 <?php include_once('popups.php') ?>
