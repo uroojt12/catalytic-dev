@@ -10,6 +10,7 @@ class Members extends SUBADMIN_Controller
         $this->subadmin = $this->getActiveSubAdmin();
     }
 
+    
     public function index()
     {
         $this->data['enable_datatable'] = TRUE;
