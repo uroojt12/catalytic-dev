@@ -161,6 +161,7 @@ class Ajax extends MY_Controller
                         if ($code_row = $this->master->getRow('code', array('id' => $inventory_code->inventory_id))) {
                             $price_pump = !empty($sub_admin_row->price_pump) ? $sub_admin_row->price_pump :  2;
                             $cal_price = calculatedPrice($admin_site_settings->site_o_pt_price, $admin_site_settings->site_live_pt_price, $admin_site_settings->site_o_pd_price, $admin_site_settings->site_live_pd_price, $admin_site_settings->site_o_rh_price, $admin_site_settings->site_live_rh_price, $code_row->o_price, $code_row->pt_price, $code_row->pd_price, $code_row->rh_price);
+
                             $cal_price = $cal_price + (($cal_price * $price_pump) / 100);
                             // $amount = $cal_price;
                             // pr($code_row);
@@ -442,9 +443,11 @@ class Ajax extends MY_Controller
         $html = '';
         if (!empty($this->data['find_code'])) {
             foreach ($this->data['find_code'] as $code_p) {
-                $cal_price = calculatedPrice($site_settings->site_o_pt_price, $site_settings->site_live_pt_price, $site_settings->site_o_pd_price, $site_settings->site_live_pd_price, $site_settings->site_o_rh_price, $site_settings->site_live_rh_price, $code_p->o_price, $code_p->pt_price, $code_p->pd_price, $code_p->rh_price);
-                $cal_price = $cal_price + (($cal_price * $price_pump) / 100);
-                $amount = $cal_price;
+                $pump_cal_price = calculatedAllPrice($site_settings->site_o_pt_price, $site_settings->site_live_pt_price, $site_settings->site_o_pd_price, $site_settings->site_live_pd_price, $site_settings->site_o_rh_price, $site_settings->site_live_rh_price, $this->session->web_id, $code_p->id, $this->session->mem_id);
+
+                // $cal_price = calculatedPrice($site_settings->site_o_pt_price, $site_settings->site_live_pt_price, $site_settings->site_o_pd_price, $site_settings->site_live_pd_price, $site_settings->site_o_rh_price, $site_settings->site_live_rh_price, $code_p->o_price, $code_p->pt_price, $code_p->pd_price, $code_p->rh_price);
+                // $cal_price = $cal_price + (($cal_price * $price_pump) / 100);
+                $amount = $pump_cal_price;
                 $html .= '<div class="cols">
                 <div class="inner">
                     

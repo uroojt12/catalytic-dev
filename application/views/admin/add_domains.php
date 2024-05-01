@@ -22,19 +22,20 @@
                         <label class="control-label" for="name"> Name <span class="symbol required">*</span></label>
                         <input type="text" name="name" id="name" value="<?php if (isset($row->name)) echo $row->name; ?>" class="form-control" autofocus required>
                     </div>
+                    <div class="clearfix"></div>
 
                     <div class="col-md-6">
                         <label class="control-label" for="password">User password <span class="symbol required">*</span></label>
                         <input type="text" name="password" id="password" value="<?php if (isset($row->password)) ?>" class="form-control" autofocus>
                     </div>
 
-
                     <div class="col-md-6">
                         <label class="control-label" for="email">User Email <span class="symbol required">*</span></label>
                         <input type="text" name="email" id="email" value="<?php if (isset($row->email)) echo $row->email; ?>" class="form-control" autofocus required>
                     </div>
 
-
+                    <div class="clearfix"></div>
+                    
 
                     <div class="col-md-6">
                         <label class="control-label" for="status"> Status <span class="symbol required">*</span></label>

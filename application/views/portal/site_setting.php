@@ -157,13 +157,41 @@
                     <textarea rows="2" name="site_about" class="form-control"><?php if (isset($this->subadmin->site_about)) echo ($this->subadmin->site_about); ?></textarea>
                 </div>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label"> Price Pump <span class="symbol required"></span></label>
                     <input type="number" name="price_pump" class="form-control" value="<?php if (isset($this->subadmin->price_pump)) echo ($this->subadmin->price_pump); ?>" />
                 </div>
-            </div>
+            </div> -->
 
+
+        </div>
+
+
+        <div class="clearfix"></div>
+        <h3><i class="fa fa-bars"></i> Site Prices</h3>
+        <hr class="hr-short">
+        <div class="col-md-12">
+            <div class="form-group">
+
+                <div class="col-md-6">
+                    <label class="control-label" for="site_live_pt_price">Live PT Price<span class="symbol required">*</span></label>
+                    <input type="number" min="0" step="any" name="site_live_pt_price" value="<?php if (isset($this->subadmin->site_live_pt_price)) echo $this->subadmin->site_live_pt_price; ?>" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label" for="site_live_pd_price">Live PD Price<span class="symbol required">*</span></label>
+                    <input type="number" min="0" step="any" name="site_live_pd_price" value="<?php if (isset($this->subadmin->site_live_pd_price)) echo $this->subadmin->site_live_pd_price; ?>" class="form-control">
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-6">
+                    <label class="control-label" for="site_live_rh_price">Live RH Price<span class="symbol required">*</span></label>
+                    <input type="number" min="0" step="any" name="site_live_rh_price" value="<?php if (isset($this->subadmin->site_live_rh_price)) echo $this->subadmin->site_live_rh_price; ?>" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label"> Price Pump <span class="symbol required"></span></label>
+                    <input type="number" name="price_pump" class="form-control" value="<?php if (isset($this->subadmin->price_pump)) echo ($this->subadmin->price_pump); ?>" />
+                </div>
+            </div>
 
         </div>
 

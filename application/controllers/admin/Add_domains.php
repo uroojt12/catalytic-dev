@@ -45,6 +45,11 @@ class Add_domains extends Admin_Controller
             } else {
                 $vals['site_logo'] = $content_row->site_logo;
             }
+            
+            $vals['site_live_pt_price'] = $this->data['adminsite_setting']->site_live_pt_price;
+            $vals['site_live_pd_price'] = $this->data['adminsite_setting']->site_live_pd_price;
+            $vals['site_live_rh_price'] = $this->data['adminsite_setting']->site_live_rh_price;
+
             $id = $this->add_domains_model->save($vals, $this->uri->segment(4));
             if ($id > 0) {
 

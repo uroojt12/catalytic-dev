@@ -28,12 +28,13 @@ class Generics extends SUBADMIN_Controller
             $vals = $this->input->post();
 
             // pr($this->subadmin);
-            $new_price = ($vals['percentage'] / 100) * $vals['new_price'];
-
-            $vals['new_price'] = $vals['new_price'] + $new_price;
+            // $new_price = ($vals['percentage'] / 100) * $vals['new_price'];
+            // $vals['new_price'] = $vals['new_price'] + $new_price;
+            
             $vals['site_id'] = $this->subadmin->site_id;
             $vals['code_id'] = $this->uri->segment(4);
             $vals['created_date'] = date('Y-m-d h:i:s');
+            // pr($vals);
             $id = $this->master->save('code_prices', $vals);
             // pr($vals);
             // $this->code_model->save($vals, $this->uri->segment(4));

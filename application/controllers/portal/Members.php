@@ -38,6 +38,7 @@ class Members extends SUBADMIN_Controller
                     redirect(SUBADMIN . '/members/manage/' . $this->uri->segment(4), 'refresh');
                 }
             }
+            // pr($vals);
             $mem_id = $this->member->save($vals, $this->uri->segment(4));
             setMsg('success', 'Member has been saved successfully.');
             redirect(SUBADMIN . '/members', 'refresh');
