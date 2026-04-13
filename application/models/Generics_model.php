@@ -52,4 +52,12 @@ class Generics_model extends CRUD_model
         }
         return $this->db->get()->result();
     }
+
+
+    public function searchGenerics($search_word) {
+        $this->db->like('code', $search_word);
+        $this->db->where('status', 1);
+        $this->db->where('type', 'Generics');
+        return $this->db->get($this->table_name)->result();
+    }
 }

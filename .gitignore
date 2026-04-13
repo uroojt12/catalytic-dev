@@ -1,0 +1,8 @@
+application/config/constants.php
+/application/config/constants.php
+node_modules/
+.env
+uploads/
+vendor/
+old/
+*.zip

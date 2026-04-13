@@ -1,4 +1,4 @@
-<main>
+<main class="rev_banner">
     <!-- ====== -->
     <section class="small_banner" style="background-image:url('<?= get_site_image_src("images/", $site_content['image1']) ?>')">
         <div class="contain">
@@ -32,15 +32,19 @@
                     <div class="flex">
                         <?php if (!empty($inventory)) : ?>
                             <?php foreach ($inventory as $invent) : ?>
-                                <div class="cols">
-                                    <div class="inner">
-                                        <div class="content">
-                                            <h4><a href="<?= base_url('inventory-detail/' . doEncode($invent->id)) ?>"><?= $invent->lot_name ?></a></h4>
-                                            <p><?= format_date($invent->created_date, 'M d, Y') ?></p>
+                                    
+                                    <div class="cols inventory-link">
+                                        <div class="inner">
+                                            <a href="<?= base_url('inventory-detail/' . doEncode($invent->id)) ?>" class="cstm_lnk_outer"></a>
+                                            <div class="content">
+                                                <h4><?= $invent->lot_name ?></h4>
+                                                <p><?= format_date($invent->created_date, 'M d, Y') ?></p>
+                                            </div>
+                                            <button type="button" class="btn btn-danger btn-sm delete-lot" data-lot-id="<?= $invent->id ?>" >Delete</button>
                                         </div>
-
                                     </div>
-                                </div>
+                                
+                           
                             <?php endforeach ?>
                         <?php else : ?>
                             <div class="alert alert-danger">No active inventory added yet!</div>
@@ -57,13 +61,14 @@
                     <div class="flex">
                         <?php if (!empty($closed_inventory)) : ?>
                             <?php foreach ($closed_inventory as $invent) : ?>
-                                <div class="cols">
+                                <div class="cols inventory-link" style="cursor: pointer;">
                                     <div class="inner">
+                                        <a href="<?= base_url('inventory-detail/' . doEncode($invent->id)) ?>" class="cstm_lnk_outer"></a>
                                         <div class="content">
-                                            <h4><a href="<?= base_url('inventory-detail/' . doEncode($invent->id)) ?>"><?= $invent->lot_name ?></a></h4>
+                                            <h4><?= $invent->lot_name ?></h4>
                                             <p><?= format_date($invent->created_date, 'M d, Y') ?></p>
                                         </div>
-
+                            <button type="button" class="btn btn-danger btn-sm delete-lot" data-lot-id="<?= $invent->id ?>" >Delete</button>
                                     </div>
                                 </div>
                             <?php endforeach ?>

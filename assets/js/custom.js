@@ -104,7 +104,29 @@ $(document).ready(function () {
       });
     });
   }
-
+    $(document).on("change", "#fullness", function (e) {
+        let fullness=$(this).val();
+        let code_price=$("#code_price").val();
+        calculate_price(code_price,fullness);
+    })
+    $(document).on("blur", "#code_price", function (e) {
+        let code_price=$(this).val();
+        let fullness=$("#fullness").val();
+        calculate_price(code_price,fullness);
+    })
+    function calculate_price(code_price,fullness){
+        if(code_price!=null && code_price!=undefined && code_price!=null){
+            code_price=parseFloat(code_price);
+            fullness=parseInt(fullness);
+            if(fullness <100){
+                fullness=100-fullness;
+                let percent_price=(code_price * fullness)/100;
+                code_price=code_price - percent_price;
+            }
+            $(".item_price_custom_code span").html("$"+code_price)
+            return code_price;
+        }
+    }
   $(document).on("submit", ".frmAjax", function (e) {
     e.preventDefault();
     needToConfirm = true;
@@ -144,9 +166,13 @@ $(document).ready(function () {
             // $(this).parents('.popup').find('form').attr('action', '');
             setTimeout(function () {
               location.reload();
-            }, 1000);
+            }, 800);
           }
           toastr.success(rs.msg, "", optsuccess);
+          $(".popup").fadeOut();
+          $("body").removeClass("flow");
+          $("#generic_slider_price").text("100");
+          $("#code_slider_price").text("100");
           setTimeout(function () {
             frm.reset();
             frmIcon.addClass("hidden");
@@ -156,7 +182,7 @@ $(document).ready(function () {
             } else {
               frmbtn.attr("disabled", false);
             }
-          }, 3000);
+          }, 800);
         } else {
           toastr.error(rs.msg, opterror);
           setTimeout(function () {
@@ -166,7 +192,7 @@ $(document).ready(function () {
             frmIcon.css("display", "none");
 
             if (rs.redirect_url) window.location.href = rs.redirect_url;
-          }, 3000);
+          }, 800);
         }
       },
       complete: function (rs) {
@@ -293,7 +319,7 @@ $(document).ready(function () {
 
           setTimeout(function () {
             location.reload();
-          }, 1000);
+          }, 800);
         } else alert("Uploading Error!");
         needToConfirm = false;
       }
@@ -330,6 +356,8 @@ $(document).ready(function () {
     // uploadedArea.html("Uploading...");
     var myFileList = this.files;
     console.log(myFileList);
+    var spinner = $(".closed-inventory-btn .spinner"); // Select the spinner inside the button
+    spinner.removeClass("hidden"); // Remove hidden class when the image upload starts
     var pst = $(this).data("store");
     $.each(myFileList, function (i, file) {
       var formData = new FormData();
@@ -374,6 +402,7 @@ $(document).ready(function () {
             uploadedArea.html(progressHTML);
           } else uploadedArea.append(jsonResponse.error);
           needToConfirm = false;
+          spinner.addClass("hidden"); // Hide the spinner after the upload is successful
         }
       };
       xhr.upload.onloadstart = function (e) {
@@ -389,6 +418,7 @@ $(document).ready(function () {
       xhr.upload.onloadend = function (e) {
         progressBar.style.width = "100%";
         $("#progress-contain-vehicle").hide();
+        spinner.addClass("hidden"); // Hide the spinner when the upload ends
         // button.find("i").addClass("hidden");
       };
 
@@ -398,6 +428,89 @@ $(document).ready(function () {
   });
 });
 
+// $(document).on("change", "#uploadPhotoGrade", function () {
+//   needToConfirm = true;
+//   var frmbtn = $(".photo-grade-btn");
+//   var frmIcon = frmbtn.find("i");
+//   var progressBar = document.getElementById("myBar1");
+//   var image_type = $(this).data("file");
+//   $("#progress-contain-vehicle").show();
+//   var elem = $(".pBar");
+//   let uploadedArea = $(".uploaded-area");
+//   // uploadedArea.html("Uploading...");
+//   var myFileList = this.files;
+//   console.log(myFileList);
+//   var pst = $(this).data("store");
+//   $.each(myFileList, function (i, file) {
+//     var formData = new FormData();
+//     formData.append("files", file);
+//     var xhr = new XMLHttpRequest();
+//     console.log(xhr);
+//     xhr.onreadystatechange = function () {
+//       if (this.readyState == 4 && this.status == 200) {
+//         var data = this.responseText;
+//         // console.log(data);
+//         var jsonResponse = JSON.parse(data);
+
+//         if (jsonResponse.upload_status == 1) {
+//           // button.removeClass("active");
+//           let progressHTML = `
+//                         <li class="bid-row">
+//                             <div class=" remove_identification" data-file="${
+//                               jsonResponse.file_name
+//                             }"></div>
+//                             <a href="${
+//                               jsonResponse.file_path
+//                             }" target="_blank" download>
+//                                 <img src="${
+//                                   base_url + "assets/images/glyph-plus.svg"
+//                                 }" />
+//                                 <div class="content">
+//                                     <div class="details">
+//                                         <span class="name">${
+//                                           jsonResponse.name
+//                                         }</span>
+//                                     </div>
+//                                 </div>
+//                                 <i class="fi-check"></i>
+//                             </a>
+//                             <input type="hidden" name="identification_file" value="${
+//                               jsonResponse.file_name
+//                             }" />
+//                             <input type="hidden" name="identification_file_name" value="${
+//                               jsonResponse.name
+//                             }" />
+//                         </li>`;
+//           uploadedArea.html(progressHTML);
+//         } else uploadedArea.append(jsonResponse.error);
+//         needToConfirm = false;
+//       }
+//     };
+//     xhr.upload.onloadstart = function (e) {
+//       elem.removeClass("hidden");
+//       progressBar.style.width = "0%";
+//       frmIcon.removeClass("hidden");
+//     };
+//     xhr.upload.onprogress = function (e) {
+//       if (e.lengthComputable) {
+//         var ratio = Math.floor((e.loaded / e.total) * 100) + "%";
+//         progressBar.style.width = ratio;
+//       }
+//       frmIcon.removeClass("hidden");
+//     };
+//     xhr.upload.onloadend = function (e) {
+//       progressBar.style.width = "100%";
+//       $("#progress-contain-vehicle").hide();
+//       frmIcon.addClass("hidden");
+//       // button.find("i").addClass("hidden");
+//     };
+
+//     xhr.open("POST", base_url + "ajax/uploadPhotoGrade");
+//     xhr.send(formData);
+//   });
+// });
+
+
 $(document).on("change", "#uploadPhotoGrade", function () {
   needToConfirm = true;
   var progressBar = document.getElementById("myBar1");
@@ -405,23 +518,21 @@ $(document).on("change", "#uploadPhotoGrade", function () {
   $("#progress-contain-vehicle").show();
   var elem = $(".pBar");
   let uploadedArea = $(".uploaded-area");
-  // uploadedArea.html("Uploading...");
   var myFileList = this.files;
-  console.log(myFileList);
-  var pst = $(this).data("store");
+  var spinner = $(".photo-grade-btn .spinner"); // Select the spinner inside the button
+  spinner.removeClass("hidden"); // Remove hidden class when the image upload starts
+
   $.each(myFileList, function (i, file) {
     var formData = new FormData();
     formData.append("files", file);
     var xhr = new XMLHttpRequest();
-    console.log(xhr);
+
     xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         var data = this.responseText;
-        // console.log(data);
         var jsonResponse = JSON.parse(data);
 
         if (jsonResponse.upload_status == 1) {
-          // button.removeClass("active");
           let progressHTML = `
                         <li class="bid-row">
                             <div class=" remove_identification" data-file="${
@@ -452,22 +563,26 @@ $(document).on("change", "#uploadPhotoGrade", function () {
           uploadedArea.html(progressHTML);
         } else uploadedArea.append(jsonResponse.error);
         needToConfirm = false;
+        spinner.addClass("hidden"); // Hide the spinner after the upload is successful
       }
     };
+
     xhr.upload.onloadstart = function (e) {
       elem.removeClass("hidden");
       progressBar.style.width = "0%";
     };
+
     xhr.upload.onprogress = function (e) {
       if (e.lengthComputable) {
         var ratio = Math.floor((e.loaded / e.total) * 100) + "%";
         progressBar.style.width = ratio;
       }
     };
+
     xhr.upload.onloadend = function (e) {
       progressBar.style.width = "100%";
       $("#progress-contain-vehicle").hide();
-      // button.find("i").addClass("hidden");
+      spinner.addClass("hidden"); // Hide the spinner when the upload ends
     };
 
     xhr.open("POST", base_url + "ajax/uploadPhotoGrade");
@@ -513,7 +628,7 @@ $(function () {
           $(".appLoad").addClass("hide");
 
           $("#resndCntnt").removeClass("hide");
-        }, 3000);
+        }, 800);
       },
     });
   });
@@ -533,19 +648,21 @@ $(document).on("click", ".qtyplus", function (e) {
     parnt.val(0);
   }
 });
+
 $(document).on("click", ".qtyminus", function (e) {
-  // This button will decrement the value till 0
+  // This button will decrement the value till 1
   e.preventDefault();
   var parnt = $(this).parent().children(".qty");
   let row_id = $(this).parent().children(".row_id");
-  var currentVal = parnt.val();
-  currentVal = parseInt(currentVal) - 1;
-  updateCart(currentVal, row_id);
-  if (!isNaN(currentVal) && currentVal > 0) {
-    parnt.val(parseInt(currentVal));
+  var currentVal = parseInt(parnt.val());
+
+  if (!isNaN(currentVal) && currentVal > 1) {
+    currentVal = currentVal - 1;
+    parnt.val(currentVal);
+    updateCart(currentVal, row_id);
   } else {
-    parnt.val(currentVal + 1);
-    updateCart(currentVal + 1, row_id);
+    parnt.val(1);
+    updateCart(1, row_id);
   }
 });
 
@@ -567,6 +684,8 @@ function updateCart(qty, row_id) {
         $("#inventory_update").html(response?.html);
         $(".grand_total").html(response?.grand_total);
         $(".average_price").html(response?.average_price);
+        $(".total_converters").html(response?.total_converters);
+        $(".new_count").html(response?.count_html_output);
       }
     },
     error: function (xhr, status, error) {
@@ -575,6 +694,21 @@ function updateCart(qty, row_id) {
     },
   });
 }
+// $(document).on("click", ".qtyminus", function (e) {
+//   // This button will decrement the value till 0
+//   e.preventDefault();
+//   var parnt = $(this).parent().children(".qty");
+//   let row_id = $(this).parent().children(".row_id");
+//   var currentVal = parnt.val();
+//   currentVal = parseInt(currentVal) - 1;
+//   updateCart(currentVal, row_id);
+//   if (!isNaN(currentVal) && currentVal > 0) {
+//     parnt.val(parseInt(currentVal));
+//   } else {
+//     parnt.val(currentVal + 1);
+//     updateCart(currentVal + 1, row_id);
+//   }
+// });
 
 $(document).on("click", "#del_row", function (e) {
   e.preventDefault();
@@ -599,6 +733,8 @@ function deleteCart(row_id) {
         $("#inventory_update").html(response?.html);
         $(".grand_total").html(response?.grand_total);
         $(".average_price").html(response?.average_price);
+        $(".total_converters").html(response?.total_converters);
+        $(".new_count").html(response?.count_html_output);
       }
     },
     error: function (xhr, status, error) {
@@ -607,6 +743,193 @@ function deleteCart(row_id) {
     },
   });
 }
+
+$(document).ready(function () {
+  $(".flexSwitchCheckDefault").change(function () {
+    var isChecked = $(this).prop("checked");
+    // Make AJAX call
+    $.ajax({
+      url: base_url + "ajax/update_member",
+      method: "POST",
+      dataType: "JSON",
+      data: { isChecked: isChecked ? 1 : 0 }, // Sending whether the switch is checked or not
+      success: function (response) {
+        if (response.status == 1) {
+          toastr.success(response.msg);
+          location.reload();
+        }
+        // Handle success response
+        // console.log(response);
+      },
+      error: function (xhr, status, error) {
+        // Handle error
+        console.error(xhr.responseText);
+      },
+    });
+  });
+});
+
+$(document).ready(function () {
+  $("#inventory_export").click(function () {
+    var id = $(this).data("id");
+    var btn = $(this);
+    btn.attr("disabled", true);
+    btn.find(".spinner").removeClass("hidden");
+
+    $.ajax({
+      url: base_url + "ajax/pdf_export/" + id,
+      method: "POST",
+      dataType: "JSON",
+      success: function (response) {
+        console.log(response);
+        if (response.status == 1) {
+          toastr.success(response.msg);
+
+          var fileName = response.pdf.substring(
+            response.pdf.lastIndexOf("/") + 1
+          );
+          var downloadLink = document.createElement("a");
+          downloadLink.href = response.pdf;
+          downloadLink.download = fileName;
+          downloadLink.style.display = "none";
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+        } else {
+          toastr.error(response.msg);
+        }
+      },
+      error: function (xhr, status, error) {
+        btn.removeAttr("disabled");
+        btn.find(".spinner").addClass("hidden");
+        console.error(xhr.responseText);
+        toastr.error("An error occurred while processing your request.");
+      },
+      complete: function () {
+        setTimeout(function () {
+          btn.removeAttr("disabled");
+          btn.find(".spinner").addClass("hidden");
+        }, 800);
+      },
+    });
+  });
+});
+
+// $(".inventory-link").click(function () {
+//   var url = $(this).find("a").attr("href");
+//   window.location.href = url;
+// });
+
+$(document).ready(function () {
+  const $sortOrderSelect = $("#sort_order");
+
+  const savedSortOrder = localStorage.getItem("sort_order");
+  if (savedSortOrder) {
+    $sortOrderSelect.val(savedSortOrder);
+  }
+  $sortOrderSelect.on("change", function () {
+    const selectedValue = $(this).val();
+    localStorage.setItem("sort_order", selectedValue);
+  });
+
+  const $genericSortOrderSelect = $("#generics_sort_order");
+  const savedGenericSortOrder = localStorage.getItem("generics_sort_order");
+  if (savedGenericSortOrder) {
+    $genericSortOrderSelect.val(savedGenericSortOrder);
+  }
+  $genericSortOrderSelect.on("change", function () {
+    const selectedValueGen = $(this).val();
+    localStorage.setItem("generics_sort_order", selectedValueGen);
+  });
+});
+
+$(document).ready(function () {
+  const $filterCode = $("#filter_code");
+  const $filterGen = $("#filter_generics");
+
+  const $opt1 = $(".horizontal-opt1").parent();
+  const $opt2 = $(".horizontal-opt2").parent();
+
+  function setViewMode(mode) {
+    if (mode === "grid") {
+      $opt2.addClass("active");
+      $opt1.removeClass("active");
+      $filterCode.removeClass("horizontal_code");
+      $filterGen.removeClass("horizontal_code");
+    } else {
+      $opt2.removeClass("active");
+      $opt1.addClass("active");
+      $filterCode.addClass("horizontal_code");
+      $filterGen.addClass("horizontal_code");
+    }
+    localStorage.setItem("view_mode", mode);
+  }
+
+  if (!localStorage.getItem("view_mode")) {
+    setViewMode("grid");
+  }
+
+  const savedViewMode = localStorage.getItem("view_mode");
+  if (savedViewMode) {
+    setViewMode(savedViewMode);
+  }
+
+  $opt1.on("click", function (event) {
+    event.preventDefault();
+    setViewMode("list");
+  });
+
+  $opt2.on("click", function (event) {
+    event.preventDefault();
+    setViewMode("grid");
+  });
+});
+
+$(document).ready(function () {
+  $(".remove-data").click(function () {
+    $(".search_code").val("");
+    $("#search_generics").val("");
+    $(".search_items_code").addClass("hidden");
+    $("#search_items").addClass("hidden");
+    $(".remove-data").addClass("hidden");
+  });
+});
+
+
+
+$(document).on('click', '.delete-lot', function(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    if (!confirm('Are you sure you want to delete this lot?')) return;
+
+    var lotId = $(this).data('lot-id');
+    var row = $(this).closest('.cols'); 
+
+    $.ajax({
+        url: base_url + "ajax/delete_lot",
+        type: "POST",
+        data: { lot_id: lotId },
+        dataType: "json",
+        success: function(res) {
+            if (res.status) {
+                
+                row.fadeOut(300, function() { $(this).remove(); });
+               
+                toastr.success(res.message);
+                setTimeout(function() {
+                    location.reload(); 
+                }, 800);
+            } else {
+                toastr.error(res.message);
+            }
+        },
+        error: function() {
+            toastr.error('Something went wrong!');
+        }
+    });
+});
+
 
 // $(document).ready(function () {
 //   $("#clear-all").click(function (e) {

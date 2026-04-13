@@ -13,7 +13,7 @@
 <div class="row col-md-12">
     <form role="form" class="form-horizontal" action="" method="post" enctype="multipart/form-data">
         <div class="col-md-6">
-            <h3><i class="fa fa-bars"></i> Default Meta</h3>
+            <!-- <h3><i class="fa fa-bars"></i> Default Meta</h3>
             <hr class="hr-short">
             <div class="form-group">
                 <div class="col-md-12">
@@ -26,7 +26,7 @@
                     <label class="control-label"> Meta Keywords <span class="symbol required"></span></label>
                     <textarea rows="5" name="site_meta_keyword" class="form-control" required><?php if (isset($adminsite_setting->site_meta_keyword)) echo ($adminsite_setting->site_meta_keyword); ?></textarea>
                 </div>
-            </div>
+            </div> -->
             <h3><i class="fa fa-bars"></i> Social Media</h3>
             <hr class="hr-short">
             <div class="form-group">
@@ -81,12 +81,12 @@
                 <input type="text" name="site_copyright" value="<?php if (isset($adminsite_setting->site_copyright)) echo $adminsite_setting->site_copyright; ?>" class="form-control" required>
                 </div>
             </div> -->
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label"> Site Admin Email <span class="symbol required"></span></label>
                     <input type="text" name="site_email" value="<?php if (isset($adminsite_setting->site_email)) echo $adminsite_setting->site_email; ?>" class="form-control" required>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label"> Site Events Email <span class="symbol required"></span></label>
@@ -96,7 +96,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label"> Site Email <span class="symbol required"></span></label>
-                    <input type="text" name="site_general_email" value="<?php if (isset($adminsite_setting->site_general_email)) echo $adminsite_setting->site_general_email; ?>" class="form-control" required>
+                    <input type="text" name="site_email" value="<?php if (isset($adminsite_setting->site_email)) echo $adminsite_setting->site_email; ?>" class="form-control" required>
                 </div>
             </div>
             <!-- <div class="form-group">
@@ -143,6 +143,14 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label class="control-label" for="site_about">Footer About<span class="symbol required">*</span></label>
+
+                    <textarea rows="5" name="site_about" class="form-control"><?php if (isset($adminsite_setting->site_about)) echo ($adminsite_setting->site_about); ?></textarea>
+                </div>
+            </div>
+
 
         </div>
 
@@ -175,76 +183,7 @@
         </div> -->
 
 
-        <div class="clearfix"></div>
-        <h3><i class="fa fa-bars"></i> Footer Settings</h3>
-        <hr class="hr-short">
-        <div class="col-md-12">
 
-            <div class="form-group">
-                <div class="col-md-12">
-                    <label class="control-label" for="site_footer_text">Footer Text<span class="symbol required">*</span></label>
-
-                    <textarea rows="5" name="site_footer_text" class="form-control"><?php if (isset($adminsite_setting->site_footer_text)) echo ($adminsite_setting->site_footer_text); ?></textarea>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label" for="site_first_section_heading">First Section Heading<span class="symbol required">*</span></label>
-                            <input type="text" name="site_first_section_heading" value="<?php if (isset($adminsite_setting->site_first_section_heading)) echo $adminsite_setting->site_first_section_heading; ?>" class="form-control" required>
-                        </div>
-                        <!-- <div class="col-md-12">
-                            <label class="control-label" for="site_first_section_sub_1">Address<span class="symbol required">*</span></label>
-                            <input type="text" name="site_first_section_sub_1" value="<?php if (isset($adminsite_setting->site_first_section_sub_1)) echo $adminsite_setting->site_first_section_sub_1; ?>"  class="form-control" required>
-                        </div> -->
-                        <!-- <div class="col-md-12">
-                            <label class="control-label" for="site_first_section_sub_2">Email<span class="symbol required">*</span></label>
-                            <input type="text" name="site_first_section_sub_2" value="<?php if (isset($adminsite_setting->site_first_section_sub_2)) echo $adminsite_setting->site_first_section_sub_2; ?>"  class="form-control" required>
-                        </div> -->
-                        <!-- <div class="col-md-12">
-                            <label class="control-label" for="site_first_section_sub_3">Phone<span class="symbol required">*</span></label>
-                            <input type="text" name="site_first_section_sub_3" value="<?php if (isset($adminsite_setting->site_first_section_sub_3)) echo $adminsite_setting->site_first_section_sub_3; ?>"  class="form-control" required>
-                        </div> -->
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label" for="site_second_section_heading">Second Section Heading<span class="symbol required">*</span></label>
-                            <input type="text" name="site_second_section_heading" value="<?php if (isset($adminsite_setting->site_second_section_heading)) echo $adminsite_setting->site_second_section_heading; ?>" class="form-control" required>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label" for="site_third_section_heading">Third Section Heading<span class="symbol required">*</span></label>
-                            <input type="text" name="site_third_section_heading" value="<?php if (isset($adminsite_setting->site_third_section_heading)) echo $adminsite_setting->site_third_section_heading; ?>" class="form-control" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label" for="site_fourth_section_heading">Fourth Section Heading<span class="symbol required">*</span></label>
-                            <input type="text" name="site_fourth_section_heading" value="<?php if (isset($adminsite_setting->site_fourth_section_heading)) echo $adminsite_setting->site_fourth_section_heading; ?>" class="form-control" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="control-label" for="site_fourth_section_sub_1">Field Heading<span class="symbol required">*</span></label>
-                            <input type="text" name="site_fourth_section_sub_1" value="<?php if (isset($adminsite_setting->site_fourth_section_sub_1)) echo $adminsite_setting->site_fourth_section_sub_1; ?>" class="form-control" required>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="form-group">
-                <div class="col-md-12">
-                    <textarea rows="5" name="site_footer_text" class="form-control"><?php if (isset($adminsite_setting->site_footer_text)) echo ($adminsite_setting->site_footer_text); ?></textarea>
-                </div>
-            </div> -->
-        </div>
 
         <div class="clearfix"></div>
         <h3><i class="fa fa-bars"></i> Site Prices</h3>
@@ -259,24 +198,81 @@
                 <div class="col-md-6">
                     <label class="control-label" for="site_live_pt_price">Live PT Price<span class="symbol required">*</span></label>
                     <input type="number" min="0" step="any" name="site_live_pt_price" value="<?php if (isset($adminsite_setting->site_live_pt_price)) echo $adminsite_setting->site_live_pt_price; ?>" class="form-control" required>
+ <?php if (isset($pt_price_percent)): ?>
+    <small>
+        <?php if ($pt_price_percent > 0): ?>
+            <span style="color: green;">▲ Increased by <?= round($pt_price_percent, 2) ?>%</span>
+        <?php elseif ($pt_price_percent < 0): ?>
+            <span style="color: red;">▼ Decreased by <?= round(abs($pt_price_percent), 2) ?>%</span>
+        <?php else: ?>
+            <span style="color: gray;">No Change</span>
+        <?php endif; ?>
+    </small>
+<?php endif; ?>
+
+
+
                 </div>
+     
                 <div class="clearfix"></div>
                 <div class="col-md-6">
                     <label class="control-label" for="site_o_pd_price">Original PD Price<span class="symbol required">*</span></label>
                     <input type="number" min="0" step="any" name="site_o_pd_price" value="<?php if (isset($adminsite_setting->site_o_pd_price)) echo $adminsite_setting->site_o_pd_price; ?>" class="form-control" required>
                 </div>
-                <div class="col-md-6">
-                    <label class="control-label" for="site_live_pd_price">Live PD Price<span class="symbol required">*</span></label>
-                    <input type="number" min="0" step="any" name="site_live_pd_price" value="<?php if (isset($adminsite_setting->site_live_pd_price)) echo $adminsite_setting->site_live_pd_price; ?>" class="form-control" required>
-                </div>
+                <!--<div class="col-md-6">-->
+                <!--    <label class="control-label" for="site_live_pd_price">Live PD Price<span class="symbol required">*</span></label>-->
+                <!--    <input type="number" min="0" step="any" name="site_live_pd_price" value="<?php if (isset($adminsite_setting->site_live_pd_price)) echo $adminsite_setting->site_live_pd_price; ?>" class="form-control" required>-->
+                <!--</div>-->
+                <!-- PD Price -->
+<div class="col-md-6">
+    <label class="control-label" for="site_live_pd_price">Live PD Price<span class="symbol required">*</span></label>
+    <input type="number" min="0" step="any" name="site_live_pd_price" value="<?php if (isset($adminsite_setting->site_live_pd_price)) echo $adminsite_setting->site_live_pd_price; ?>" class="form-control" required>
+  <?php if (isset($pd_price_percent)): ?>
+    <small>
+        <?php if ($pd_price_percent > 0): ?>
+            <span style="color: green;">▲ Increased by <?= round($pd_price_percent, 2) ?>%</span>
+        <?php elseif ($pd_price_percent < 0): ?>
+            <span style="color: red;">▼ Decreased by <?= round(abs($pd_price_percent), 2) ?>%</span>
+        <?php else: ?>
+            <span style="color: gray;">No Change</span>
+        <?php endif; ?>
+    </small>
+<?php endif; ?>
+
+</div>
+                
                 <div class="clearfix"></div>
                 <div class="col-md-6">
                     <label class="control-label" for="site_o_rh_price">Original RH Price<span class="symbol required">*</span></label>
                     <input type="number" min="0" step="any" name="site_o_rh_price" value="<?php if (isset($adminsite_setting->site_o_rh_price)) echo $adminsite_setting->site_o_rh_price; ?>" class="form-control" required>
                 </div>
+                <!--<div class="col-md-6">-->
+                <!--    <label class="control-label" for="site_live_rh_price">Live RH Price<span class="symbol required">*</span></label>-->
+                <!--    <input type="number" min="0" step="any" name="site_live_rh_price" value="<?php if (isset($adminsite_setting->site_live_rh_price)) echo $adminsite_setting->site_live_rh_price; ?>" class="form-control" required>-->
+                <!--</div>-->
+                
+                <!-- RH Price -->
+<div class="col-md-6">
+    <label class="control-label" for="site_live_rh_price">Live RH Price<span class="symbol required">*</span></label>
+    <input type="number" min="0" step="any" name="site_live_rh_price" value="<?php if (isset($adminsite_setting->site_live_rh_price)) echo $adminsite_setting->site_live_rh_price; ?>" class="form-control" required>
+<?php if (isset($rh_price_percent)): ?>
+    <small>
+        <?php if ($rh_price_percent > 0): ?>
+            <span style="color: green;">▲ Increased by <?= round($rh_price_percent, 2) ?>%</span>
+        <?php elseif ($rh_price_percent < 0): ?>
+            <span style="color: red;">▼ Decreased by <?= round(abs($rh_price_percent), 2) ?>%</span>
+        <?php else: ?>
+            <span style="color: gray;">No Change</span>
+        <?php endif; ?>
+    </small>
+<?php endif; ?>
+
+</div>
+                <div class="clearfix"></div>
+
                 <div class="col-md-6">
-                    <label class="control-label" for="site_live_rh_price">Live RH Price<span class="symbol required">*</span></label>
-                    <input type="number" min="0" step="any" name="site_live_rh_price" value="<?php if (isset($adminsite_setting->site_live_rh_price)) echo $adminsite_setting->site_live_rh_price; ?>" class="form-control" required>
+                    <label class="control-label" for="price_pump"> Price Pump (%) <span class="symbol required"></span></label>
+                    <input type="number" name="price_pump" class="form-control" value="<?php if (isset($adminsite_setting->price_pump)) echo ($adminsite_setting->price_pump); ?>" required>
                 </div>
             </div>
 

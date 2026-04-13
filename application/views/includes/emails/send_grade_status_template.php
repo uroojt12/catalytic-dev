@@ -68,7 +68,7 @@
                         <?php if ($mem_data['photo']->status == 'approved') { ?>
                             <tr>
                                 <td style="font-size: 15px; line-height: 20px;">
-                                    Price: <b><?= format_amount($mem_data['photo']->price, 2) ?></b>
+                                    Price: <b><?= format_amount($mem_data['photo']->price) ?></b>
                                 </td>
                             </tr>
                         <?php } ?>

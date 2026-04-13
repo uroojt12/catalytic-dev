@@ -257,6 +257,15 @@ function get_site_image_src($path, $image, $type = '', $user_image = false)
     return empty($user_image) ? base_url('assets/images/no_image.jpg') : base_url('assets/images/no_image.jpg');
 }
 
+function get_site_code_image_src($path, $image, $site_settings)
+{
+    $filepath = base_url() . UPLOADS . $path . '/'  . $image;
+    if (!empty($image) && @file_exists(FCPATH . 'uploads/' . $path . '/'  . $image)) {
+        return $filepath;
+    }
+    return base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version;
+}
+
 function get_site_video($path, $video)
 {
     $filepath = UPLOAD_PATH . $path . '/' . $video;
@@ -747,12 +756,29 @@ function doDecode($string, $key = 'preciousprotection')
     return $hash;
 }
 
-function format_amount($amount, $size = 2)
+function format_amount_decimal($amount, $size = 2)
 {
     $amount = floatval($amount);
     return $amount >= 0 ? "$ " . number_format($amount, $size) : "$  (" . number_format(abs($amount), $size) . ')';
 }
 
+function format_amount($amount)
+{
+    $amount = floatval($amount);  // Round the amount to the nearest whole number
+    return $amount >= 0 ? "$ " . number_format($amount) : "$  (" . number_format(abs($amount)) . ')';
+}
+
+// function format_amount($amount, $size = 2)
+// {
+//     $amount = floatval($amount);
+//     return $amount >= 0 ? "$" . number_format($amount, $size) : "$(" . number_format(abs($amount), $size) . ')';
+// }
+
+// function format_amount($amount, $size = 2)
+// {
+//     $amount = floatval($amount);
+//     return $amount >= 0 ? "$ " . number_format($amount, $size) : "$ (" . number_format(abs($amount), $size) . ')';
+// }
 function num_size($num, $size = 6)
 {
     return sprintf('mysaf' . '%0' . $size . 'd', $num);
@@ -1396,117 +1422,468 @@ function calculatedPrice($site_o_pt_price, $site_live_pt_price, $site_o_pd_price
 
 
 
-function calculatedAllPrice($site_o_pt_price, $site_live_pt_price, $site_o_pd_price, $site_live_pd_price, $site_o_rh_price, $site_live_rh_price, $site_id, $code_id, $mem_id = " ")
-{
+function calculatedAllPrice(
+    $site_o_pt_price,
+    $site_live_pt_price,
+    $site_o_pd_price,
+    $site_live_pd_price,
+    $site_o_rh_price,
+    $site_live_rh_price,
+    $site_id,
+    $code_id,
+    $mem_id = " "
+) {
     $CI = get_instance();
-    $chk_code = $CI->master->getRow('code', array('id' => $code_id, 'status' => 1));
-    $chk_subadmin = $CI->master->getRow('add_domains', array('site_id' => $site_id, 'status' => 1));
-    $chk_pump = $CI->master->last_row('code_prices', array('site_id' => $site_id, 'code_id' => $code_id));
+    $chk_code = $CI->master->getRow('code', ['id' => $code_id, 'status' => 1]);
+    $chk_subadmin = $CI->master->getRow('add_domains', ['site_id' => $site_id, 'status' => 1]);
+    $chk_pump = $CI->master->last_row('code_prices', ['site_id' => $site_id, 'code_id' => $code_id]);
+    $chk_superadmin_pump = $CI->master->last_row('code_prices', ['site_id' => '-1', 'code_id' => $code_id]);
+    $chk_superadmin_g_pump = $CI->master->getRow('siteadmin');
 
-    if ($mem_id > 0) {
-        $chk_member = $CI->master->getRow('members', array('mem_id' => $mem_id, 'site_id' => $site_id, 'mem_status' => 1));
+    $chk_member = $mem_id > 0 ? $CI->master->getRow('members', ['mem_id' => $mem_id, 'site_id' => $site_id, 'mem_status' => 1]) : null;
 
-        if (!empty($chk_member) && !empty($chk_code) && !empty($chk_subadmin)) {
-            if ($chk_member->mem_live_pt_price > 0 || $chk_member->mem_live_pd_price > 0 || $chk_member->mem_live_rh_price > 0) {
-
-                $result = (
-                    ($chk_code->o_price + (((($chk_member->mem_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
-                    (((($chk_member->mem_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
-                    (((($chk_member->mem_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
-                );
-
-                if ($chk_member->mem_price_pump > 0) {
-                    $cal_price = $result + (($result * $chk_member->mem_price_pump) / 100);
-                    return $cal_price;
-                } elseif (!empty($chk_pump) && $chk_pump->percentage > 0) {
-                    $cal_price = $result + (($result * $chk_pump->percentage) / 100);
-                    return $cal_price;
-                } elseif ($chk_subadmin->price_pump > 0) {
-                    $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
-                    return $cal_price;
-                } else {
-                    return $result;
-                }
-            } elseif ($chk_subadmin->site_live_pt_price > 0 || $chk_subadmin->site_live_pd_price > 0 || $chk_subadmin->site_live_rh_price > 0) {
-
-                $result = (
-                    ($chk_code->o_price + (((($chk_subadmin->site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
-                    (((($chk_subadmin->site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
-                    (((($chk_subadmin->site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
-                );
-
-                if ($chk_member->mem_price_pump > 0) {
-                    $cal_price = $result + (($result * $chk_member->mem_price_pump) / 100);
-                    return $cal_price;
-                } elseif (!empty($chk_pump) && $chk_pump->percentage > 0) {
-                    $cal_price = $result + (($result * $chk_pump->percentage) / 100);
-                    return $cal_price;
-                } elseif ($chk_subadmin->price_pump > 0) {
-                    $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
-                    return $cal_price;
-                } else {
-                    return $result;
-                }
-            } else {
-
-                $result = (
-                    ($chk_code->o_price + (((($site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
-                    (((($site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
-                    (((($site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
-                );
-
-
-
-                if ($chk_member->mem_price_pump > 0) {
-                    $cal_price = $result + (($result * $chk_member->mem_price_pump) / 100);
-                    return $cal_price;
-                } elseif (!empty($chk_pump) && $chk_pump->percentage > 0) {
-                    $cal_price = $result + (($result * $chk_pump->percentage) / 100);
-                    return $cal_price;
-                } elseif ($chk_subadmin->price_pump > 0) {
-                    $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
-                    return $cal_price;
-                } else {
-                    return $result;
-                }
-            }
-        }
-    } else {
-
-        if ($chk_subadmin->site_live_pt_price > 0 || $chk_subadmin->site_live_pd_price > 0 || $chk_subadmin->site_live_rh_price > 0) {
-
-            $result = (
-                ($chk_code->o_price + (((($chk_subadmin->site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
-                (((($chk_subadmin->site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
-                (((($chk_subadmin->site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
-            );
-
-            if (!empty($chk_pump) && $chk_pump->percentage > 0) {
-                $cal_price = $result + (($result * $chk_pump->percentage) / 100);
-                return $cal_price;
-            } elseif ($chk_subadmin->price_pump > 0) {
-                $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
-                return $cal_price;
-            } else {
-                return $result;
-            }
-        } else {
-
-            $result = (
-                ($chk_code->o_price + (((($site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
-                (((($site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
-                (((($site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
-            );
-
-            if (!empty($chk_pump) && $chk_pump->percentage > 0) {
-                $cal_price = $result + (($result * $chk_pump->percentage) / 100);
-                return $cal_price;
-            } elseif ($chk_subadmin->price_pump > 0) {
-                $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
-                return $cal_price;
-            } else {
-                return $result;
-            }
-        }
+    if (empty($chk_code) || empty($chk_subadmin)) {
+        return 0;
     }
+
+    $price_calculation = function ($live_pt, $o_pt, $live_pd, $o_pd, $live_rh, $o_rh) use ($chk_code) {
+        return (
+            ($chk_code->o_price + (((($live_pt / $o_pt) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
+            (((($live_pd / $o_pd) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
+            (((($live_rh / $o_rh) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
+        );
+    };
+
+    if ($chk_member && $chk_member->mem_headge_prices == '1' && $chk_member->mem_live_pt_price > 0 && $chk_member->mem_live_pd_price > 0 && $chk_member->mem_live_rh_price > 0) {
+        $result = $price_calculation($chk_member->mem_live_pt_price, $site_o_pt_price, $chk_member->mem_live_pd_price, $site_o_pd_price, $chk_member->mem_live_rh_price, $site_o_rh_price);
+    } elseif ($chk_subadmin->site_live_pt_price > 0 && $chk_subadmin->site_live_pd_price > 0 && $chk_subadmin->site_live_rh_price > 0) {
+        $result = $price_calculation($chk_subadmin->site_live_pt_price, $site_o_pt_price, $chk_subadmin->site_live_pd_price, $site_o_pd_price, $chk_subadmin->site_live_rh_price, $site_o_rh_price);
+    } else {
+        $result = $price_calculation($site_live_pt_price, $site_o_pt_price, $site_live_pd_price, $site_o_pd_price, $site_live_rh_price, $site_o_rh_price);
+    }
+
+    $margin = $chk_member && $chk_member->mem_margin > 0
+        ? $chk_member->mem_price_pump - $chk_member->mem_margin
+        : ($chk_member->mem_price_pump ?? 0);
+
+    $sum_pump = array_sum(array_filter([
+        $margin,
+        $chk_pump->percentage ?? 0,
+        $chk_subadmin->price_pump ?? 0,
+        $chk_superadmin_pump->percentage ?? 0,
+        $chk_superadmin_g_pump->price_pump ?? 0
+    ]));
+
+    return $sum_pump !== 0 ? $result * (1 + ($sum_pump / 100)) : $result;
 }
+
+
+
+
+// function calculatedAllPrice($site_o_pt_price, $site_live_pt_price, $site_o_pd_price, $site_live_pd_price, $site_o_rh_price, $site_live_rh_price, $site_id, $code_id, $mem_id = " ")
+// {
+//     $CI = get_instance();
+//     $chk_code = $CI->master->getRow('code', array('id' => $code_id, 'status' => 1));
+//     $chk_subadmin = $CI->master->getRow('add_domains', array('site_id' => $site_id, 'status' => 1));
+//     $chk_pump = $CI->master->last_row('code_prices', array('site_id' => $site_id, 'code_id' => $code_id));
+
+//     $chk_superadmin_g_pump = $CI->master->getRow('siteadmin');
+//     $chk_superadmin_pump = $CI->master->last_row('code_prices', array('site_id' => '-1', 'code_id' => $code_id));
+
+
+//     if ($mem_id > 0) {
+//         $chk_member = $CI->master->getRow('members', array('mem_id' => $mem_id, 'site_id' => $site_id, 'mem_status' => 1));
+
+//         if (!empty($chk_member) && !empty($chk_code) && !empty($chk_subadmin) && !empty($chk_superadmin_g_pump)) {
+//             if ($chk_member->mem_headge_prices == '1' && $chk_member->mem_live_pt_price > 0 && $chk_member->mem_live_pd_price > 0 && $chk_member->mem_live_rh_price > 0) {
+
+//                 $result = (
+//                     ($chk_code->o_price + (((($chk_member->mem_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
+//                     (((($chk_member->mem_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
+//                     (((($chk_member->mem_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
+//                 );
+
+//                 if ($chk_member->mem_price_pump != 0 && !empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_pump->percentage + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0 && !empty($chk_pump) && $chk_pump->percentage != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_pump->percentage;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif (!empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_pump->percentage + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0) {
+//                     if ($chk_member->mem_price_pump > 0) {
+//                         $cal_price = $result + (($result * $chk_member->mem_price_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_member->mem_price_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif (!empty($chk_pump) && $chk_pump->percentage != 0) {
+//                     if ($chk_pump->percentage > 0) {
+//                         $cal_price = $result + (($result * $chk_pump->percentage) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_pump->percentage)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_subadmin->price_pump != 0) {
+//                     if ($chk_subadmin->price_pump > 0) {
+//                         $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_subadmin->price_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif (!empty($chk_superadmin_pump) && $chk_superadmin_pump->percentage != 0) {
+//                     if ($chk_superadmin_pump->percentage > 0) {
+//                         $cal_price = $result + (($result * $chk_superadmin_pump->percentage) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_superadmin_pump->percentage)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_superadmin_g_pump->price_pump != 0) {
+//                     if ($chk_superadmin_g_pump->price_pump > 0) {
+//                         $cal_price = $result + (($result * $chk_superadmin_g_pump->price_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_superadmin_g_pump->price_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } else {
+//                     return $result;
+//                 }
+//             } elseif ($chk_subadmin->site_live_pt_price > 0 && $chk_subadmin->site_live_pd_price > 0 && $chk_subadmin->site_live_rh_price > 0) {
+
+//                 // pr('hi');
+//                 $result = (
+//                     ($chk_code->o_price + (((($chk_subadmin->site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
+//                     (((($chk_subadmin->site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
+//                     (((($chk_subadmin->site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
+//                 );
+//                 // $result = round($result,0);
+//                 // pr($result);
+
+
+//                 if ($chk_member->mem_price_pump != 0 && !empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_pump->percentage + $chk_subadmin->price_pump;
+
+
+
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0 && !empty($chk_pump) && $chk_pump->percentage != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_pump->percentage;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0 && $chk_subadmin->price_pump != 0) {
+
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif (!empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_pump->percentage + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0) {
+
+//                     // pr($chk_member->mem_price_pump);
+
+//                     if ($chk_member->mem_margin > 0) {
+//                         $margin = $chk_member->mem_price_pump - $chk_member->mem_margin;
+//                     } else {
+//                         $margin = $chk_member->mem_price_pump;
+//                     }
+
+//                     if ($margin > 0) {
+//                         $cal_price = $result + (($result * $margin) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($margin)) / 100);
+//                     }
+//                     // pr($cal_price);
+//                     return $cal_price;
+
+//                     // pr($result);
+//                     // if ($chk_member->mem_price_pump > 0) {
+//                     //     $cal_price = $result + (($result * $chk_member->mem_price_pump) / 100);
+//                     // } else {
+//                     //     $cal_price = $result - (($result * abs($chk_member->mem_price_pump) / 100));
+//                     // }
+
+//                     // return $cal_price;
+//                 } elseif (!empty($chk_pump) && $chk_pump->percentage != 0) {
+//                     if ($chk_pump->percentage > 0) {
+//                         $cal_price = $result + (($result * $chk_pump->percentage) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_pump->percentage)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_subadmin->price_pump != 0) {
+//                     if ($chk_subadmin->price_pump > 0) {
+//                         $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_subadmin->price_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif (!empty($chk_superadmin_pump) && $chk_superadmin_pump->percentage != 0) {
+//                     if ($chk_superadmin_pump->percentage > 0) {
+//                         $cal_price = $result + (($result * $chk_superadmin_pump->percentage) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_superadmin_pump->percentage)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_superadmin_g_pump->price_pump != 0) {
+//                     if ($chk_superadmin_g_pump->price_pump > 0) {
+//                         $cal_price = $result + (($result * $chk_superadmin_g_pump->price_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_superadmin_g_pump->price_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } else {
+
+//                     if ($chk_member->mem_margin > 0) {
+//                         $margin = - ($chk_member->mem_margin);
+//                         if ($margin > 0) {
+//                             $cal_price = $result + (($result * $margin) / 100);
+//                         } else {
+//                             $cal_price = $result - (($result * abs($margin)) / 100);
+//                         }
+
+//                         return $cal_price;
+//                     } else {
+//                         return $result;
+//                     }
+
+
+//                     // return $result;
+//                 }
+//             } else {
+
+//                 $result = (
+//                     ($chk_code->o_price + (((($site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
+//                     (((($site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
+//                     (((($site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
+//                 );
+//                 // pr($result);
+
+
+//                 if ($chk_member->mem_price_pump != 0 && !empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_pump->percentage + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0 && !empty($chk_pump) && $chk_pump->percentage != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_pump->percentage;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_member->mem_price_pump + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif (!empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                     $sum_pump =  $chk_pump->percentage + $chk_subadmin->price_pump;
+//                     if ($sum_pump > 0) {
+//                         $cal_price = $result + (($result * $sum_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_member->mem_price_pump != 0) {
+//                     if ($chk_member->mem_margin > 0) {
+//                         $margin = $chk_member->mem_price_pump - $chk_member->mem_margin;
+//                     } else {
+//                         $margin = $chk_member->mem_price_pump;
+//                     }
+
+//                     if ($margin > 0) {
+//                         $cal_price = $result + (($result * $margin) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($margin)) / 100);
+//                     }
+//                     // if ($chk_member->mem_price_pump > 0) {
+//                     //     $cal_price = $result + (($result * $chk_member->mem_price_pump) / 100);
+//                     // } else {
+//                     //     $cal_price = $result - (($result * abs($chk_member->mem_price_pump)) / 100);
+//                     // }
+//                     // pr($cal_price);
+
+//                     return $cal_price;
+//                 } elseif (!empty($chk_pump) && $chk_pump->percentage != 0) {
+//                     if ($chk_pump->percentage > 0) {
+//                         $cal_price = $result + (($result * $chk_pump->percentage) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_pump->percentage)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_subadmin->price_pump != 0) {
+//                     if ($chk_subadmin->price_pump > 0) {
+//                         $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_subadmin->price_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif (!empty($chk_superadmin_pump) && $chk_superadmin_pump->percentage != 0) {
+//                     if ($chk_superadmin_pump->percentage > 0) {
+//                         $cal_price = $result + (($result * $chk_superadmin_pump->percentage) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_superadmin_pump->percentage)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } elseif ($chk_superadmin_g_pump->price_pump != 0) {
+//                     if ($chk_superadmin_g_pump->price_pump > 0) {
+//                         $cal_price = $result + (($result * $chk_superadmin_g_pump->price_pump) / 100);
+//                     } else {
+//                         $cal_price = $result - (($result * abs($chk_superadmin_g_pump->price_pump)) / 100);
+//                     }
+//                     return $cal_price;
+//                 } else {
+//                     return $result;
+//                 }
+//             }
+//         }
+//     } else {
+
+//         if ($chk_subadmin->site_live_pt_price > 0 && $chk_subadmin->site_live_pd_price > 0 && $chk_subadmin->site_live_rh_price > 0) {
+
+//             $result = (
+//                 ($chk_code->o_price + (((($chk_subadmin->site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
+//                 (((($chk_subadmin->site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
+//                 (((($chk_subadmin->site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
+//             );
+
+//             if (!empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                 $sum_pump =  $chk_pump->percentage + $chk_subadmin->price_pump;
+//                 if ($sum_pump > 0) {
+//                     $cal_price = $result + (($result * $sum_pump) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif (!empty($chk_pump) && $chk_pump->percentage != 0) {
+//                 if ($chk_pump->percentage > 0) {
+//                     $cal_price = $result + (($result * $chk_pump->percentage) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_pump->percentage)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif ($chk_subadmin->price_pump != 0) {
+//                 if ($chk_subadmin->price_pump > 0) {
+//                     $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_subadmin->price_pump)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif (!empty($chk_superadmin_pump) && $chk_superadmin_pump->percentage != 0) {
+//                 if ($chk_superadmin_pump->percentage > 0) {
+//                     $cal_price = $result + (($result * $chk_superadmin_pump->percentage) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_superadmin_pump->percentage)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif ($chk_superadmin_g_pump->price_pump != 0) {
+//                 if ($chk_superadmin_g_pump->price_pump > 0) {
+//                     $cal_price = $result + (($result * $chk_superadmin_g_pump->price_pump) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_superadmin_g_pump->price_pump)) / 100);
+//                 }
+//                 return $cal_price;
+//             } else {
+//                 return $result;
+//             }
+//         } else {
+
+//             $result = (
+//                 ($chk_code->o_price + (((($site_live_pt_price / $site_o_pt_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pt_price))) +
+//                 (((($site_live_pd_price / $site_o_pd_price) - 1) * 100) * ($chk_code->o_price - $chk_code->pd_price)) +
+//                 (((($site_live_rh_price / $site_o_rh_price) - 1) * 100) * ($chk_code->o_price - $chk_code->rh_price))
+//             );
+
+//             if (!empty($chk_pump) && $chk_pump->percentage != 0 && $chk_subadmin->price_pump != 0) {
+//                 $sum_pump =  $chk_pump->percentage + $chk_subadmin->price_pump;
+//                 if ($sum_pump > 0) {
+//                     $cal_price = $result + (($result * $sum_pump) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($sum_pump)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif (!empty($chk_pump) && $chk_pump->percentage != 0) {
+//                 if ($chk_pump->percentage > 0) {
+//                     $cal_price = $result + (($result * $chk_pump->percentage) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_pump->percentage)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif ($chk_subadmin->price_pump != 0) {
+//                 if ($chk_subadmin->price_pump > 0) {
+//                     $cal_price = $result + (($result * $chk_subadmin->price_pump) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_subadmin->price_pump)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif (!empty($chk_superadmin_pump) && $chk_superadmin_pump->percentage != 0) {
+//                 if ($chk_superadmin_pump->percentage > 0) {
+//                     $cal_price = $result + (($result * $chk_superadmin_pump->percentage) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_superadmin_pump->percentage)) / 100);
+//                 }
+//                 return $cal_price;
+//             } elseif ($chk_superadmin_g_pump->price_pump != 0) {
+//                 if ($chk_superadmin_g_pump->price_pump > 0) {
+//                     $cal_price = $result + (($result * $chk_superadmin_g_pump->price_pump) / 100);
+//                 } else {
+//                     $cal_price = $result - (($result * abs($chk_superadmin_g_pump->price_pump)) / 100);
+//                 }
+//                 return $cal_price;
+//             } else {
+//                 return $result;
+//             }
+//         }
+//     }
+// }

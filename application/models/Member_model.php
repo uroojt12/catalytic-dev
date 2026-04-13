@@ -380,14 +380,27 @@ class Member_model extends CRUD_Model
         return $vals['mem_status'];
     }
 
+//////talal function////
+public function emailExists($mem_email, $site_id, $mem_id = 0)
+{
+    $this->db->where('mem_email', $mem_email);
+    $this->db->where('site_id', $site_id); // Add site_id condition
+    $this->db->where('mem_id !=', $mem_id); // Exclude current mem_id for updates
+    $query = $this->db->get($this->table_name);
+    
+    return $query->row();
+}
 
-    function emailExists($mem_email, $mem_id = 0)
-    {
-        $this->db->where('mem_email', $mem_email);
-        $this->db->where('mem_id <> ' . $mem_id);
-        $query = $this->db->get($this->table_name);
-        return $query->row();
-    }
+
+
+////////aziz funtion////
+    // function emailExists($mem_email, $mem_id = 0)
+    // {
+    //     $this->db->where('mem_email', $mem_email);
+    //     $this->db->where('mem_id <> ' . $mem_id);
+    //     $query = $this->db->get($this->table_name);
+    //     return $query->row();
+    // }
 
     function phoneExists($mem_phone, $mem_id = 0)
     {
@@ -397,9 +410,10 @@ class Member_model extends CRUD_Model
         return $query->row();
     }
 
-    function forgotEmailExists($mem_email)
+    function forgotEmailExists($mem_email, $site_id)
     {
         $this->db->where('mem_email', $mem_email);
+        $this->db->where('site_id', $site_id); // Add site_id condition
         $this->db->where('mem_status', '1');
         // $this->db->where('mem_verified', '1');
         $query = $this->db->get($this->table_name);
@@ -450,17 +464,37 @@ class Member_model extends CRUD_Model
         return $query->row();
     }
 
-    function authenticate($mem_email, $mem_pswd, $mem_type = NULL) {
-        $mem_pswd = md5($mem_pswd);
-        if (!empty($mem_type))
-            $this->db->where('mem_type', $mem_type);
 
-        $this->db->where('mem_email', $mem_email);
-        $this->db->where('mem_pswd', $mem_pswd);
-        $query = $this->db->get($this->table_name);
-        // return $this->db->last_query();
-        return $query->row();
+public function authenticate($mem_email, $mem_pswd, $site_id, $mem_type = NULL) {
+    $mem_pswd = md5($mem_pswd);
+    
+    // Check for mem_type if provided
+    if (!empty($mem_type)) {
+        $this->db->where('mem_type', $mem_type);
     }
+
+   
+    $this->db->where('mem_email', $mem_email);
+    $this->db->where('mem_pswd', $mem_pswd);
+    $this->db->where('site_id', $site_id);
+
+    $query = $this->db->get($this->table_name);
+
+    return $query->row();
+}
+
+
+    // function authenticate($mem_email, $mem_pswd, $mem_type = NULL) {
+    //     $mem_pswd = md5($mem_pswd);
+    //     if (!empty($mem_type))
+    //         $this->db->where('mem_type', $mem_type);
+
+    //     $this->db->where('mem_email', $mem_email);
+    //     $this->db->where('mem_pswd', $mem_pswd);
+    //     $query = $this->db->get($this->table_name);
+    //     // return $this->db->last_query();
+    //     return $query->row();
+    // }
 
     function authenticateEmail($mem_email) {
         $this->db->where('mem_email', $mem_email);

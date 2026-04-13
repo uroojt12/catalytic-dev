@@ -1,4 +1,4 @@
-<main>
+<main class="rev_banner">
     <!-- ====== -->
     <section class="small_banner" style="background-image:url('<?= get_site_image_src("images/", $site_content['image1']) ?>')">
         <div class="contain">
@@ -32,33 +32,41 @@
                 </li>
 
             </ul>
+
             <div class="tab-content">
                 <div id="active" class="tab-pane fade a active in">
                     <div class="flex">
-                        <?php foreach ($pend_photo_grade as $p_photo) : ?>
-                            <div class="cols">
-                                <div class="inner">
-                                    <div class="image-1">
-                                        <img src="<?= get_site_image_src('photo_grade', $p_photo->grade_image); ?>" alt="no_image">
-                                    </div>
-                                    <div class="content">
-                                        <!-- <p><?= $photo->code ?></p> -->
-                                        <h4>
-                                            <?= $p_photo->status ?>
-                                        </h4>
-                                        <div class="total_flex">
-                                            <div><strong>Fullness</strong></div>
-                                            <div><?= $p_photo->grade_fullness ?></div>
+                        <?php if (!empty($pend_photo_grade)) { ?>
+                            <?php foreach ($pend_photo_grade as $p_photo) : ?>
+                                <div class="cols">
+                                    <div class="inner">
+                                        <div class="image-1 custom_img_buble popBtn" data-popup="custum_buble_img">
+                                            <img src="<?= get_site_image_src('photo_grade', $p_photo->grade_image); ?>" alt="no_image">
+                                            <div class="custom_bubles">
+                                                <div><?= $p_photo->grade_fullness ?></div>
+                                            </div>
                                         </div>
+                                        <div class="content">
+                                            <!-- <p><?= $photo->code ?></p> -->
+                                            <!-- <h4>
+                                                <?= $p_photo->status ?>
+                                            </h4> -->
+                                            <!--<div class="total_flex">-->
+                                            <!--    <div><strong>Fullness</strong></div>-->
+                                            <!--    <div><?= $p_photo->grade_fullness ?></div>-->
+                                            <!--</div>-->
 
-                                        <!-- <div class="cta-1">
+                                            <!-- <div class="cta-1">
                                             <a href="javascript:void(0)" class="style_it popBtn" data-popup="add_new_lot">Add</a>
                                         </div> -->
-                                    </div>
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endforeach ?>
+                            <?php endforeach ?>
+                        <?php } else { ?>
+                            <div class="alert alert-danger">There is no pending photo grade!</div>
+                        <?php } ?>
                     </div>
                     <div class="cta">
                         <a href="<?= base_url('new-photo-grade') ?>" class="webBtn">New Photo Grade</a>
@@ -66,36 +74,50 @@
                 </div>
                 <div id="closed" class="tab-pane fade b">
                     <div class="flex">
-                        <?php foreach ($comp_photo_grade as $c_photo) : ?>
-                            <div class="cols">
-                                <div class="inner">
-                                    <div class="image-1">
-                                        <img src="<?= get_site_image_src('photo_grade', $c_photo->grade_image); ?>" alt="no_image">
-                                    </div>
-                                    <div class="content">
-                                        <!-- <p><?= $photo->code ?></p> -->
-                                        <h4>
-                                            <?= $c_photo->status ?>
-                                        </h4>
-                                        <div class="total_flex">
-                                            <div><strong>Fullness</strong></div>
-                                            <div><?= $c_photo->grade_fullness ?></div>
+                        <?php if (!empty($comp_photo_grade)) { ?>
+                            <?php foreach ($comp_photo_grade as $c_photo) : ?>
+                                <div class="cols">
+                                    <div class="inner">
+                                        <div class="image-1 custom_img_buble popBtn" data-popup="custum_buble_img">
+                                            <img src="<?= get_site_image_src('photo_grade', $c_photo->grade_image); ?>" alt="no_image">
+                                            <div class="custom_bubles">
+                                                <div><?= $c_photo->grade_fullness ?></div>
+                                                <div><?= format_amount($c_photo->price) ?></div>
+                                                <div><?= $c_photo->grade_notes ?></div>
+                                            </div>
                                         </div>
-                                        <div class="devide_line"></div>
-                                        <div class="total_flex">
-                                            <div><strong>Amount</strong></div>
-                                            <div><?= format_amount($c_photo->price) ?></div>
+                                        <div class="content">
+                                            <!-- <p><?= $photo->code ?></p> -->
+                                            <!-- <h4>
+                                                <?= $c_photo->status ?>
+                                            </h4> -->
+                                            <!--<div class="total_flex">-->
+                                            <!--    <div><strong>Fullness</strong></div>-->
+                                            <!--    <div><?= $c_photo->grade_fullness ?></div>-->
+                                            <!--</div>-->
+                                            <!--<div class="devide_line"></div>-->
+                                            <!--<div class="total_flex">-->
+                                            <!--    <div><strong>Amount</strong></div>-->
+                                            <!--    <div><?= format_amount($c_photo->price) ?></div>-->
+                                            <!--</div>-->
+                                            <!--<div class="devide_line"></div>-->
+                                            <!--<div class="total_flex">-->
+                                            <!--    <div><strong>Notes</strong></div>-->
+                                            <!--    <div><?= $c_photo->grade_notes ?></div>-->
+                                            <!--</div>-->
+                                            
+                                            <!-- <div class="devide_line"></div> -->
+                                            <div class="total_flex">
+                                                <a href="javascript:void(0)" class="webBtn brightBtn popBtn" data-popup="custom_codes_grade" data-grade-id="<?= ($c_photo->id) ?>" data-photo-grade-price="<?= ($c_photo->price) ?>" data-options="get_lot_names">Add to Lot</a>
+                                            </div>
                                         </div>
-                                        <div class="devide_line"></div>
-                                        <div class="total_flex">
-                                            <div><strong>Notes</strong></div>
-                                            <div><?= $c_photo->grade_notes ?></div>
-                                        </div>
-                                    </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endforeach ?>
+                            <?php endforeach ?>
+                        <?php } else { ?>
+                            <div class="alert alert-danger">There is no completed photo grade!</div>
+                        <?php } ?>
 
                     </div>
                     <div class="cta">
@@ -104,28 +126,35 @@
                 </div>
                 <div id="rejected" class="tab-pane fade c">
                     <div class="flex">
-                        <?php foreach ($rej_photo_grade as $r_photo) : ?>
-                            <div class="cols">
-                                <div class="inner">
-                                    <div class="image-1">
-                                        <img src="<?= get_site_image_src('photo_grade', $r_photo->grade_image); ?>" alt="no_image">
-                                    </div>
-                                    <div class="content">
-                                        <!-- <p><?= $photo->code ?></p> -->
-                                        <h4>
-                                            <?= $r_photo->grade_fullness ?> | <?= $r_photo->status ?>
-                                            <!-- <a href="<?= base_url('photo-detail/' . doEncode($photo->id)) ?>"><?= format_amount($photo->price) ?> | <?= $photo->percentage ?>
-                                            </a> -->
-                                        </h4>
-                                        <div class="total_flex">
-                                            <div><strong>Fullness</strong></div>
-                                            <div><?= $r_photo->grade_fullness ?></div>
+                        <?php if (!empty($rej_photo_grade)) { ?>
+                            <?php foreach ($rej_photo_grade as $r_photo) : ?>
+                                <div class="cols">
+                                    <div class="inner">
+                                        <div class="image-1 custom_img_buble popBtn" data-popup="custum_buble_img">
+                                            <img src="<?= get_site_image_src('photo_grade', $r_photo->grade_image); ?>" alt="no_image">
+                                            <div class="custom_bubles">
+                                                <div><?= $r_photo->grade_fullness ?></div>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="content">
+                                            <!-- <p><?= $photo->code ?></p> -->
+                                            <h4>
+                                                <?= $r_photo->grade_fullness ?> | <?= $r_photo->status ?>
+                                                <!-- <a href="<?= base_url('photo-detail/' . doEncode($photo->id)) ?>"><?= format_amount($photo->price) ?> | <?= $photo->percentage ?>
+                                            </a> -->
+                                            </h4>
+                                            <!--<div class="total_flex">-->
+                                            <!--    <div><strong>Fullness</strong></div>-->
+                                            <!--    <div><?= $r_photo->grade_fullness ?></div>-->
+                                            <!--</div>-->
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endforeach ?>
+                            <?php endforeach ?>
+                        <?php } else { ?>
+                            <div class="alert alert-danger">There is no rejected photo grade!</div>
+                        <?php } ?>
 
                     </div>
                     <div class="cta">

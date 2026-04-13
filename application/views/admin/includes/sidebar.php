@@ -141,8 +141,15 @@
 
             <li class="opened <?= $this->uri->segment('2') == 'add_domains' ? 'active' : '' ?>">
                 <a href="<?= site_url(ADMIN . '/add_domains') ?>">
-                    <i class="fa fa-globe" aria-hidden="true"></i>
+                    <i class="fa fa-users" aria-hidden="true"></i>
                     <span class="title">Manage Sub-Domains</span>
+                </a>
+            </li>
+
+            <li class="opened <?= $this->uri->segment('2') == 'template' ? 'active' : '' ?>">
+                <a href="<?= site_url(ADMIN . '/template') ?>">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    <span class="title">Manage Templates</span>
                 </a>
             </li>
 
@@ -171,7 +178,7 @@
                     <span class="title">Manage Closed Lots</span>
                 </a>
             </li>
-           
+
             <!-- <li class="opened </?= $this->uri->segment('2') == 'photo_grade' ? 'active' : '' ?>">
                 <a href="</?= site_url(ADMIN . '/photo_grade') ?>">
                     <i class="fa fa-th-list" aria-hidden="true"></i>
@@ -199,12 +206,12 @@
                 </a>
             </li> -->
 
-            <li class="opened<?= $this->uri->segment('2') == 'newsletter' ? ' active' : '' ?>">
-                <a href="<?= site_url(ADMIN . '/newsletter') ?>">
+            <!-- <li class="opened</?= $this->uri->segment('2') == 'newsletter' ? ' active' : '' ?>">
+                <a href="</?= site_url(ADMIN . '/newsletter') ?>">
                     <i class="fa fa-bell" aria-hidden="true"></i>
                     <span class="title">Manage Newsletter Subscriptions</span> <span class="badge badge-danger"><?= new_subscribers() ?></span>
                 </a>
-            </li>
+            </li> -->
 
             <li class="opened <?= ($this->uri->segment(2) == 'settings' && $this->uri->segment(3) == '') ? 'active' : '' ?>">
                 <a href="<?= site_url(ADMIN . '/settings') ?>">

@@ -38,15 +38,16 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="txtGrp">
-                                    <label for="">Item Fullness % <span id="photo_slider_price"></span></label>
+                                    <label for="">Item Fullness % <span id="photo_slider_price">100</span></label>
                                     <div class="inner_block">
                                         <div class="first_value">
                                             <p>0</p>
                                         </div>
                                         <!-- <div class="example"></div> -->
-                                        <!-- <input type="range" name="grade_fullness" id="grade_fullness" min="0" max="100" value="0" class="fullness-range"> -->
                                         <input type="hidden" name="grade_fullness" id="grade_fullness">
-                                        <div id="photo_price_slider"></div>
+                                        <input type="range" name="grade_fullness" id="grade_fullness" min="0" max="100" value="100" class="fullness-range" step="25" style="width: 88%;" oninput="updatePhotoSliderValue(this.value)">
+
+                                        <!-- <div id="photo_price_slider"></div> -->
 
                                         <div class="last_value">
                                             <p>100</p>
@@ -63,7 +64,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="butn">
-                                    <button type="submit" class="webBtn"> <?= $site_content['form_btn_txt'] ?><i class="spinner hidden"></i></button>
+                                    <button type="submit" class="webBtn photo-grade-btn"> <?= $site_content['form_btn_txt'] ?><i class="spinner hidden"></i></button>
                                 </div>
                             </div>
                         </div>

@@ -57,13 +57,11 @@
                         <label class="control-label" for="rh_price"> RH Price <span class="symbol required">*</span></label>
                         <input type="number" min="0" step="any" name="rh_price" id="rh_price" value="<?php if (isset($row->rh_price)) echo $row->rh_price; ?>" class="form-control" placeholder="Price" required />
                     </div>
-                    <?php $cal_price = calculatedPrice($adminsite_setting->site_o_pt_price, $adminsite_setting->site_live_pt_price, $adminsite_setting->site_o_pd_price, $adminsite_setting->site_live_pd_price, $adminsite_setting->site_o_rh_price, $adminsite_setting->site_live_rh_price, $row->o_price, $row->pt_price, $row->pd_price, $row->rh_price);
-                    // pr($cal_price);
+                    <?php $cal_price = calculatedAllPrice($adminsite_setting->site_o_pt_price, $adminsite_setting->site_live_pt_price, $adminsite_setting->site_o_pd_price, $adminsite_setting->site_live_pd_price, $adminsite_setting->site_o_rh_price, $adminsite_setting->site_live_rh_price, '-1', $row->id) ?>
 
-                    ?>
                     <div class="col-md-6">
                         <label class="control-label" for="price"> Calculated Price <span class="symbol required">*</span></label>
-                        <input type="number" min="0" step="any" name="price" id="price" value="<?= $cal_price ?>" class="form-control" placeholder="Price" readonly />
+                        <input type="number" min="0" step="any" name="price" id="price" value="<?= number_format($cal_price, 2, '.', '') ?>" class="form-control" placeholder="Price" readonly />
                     </div>
                     <!-- <div class="col-md-6">
                         <label class="control-label" for="price"> Calculated Price <span class="symbol required">*</span></label>
@@ -94,6 +92,43 @@
 
                     <div class="clearfix"></div>
 
+                    <div class="col-md-6">
+                        <label class="control-label" for="new_type"> Type <span class="symbol required">*</span></label>
+                        <select name="new_type" id="new_type" class="form-control">
+                            <option value="">---Select Type----</option>
+                            <option value="DOMESTIC" <?php
+                                                        if (isset($row->new_type) && 'DOMESTIC' == $row->new_type) {
+                                                            echo 'selected';
+                                                        }
+                                                        ?>>DOMESTIC</option>
+                            <option value="FOREIGN" <?php
+                                                    if (isset($row->new_type) && 'FOREIGN' == $row->new_type) {
+                                                        echo 'selected';
+                                                    }
+                                                    ?>>FOREIGN</option>
+                            <option value="DIESEL" <?php
+                                                    if (isset($row->new_type) && 'DIESEL' == $row->new_type) {
+                                                        echo 'selected';
+                                                    }
+                                                    ?>>DIESEL</option>
+                            <option value="WIRE" <?php
+                                                    if (isset($row->new_type) && 'WIRE' == $row->new_type) {
+                                                        echo 'selected';
+                                                    }
+                                                    ?>>WIRE</option>
+                            <option value="AFTERMARKET" <?php
+                                                        if (isset($row->new_type) && 'AFTERMARKET' == $row->new_type) {
+                                                            echo 'selected';
+                                                        }
+                                                        ?>>AFTERMARKET</option>
+                        </select>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+
+
+
                 </div>
 
                 <div class="form-group">
@@ -122,13 +157,43 @@
                                         <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
                                     </div>
                                 </div>
+                                <br>
+                                <?php if (!empty($row->id) && !empty($row->image)) { ?>
+                                    <a href="<?= site_url(ADMIN . '/code/delete_image/' . $row->id); ?>" onclick="return confirm('Are you sure?');" class="btn btn-danger">Delete Image</a>
+                                <?php } ?>
                             </div>
+
                         </div>
                     </div>
 
 
                 </div>
+                <div class="row">
+                        <div class="col-md-12 margin-bottom-10">
+                            <input type="file" name="upload_file[]" id="upload_file" class="form-control file2 inline btn btn-primary" multiple data-label="<i class='fa fa-upload'></i> Upload Multiple Images" />
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <?php
+                                $pics = getPictures($row->id,'code');
+                                if (count($pics) > 0) {
+                                    foreach ($pics as $pic) {
+                                        ?>
+                                        <div class="col-md-3 text-center margin-bottom-10">
+                                            <div class="stickerPicBox">
+                                                <img src="<?= get_site_image_src('images', $pic->image); ?>" style="height:100px;margin-bottom: 10px;"><br>
 
+                                                <button type="button" class="deleteStickerPic btn btn-danger btn-sm" data-id="<?php echo $pic->id; ?>"><i class="fa fa-times"></i> Delete</button>
+
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>  
                 <div class="col-md-12">
                     <hr class="hr-short">
                     <div class="form-group text-right">
@@ -141,6 +206,29 @@
         </div>
         <div class="clearfix"></div>
     </div>
+    <script>
+        jQuery(document).on('click','.deleteStickerPic',function(e){
+        var id = jQuery(this).data('id');
+        var ref_id = <?= $this->uri->segment('4') ?>;
+        var btn = jQuery(this);
+        btn.parent('.stickerPicBox').find('btn-info').removeClass();
+        jQuery.ajax({
+            url:base_url+'admin/code/delete_single_image',
+            data:{id:id,ref_id:ref_id},
+            method:'POST',
+            dataType:'JSON',
+            error:function(er){
+                console.log(er)
+            },
+            success:function(sc){
+                console.log(sc);
+                if(sc.status==1){
+                    window.location.reload('<?= current_url()?>') ;
+                }
+            }
+        })
+    })
+    </script>
 <?php else : ?>
     <?= showMsg(); ?>
     <?= getBredcrum(ADMIN, array('#' => 'Manage code')); ?>
@@ -159,52 +247,47 @@
 
     </div>
 
-    <table class="table table-bordered datatable" id="table-1">
+    <table class="table table-bordered" id="table-codes">
         <thead>
             <tr>
                 <th width="5%" class="text-center">Sr#</th>
                 <th width="10%">image</th>
+                <th>Type</th>
                 <th>Code</th>
-                <th>Calculated Price</th>
+                <th>Price</th>
+                <th>Add %</th>
                 <th>Status</th>
-                <!-- <th>Featured</th> -->
-                <!-- <th>Most Searched</th> -->
-
                 <th width="12%" class="text-center">&nbsp;</th>
             </tr>
         </thead>
-        <tbody>
-            <?php if (countlength($rows) > 0) : $count = 0; ?>
-                <?php foreach ($rows as $row) : ?>
-                    <tr class="odd gradeX">
-                        <td class="text-center"><?= ++$count; ?></td>
-                        <td class="text-center">
-                            <div class="">
-                                <img src="<?= get_site_image_src('code', $row->image); ?>" height="60" style="background-color:#eee">
-                            </div>
-                        </td>
-                        <?php $cal_price = calculatedPrice($adminsite_setting->site_o_pt_price, $adminsite_setting->site_live_pt_price, $adminsite_setting->site_o_pd_price, $adminsite_setting->site_live_pd_price, $adminsite_setting->site_o_rh_price, $adminsite_setting->site_live_rh_price, $row->o_price, $row->pt_price, $row->pd_price, $row->rh_price);
-                        // pr($cal_price);
-                        ?>
-
-                        <td><b><?= strtoupper($row->code) ?></b></td>
-                        <td><b><?= format_amount($cal_price, 2) ?></b></td>
-                        <td class="text-center"><?= getStatus($row->status); ?></td>
-                        <!-- <td class="text-center"></?= getFeatured($row->featured); ?></td>
-                        <td class="text-center"></?= getFeatured($row->searched); ?></td> -->
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Action <span class="caret"></span></button>
-                                <ul class="dropdown-menu dropdown-primary" role="menu">
-                                    <li><a href="<?= site_url(ADMIN . '/code/manage/' . $row->id); ?>">Edit</a></li>
-                                    <li><a href="<?= site_url(ADMIN . '/code/delete/' . $row->id); ?>" onclick="return confirm('Are you sure?');">Delete</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
     </table>
 
 <?php endif; ?>
+
+
+<script>
+    $j(document).ready(function() {
+        $j('#table-codes').DataTable({
+            // Processing indicator
+            "processing": true,
+            "language": {
+                processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+            },
+            // DataTables server-side processing mode
+            "serverSide": true,
+            // Initial no order.
+            "order": [],
+            // Load data from an Ajax source
+            "ajax": {
+                "url": base_url + 'admin/code/fetch_codes',
+                "type": "POST"
+            },
+            "stateSave": true,
+            //Set column definition initialisation properties
+            "columnDefs": [{
+                // "targets": [0,2,3],
+                "orderable": false
+            }]
+        });
+    });
+</script>

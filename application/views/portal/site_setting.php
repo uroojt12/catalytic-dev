@@ -79,6 +79,18 @@
             </div> -->
             <div class="form-group">
                 <div class="col-md-12">
+                    <label class="control-label" for="template_id">Template <span class="symbol required">*</span></label>
+                    <select name="template_id" id="template_id" class="catSub form-control" required>
+                        <option value=""> - Select - </option>
+                        <?php foreach ($templates as $key => $template) : ?>
+                            <option value="<?= $template->id ?>" <?= $template->id == $this->subadmin->template_id ? ' selected' : '' ?>>
+                                <?= $template->title ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
                     <label class="control-label"> Site Name <span class="symbol required"></span></label>
                     <input type="text" name="site_name" value="<?php if (isset($this->subadmin->site_name)) echo $this->subadmin->site_name; ?>" class="form-control" required>
                 </div>
@@ -89,12 +101,12 @@
                 <input type="text" name="site_copyright" value="<?php if (isset($this->subadmin->site_copyright)) echo $this->subadmin->site_copyright; ?>" class="form-control" required>
                 </div>
             </div> -->
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label"> Site Admin Email <span class="symbol required"></span></label>
                     <input type="text" name="site_email" value="<?php if (isset($this->subadmin->site_email)) echo $this->subadmin->site_email; ?>" class="form-control" required>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label"> Site Events Email <span class="symbol required"></span></label>
@@ -176,21 +188,34 @@
 
                 <div class="col-md-6">
                     <label class="control-label" for="site_live_pt_price">Live PT Price<span class="symbol required">*</span></label>
-                    <input type="number" min="0" step="any" name="site_live_pt_price" value="<?php if (isset($this->subadmin->site_live_pt_price)) echo $this->subadmin->site_live_pt_price; ?>" class="form-control">
+                    <input type="number" min="0" step="any" name="site_live_pt_price" value="<?php if (isset($this->subadmin->site_live_pt_price)) echo $this->subadmin->site_live_pt_price; ?>" class="form-control" required>
                 </div>
                 <div class="col-md-6">
                     <label class="control-label" for="site_live_pd_price">Live PD Price<span class="symbol required">*</span></label>
-                    <input type="number" min="0" step="any" name="site_live_pd_price" value="<?php if (isset($this->subadmin->site_live_pd_price)) echo $this->subadmin->site_live_pd_price; ?>" class="form-control">
+                    <input type="number" min="0" step="any" name="site_live_pd_price" value="<?php if (isset($this->subadmin->site_live_pd_price)) echo $this->subadmin->site_live_pd_price; ?>" class="form-control" required>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-6">
                     <label class="control-label" for="site_live_rh_price">Live RH Price<span class="symbol required">*</span></label>
-                    <input type="number" min="0" step="any" name="site_live_rh_price" value="<?php if (isset($this->subadmin->site_live_rh_price)) echo $this->subadmin->site_live_rh_price; ?>" class="form-control">
+                    <input type="number" min="0" step="any" name="site_live_rh_price" value="<?php if (isset($this->subadmin->site_live_rh_price)) echo $this->subadmin->site_live_rh_price; ?>" class="form-control" required>
                 </div>
                 <div class="col-md-6">
-                    <label class="control-label"> Price Pump <span class="symbol required"></span></label>
-                    <input type="number" name="price_pump" class="form-control" value="<?php if (isset($this->subadmin->price_pump)) echo ($this->subadmin->price_pump); ?>" />
+                    <label class="control-label"> Master Margin <span class="symbol required"></span></label>
+                    <input type="number" name="price_pump" class="form-control" value="<?php if (isset($this->subadmin->price_pump)) echo ($this->subadmin->price_pump); ?>" required>
                 </div>
+                <div class="clearfix"></div>
+
+                <!-- <div class="col-md-6">
+                    <label class="control-label" for="site_head_prices"> Head Prices <span class="symbol required">*</span></label>
+                    <select name="site_head_prices" id="site_head_prices" class="form-control">
+                        <option value="0" <//?php if (isset($this->subadmin->site_head_prices) && '0' == $this->subadmin->site_head_prices) {
+                                                echo 'selected';
+                                            } ?>>OFF</option>
+                        <option value="1" <//?php if (isset($this->subadmin->site_head_prices) && '1' == $this->subadmin->site_head_prices) {
+                                                echo 'selected';
+                                            } ?>>ON</option>
+                    </select>
+                </div> -->
             </div>
 
         </div>

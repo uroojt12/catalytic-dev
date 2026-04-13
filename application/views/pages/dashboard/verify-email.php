@@ -5,7 +5,7 @@
 
             <div id="verifyEmail">
 
-                <h3>Hello! <?= format_name($mem_data->mem_fname, $mem_data->mem_lname) ?>, Welcome to our website</h3>
+                <h3>Hello! <?= format_name($member_data->mem_fname, $member_data->mem_lname) ?>, Welcome to our website</h3>
 
                 <div class="blk">
 

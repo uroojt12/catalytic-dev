@@ -22,46 +22,95 @@ class Index extends SUBADMIN_Controller
         $this->data['adminsite_setting']->page_title = 'Login';
         $this->load->view(SUBADMIN . '/login', $this->data);
     }
-    function auth()
+    // function auth()
+    // {
+    //     $res = array();
+    //     $row = $this->subadmin_model->authenticate($this->input->post('username'), $this->input->post('password'));
+    //     // pr($row);
+    //     // pr($this->db->last_query());
+    //     if (!$row->site_id) {
+    //         $res['login_status'] = "invalid";
+    //         $res['msg'] = 'Email and Password my be wrong!';
+    //         exit(json_encode($res));
+    //     } else {
+    //         if ($row->status == 0) {
+    //             $res['login_status'] = "invalid";
+    //             $res['msg'] = 'Your account is blocked';
+    //             exit(json_encode($res));
+    //         } else {
+    //             $sess_array = array(
+    //                 'site_id' => $row->site_id,
+    //                 'name' => $row->name,
+    //                 'email' => $row->email,
+    //             );
+
+    //             // $perm_row=$this->master->fetch_row("select group_concat(permission_id) as perms from tbl_permissions_admin where admin_id=".$row->site_id,true);
+
+    //             // if($row->site_admin_type!='admin' && (empty($perm_row['perms']) || $perm_row['perms']=='')){
+    //             //     $res['msg']='Insufficient permissions, please contact administrator';
+    //             //     $res['login_status'] = "invalid";
+    //             //     exit(json_encode($res));
+    //             // }
+    //             // $perm_arr=explode(",",$perm_row['perms']);
+    //             $this->session->set_userdata('subadmin_loged_in', $sess_array);
+    //             // $this->session->set_userdata('permissions', $perm_arr);
+
+
+    //             $res['login_status'] = "success";
+    //             $res['redirect_url'] = (($this->session->userdata('subadmin_redirect_url') != "") ? $this->session->userdata('subadmin_redirect_url') : base_url(SUBADMIN . "/dashboard"));
+    //             $this->session->unset_userdata('subadmin_redirect_url');
+    //         }
+    //         exit(json_encode($res));
+    //     }
+    // }
+    
+     function auth()
     {
         $res = array();
-        $row = $this->subadmin_model->authenticate($this->input->post('username'), $this->input->post('password'));
-        // pr($row);
-        // pr($this->db->last_query());
-        if (!$row->site_id) {
-            $res['login_status'] = "invalid";
-            $res['msg'] = 'Email and Password my be wrong!';
-            exit(json_encode($res));
-        } else {
-            if ($row->status == 0) {
+        $domain = base_url();
+        $website = $this->master->getRow('add_domains', array('domain_name' => $domain));
+        if (!empty($website)) {
+            $row = $this->subadmin_model->authenticate($website->site_id, $this->input->post('username'), $this->input->post('password'));
+            // pr($row);
+            // pr($this->db->last_query());
+            if (!$row->site_id) {
                 $res['login_status'] = "invalid";
-                $res['msg'] = 'Your account is blocked';
+                $res['msg'] = 'Email and Password my be wrong!';
                 exit(json_encode($res));
             } else {
-                $sess_array = array(
-                    'site_id' => $row->site_id,
-                    'name' => $row->name,
-                    'email' => $row->email,
-                );
+                if ($row->status == 0) {
+                    $res['login_status'] = "invalid";
+                    $res['msg'] = 'Your account is blocked';
+                    exit(json_encode($res));
+                } else {
+                    $sess_array = array(
+                        'site_id' => $row->site_id,
+                        'name' => $row->name,
+                        'email' => $row->email,
+                    );
 
-                // $perm_row=$this->master->fetch_row("select group_concat(permission_id) as perms from tbl_permissions_admin where admin_id=".$row->site_id,true);
+                    // $perm_row=$this->master->fetch_row("select group_concat(permission_id) as perms from tbl_permissions_admin where admin_id=".$row->site_id,true);
 
-                // if($row->site_admin_type!='admin' && (empty($perm_row['perms']) || $perm_row['perms']=='')){
-                //     $res['msg']='Insufficient permissions, please contact administrator';
-                //     $res['login_status'] = "invalid";
-                //     exit(json_encode($res));
-                // }
-                // $perm_arr=explode(",",$perm_row['perms']);
-                $this->session->set_userdata('subadmin_loged_in', $sess_array);
-                // $this->session->set_userdata('permissions', $perm_arr);
+                    // if($row->site_admin_type!='admin' && (empty($perm_row['perms']) || $perm_row['perms']=='')){
+                    //     $res['msg']='Insufficient permissions, please contact administrator';
+                    //     $res['login_status'] = "invalid";
+                    //     exit(json_encode($res));
+                    // }
+                    // $perm_arr=explode(",",$perm_row['perms']);
+                    $this->session->set_userdata('subadmin_loged_in', $sess_array);
+                    // $this->session->set_userdata('permissions', $perm_arr);
 
 
-                $res['login_status'] = "success";
-                $res['redirect_url'] = (($this->session->userdata('subadmin_redirect_url') != "") ? $this->session->userdata('subadmin_redirect_url') : base_url(SUBADMIN . "/dashboard"));
-                $this->session->unset_userdata('subadmin_redirect_url');
+                    $res['login_status'] = "success";
+                    $res['redirect_url'] = (($this->session->userdata('subadmin_redirect_url') != "") ? $this->session->userdata('subadmin_redirect_url') : base_url(SUBADMIN . "/dashboard"));
+                    $this->session->unset_userdata('subadmin_redirect_url');
+                }
             }
-            exit(json_encode($res));
+        } else {
+            $res['login_status'] = "invalid";
+            $res['msg'] = 'Technical Error!';
         }
+        exit(json_encode($res));
     }
     function page_404()
     {

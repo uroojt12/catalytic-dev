@@ -6,7 +6,7 @@
                 <div class="cols col1">
                     <div class="inner">
                         <div class="head">
-                            <h1><?= $site_content['banner_heading'] ?></h1>
+                            <h1></h1>
                         </div>
                         <div class="sec_content">
                             <p><?= $site_content['banner_detail'] ?></p>
@@ -14,32 +14,89 @@
                         <div class="cta">
                             <a href="<?= $site_content['banner_btn_url'] ?>" class="webBtn"><?= $site_content['banner_btn_text'] ?></a>
                         </div>
-                        <ul class="listing">
-                            <li>
-                                <a href="" class="inside">
-                                    <h3><?= $site_content['ban_title1'] ?></h3>
-                                    <h4>$<?= $site_content['ban_price1'] ?></h4>
-                                    <p><strong>+<?= $site_content['ban_fullness1'] ?>%</strong></p>
+                        <?php if ($member_data->mem_headge_prices == '1' && $member_data->mem_live_pt_price > 0 && $member_data->mem_live_pd_price > 0 && $member_data->mem_live_rh_price > 0) { ?>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="inside">
-                                    <h3><?= $site_content['ban_title2'] ?></h3>
-                                    <h4>$<?= $site_content['ban_price2'] ?></h4>
-                                    <p><strong>+<?= $site_content['ban_fullness2'] ?>%</strong></p>
+                            <ul class="listing">
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title1'] ?></h3>
+                                        <h4><?= format_amount($member_data->mem_live_pt_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness1'] ?>%</strong></p>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="inside">
-                                    <h3><?= $site_content['ban_title3'] ?></h3>
-                                    <h4>$<?= $site_content['ban_price3'] ?></h4>
-                                    <p><strong>+<?= $site_content['ban_fullness3'] ?>%</strong></p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title2'] ?></h3>
+                                        <h4><?= format_amount($member_data->mem_live_pd_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness2'] ?>%</strong></p>
 
-                                </a>
-                            </li>
-                        </ul>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title3'] ?></h3>
+                                        <h4><?= format_amount($member_data->mem_live_rh_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness3'] ?>%</strong></p>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        <?php } elseif ($sub_site_settings->site_live_pt_price > 0 && $sub_site_settings->site_live_pd_price > 0 && $sub_site_settings->site_live_rh_price > 0) { ?>
+                            <ul class="listing">
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title1'] ?></h3>
+                                        <h4><?= format_amount($sub_site_settings->site_live_pt_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness1'] ?>%</strong></p>
+
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title2'] ?></h3>
+                                        <h4><?= format_amount($sub_site_settings->site_live_pd_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness2'] ?>%</strong></p>
+
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title3'] ?></h3>
+                                        <h4><?= format_amount($sub_site_settings->site_live_rh_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness3'] ?>%</strong></p>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        <?php } else { ?>
+                            <ul class="listing">
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title1'] ?></h3>
+                                        <h4><?= format_amount($sup_site_settings->site_live_pt_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness1'] ?>%</strong></p>
+
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title2'] ?></h3>
+                                        <h4><?= format_amount($sup_site_settings->site_live_pd_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness2'] ?>%</strong></p>
+
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="inside">
+                                        <h3><?= $site_content['ban_title3'] ?></h3>
+                                        <h4><?= format_amount($sup_site_settings->site_live_rh_price) ?></h4>
+                                        <p><strong>+<?= $site_content['ban_fullness3'] ?>%</strong></p>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        <?php  } ?>
                     </div>
                 </div>
                 <div class="cols col2">
@@ -70,18 +127,24 @@
                     <div class="cols">
                         <div class="inner">
 
-                            <div class="image_2">
-                                <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>" alt="<?= $site_settings->site_name ?>" alt="">
+                            <div class="image_2 popBtn" data-popup="code_image" data-image-url="<?= get_site_code_image_src("code", $top->image, $site_settings) ?>">
+                                <img src="<?= get_site_code_image_src("code", $top->image, $site_settings) ?>" alt="<?= $site_settings->site_name ?>" alt="">
                             </div>
                             <div class="content">
                                 <h5><?= $top->title ?></h5>
                                 <p><?= $top->code ?></p>
+                                
+                                 <?php if (!empty($this->session->mem_id) && $member_data->mem_verified > 0 ) { ?>
                                 <div class="cta_price">
-                                    <h5><strong><?= format_amount(number_format($top->total_price, 2, '.', '')) ?></strong></h5>
+                                    <h5><strong><?= format_amount($top->total_price) ?></strong>
+                                    </h5>
                                     <div class="cta">
-                                        <a href="javascript:void(0)" class="webBtn popBtn" data-popup="add_code">Add</a>
+                                        <!-- <a href="javascript:void(0)" class="webBtn popBtn" data-popup="add_code">Add</a> -->
+                                        <a href="javascript:void(0)" class="webBtn popBtn" data-lot_type="<?= ($top->type) ?>" data-inventory_id="<?= ($top->id) ?>" data-popup="add_code">Add</a>
+
                                     </div>
                                 </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -150,52 +213,54 @@
 
     <!-- =====testimonials======= -->
     <section class="testimonials">
-        <div class="flex">
-            <div class="cols col1">
-                <div class="sec_heading">
-                    <h2><?= $site_content['sec5_heading'] ?></h2>
+        <div class="contain">
+            <div class="flex">
+                <div class="cols col1">
+                    <div class="sec_heading">
+                        <h2><?= $site_content['sec5_heading'] ?></h2>
+                    </div>
+                    <div class="sec_content">
+                        <p><?= $site_content['sec5_detail'] ?></p>
+                    </div>
+                    <div class="cta">
+                        <a href="<?= $site_content['sec5_btn_url'] ?>" class="webBtn"><?= $site_content['sec5_btn_text'] ?></a>
+                    </div>
                 </div>
-                <div class="sec_content">
-                    <p><?= $site_content['sec5_detail'] ?></p>
-                </div>
-                <div class="cta">
-                    <a href="<?= $site_content['sec5_btn_url'] ?>" class="webBtn"><?= $site_content['sec5_btn_text'] ?></a>
-                </div>
-            </div>
-            <div class="col2">
-                <div class="owl-carousel testi-carousel">
-                    <?php foreach ($testimonials as $testimonial) : ?>
-                        <div class="item">
-                            <div class="inside">
-                                <div class="inner">
-                                    <div class="content">
-                                        <div class="image">
-                                            <img src="<?= get_site_image_src('testimonials', $testimonial->image, 'thumb_', true); ?>" alt="No Image">
-                                        </div>
-                                        <div class="name-profession">
-                                            <span class="profession">
-                                                <p>
-                                                    <?= $testimonial->detail ?>
-                                                </p>
-                                            </span>
-                                            <div class="lower">
-                                                <div class="lower-cntnt">
-                                                    <span class="name"> <?= $testimonial->name ?></span>
-                                                    <span class="scale"> <?= $testimonial->designation ?></span>
-                                                </div>
-                                                <div class="quote">
-                                                    <img src="<?= base_url() ?>assets/images/quote.png" alt="">
+                <div class="col2">
+                    <div class="owl-carousel testi-carousel">
+                        <?php foreach ($testimonials as $testimonial) : ?>
+                            <div class="item">
+                                <div class="inside">
+                                    <div class="inner">
+                                        <div class="content">
+                                            <div class="image">
+                                                <img src="<?= get_site_image_src('testimonials', $testimonial->image, 'thumb_', true); ?>" alt="No Image">
+                                            </div>
+                                            <div class="name-profession">
+                                                <span class="profession">
+                                                    <p>
+                                                        <?= $testimonial->detail ?>
+                                                    </p>
+                                                </span>
+                                                <div class="lower">
+                                                    <div class="lower-cntnt">
+                                                        <span class="name"> <?= $testimonial->name ?></span>
+                                                        <span class="scale"> <?= $testimonial->designation ?></span>
+                                                    </div>
+                                                    <div class="quote">
+                                                        <img src="<?= base_url() ?>assets/images/quote.png" alt="">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach ?>
+                        <?php endforeach ?>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
 
     </section>

@@ -19,7 +19,16 @@ class Generics extends Admin_Controller
         $this->data['rows'] = $this->generics_model->get_rows(array('type' => 'Generics'));
         $this->load->view(ADMIN . '/includes/siteMaster', $this->data);
     }
+     function delete_single_image(){
+        $vals = $this->input->post();
+        // pr($vals);
+        if ($vals) {
+            $this->master->delete('multiple_images','id',$vals['id']);
+                echo json_encode(array('status'=>1));
 
+            
+        }
+    }
     function manage()
     {
         $this->data['enable_editor'] = TRUE;
@@ -41,9 +50,14 @@ class Generics extends Admin_Controller
                 }
             }
             $vals['type'] = 'Generics';
+            $vals['cat_id'] = NULL;
+
 
             // pr($vals);
-            $this->generics_model->save($vals, $this->uri->segment(4));
+            $id=$this->generics_model->save($vals, $this->uri->segment(4));
+            if (isset($_FILES["upload_file"]["name"]) && count($_FILES["upload_file"]["name"]) > 0) {
+                upload_multiple_images('./uploads/images/', $_FILES, 'upload_file', $id,'generics');
+            }
             setMsg('success', 'Generics  has been saved successfully.');
             redirect(ADMIN . '/generics', 'refresh');
             exit;
@@ -53,42 +67,109 @@ class Generics extends Admin_Controller
         $this->load->view(ADMIN . '/includes/siteMaster', $this->data);
     }
 
+    // function upload_bulk()
+    // {
+    //     if (isset($_FILES) && !empty($_FILES['genericsFile']['name'])) {
+    //         $file = $_FILES['genericsFile'];
+    //         $extension = explode('.', $file['name']);
+    //         if ($extension[1] === 'csv') {
+    //             $row = 0;
+    //             if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
+    //                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+    //                     if (++$row === 0) {
+    //                         continue;
+    //                     } else {
+    //                         $insert = [];
+    //                         // pr($data);
+    //                         if (
+    //                             !empty(trim($data[0]))
+    //                             && !empty(trim($data[1]))
+    //                             && !empty(trim($data[2]))
+    //                             && !empty(trim($data[3]))
+    //                             && !empty(trim($data[4]))
+    //                             // && !empty(trim($data[5]))
+    //                         ) {
+
+    //                             // $category = $this->page->checkCategoryExist(strtolower($data[0]));
+    //                             $insert['cat_id'] = NULL;
+    //                             $insert['type']         = 'Generics';
+    //                             $insert['title']         = NULL;
+    //                             $insert['code']         = trim(strtolower($data[0]));
+    //                             $insert['o_price']         = trim($data[1]);
+    //                             $insert['pt_price']         = trim($data[2]);
+    //                             $insert['pd_price']         = trim($data[3]);
+    //                             $insert['rh_price']         = trim($data[4]);
+    //                             // $insert['price']         = trim($data[5]);
+    //                             $insert['status'] = 1;
+    //                             $insert['created_date'] = date('Y-m-d h:i:s');
+    //                             // pr($insert);
+    //                             $this->master->save('code', $insert);
+    //                         }
+    //                     }
+    //                 }
+
+    //                 setMsg('success', 'File uploaded successfully! Empty records will be ignored.');
+    //                 redirect(ADMIN . '/generics', 'refresh');
+    //                 exit;
+    //             }
+    //         } else {
+    //             setMsg('error', 'Please select only csv file.');
+    //             redirect(ADMIN . '/generics', 'refresh');
+    //             exit;
+    //         }
+    //     } else {
+    //         setMsg('error', 'No File was seleted.');
+    //         redirect(ADMIN . '/generics', 'refresh');
+    //         exit;
+    //     }
+    // }
+
     function upload_bulk()
     {
         if (isset($_FILES) && !empty($_FILES['genericsFile']['name'])) {
             $file = $_FILES['genericsFile'];
             $extension = explode('.', $file['name']);
-            if ($extension[1] === 'csv') {
+            if (strtolower(end($extension)) === 'csv') {
                 $row = 0;
                 if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
                     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                        if (++$row === 0) {
+                        if ($row++ === 0) {
                             continue;
-                        } else {
-                            $insert = [];
-                            // pr($data);
-                            if (
-                                !empty(trim($data[0]))
-                                && !empty(trim($data[1]))
-                                && !empty(trim($data[2]))
-                                && !empty(trim($data[3]))
-                                && !empty(trim($data[4]))
-                                // && !empty(trim($data[5]))
-                            ) {
+                        }
 
+                        if (
+                            !empty(trim($data[0])) &&
+                            !empty(trim($data[1])) &&
+                            !empty(trim($data[2])) &&
+                            !empty(trim($data[3])) &&
+                            !empty(trim($data[4]))
+                            // !empty(trim($data[5]))
+                        ) {
+                            $code = trim(strtolower($data[0]));
+                            $new_type = !empty(trim($data[5])) ? trim($data[5]) : NULL;
+
+                            $existing_code = $this->master->getRow('code', ['code' => $code]);
+
+                            if ($existing_code) {
+                                $update_data = [
+                                    'new_type' => $new_type,
+                                ];
+                                $this->master->update('code', $update_data, ['code' => $code]);
+                            } else {
                                 // $category = $this->page->checkCategoryExist(strtolower($data[0]));
-                                $insert['cat_id'] = NULL;
-                                $insert['type']         = 'Generics';
-                                $insert['title']         = NULL;
-                                $insert['code']         = trim(strtolower($data[0]));
-                                $insert['o_price']         = trim($data[1]);
-                                $insert['pt_price']         = trim($data[2]);
-                                $insert['pd_price']         = trim($data[3]);
-                                $insert['rh_price']         = trim($data[4]);
-                                // $insert['price']         = trim($data[5]);
-                                $insert['status'] = 1;
-                                $insert['created_date'] = date('Y-m-d h:i:s');
-                                // pr($insert);
+                                $insert = [
+                                    'cat_id' => NULL,
+                                    'type' => 'Generics',
+                                    'title' => NULL,
+                                    'code' => $code,
+                                    'o_price' => trim($data[1]),
+                                    'pt_price' => trim($data[2]),
+                                    'pd_price' => trim($data[3]),
+                                    'rh_price' => trim($data[4]),
+                                    'new_type' => $new_type,
+                                    'status' => 1,
+                                    'created_date' => date('Y-m-d h:i:s')
+                                ];
                                 $this->master->save('code', $insert);
                             }
                         }
@@ -104,10 +185,31 @@ class Generics extends Admin_Controller
                 exit;
             }
         } else {
-            setMsg('error', 'No File was seleted.');
+            setMsg('error', 'No File was selected.');
             redirect(ADMIN . '/generics', 'refresh');
             exit;
         }
+    }
+
+
+
+    function update_price()
+    {
+
+        $this->data['enable_editor'] = TRUE;
+        $this->data['pageView'] = ADMIN . '/generics';
+        if ($this->input->post()) {
+            $vals = $this->input->post();
+            $vals['site_id'] = '-1';
+            $vals['code_id'] = $this->uri->segment(4);
+            $vals['created_date'] = date('Y-m-d h:i:s');
+            // pr($vals);
+            $id = $this->master->save('code_prices', $vals);
+            setMsg('success', 'Generic Price has been saved successfully.');
+            redirect(ADMIN . '/generics', 'refresh');
+            exit;
+        }
+        $this->load->view(ADMIN . '/includes/siteMaster', $this->data);
     }
 
 
@@ -125,12 +227,26 @@ class Generics extends Admin_Controller
             show_404();
     }
 
+    function delete_image($id)
+    {
+        $id = intval($id);
+        if ($row = $this->generics_model->get_row($id)) {
+            $this->remove_file($id);
+            $data['image'] = NULL;
+            $this->generics_model->save($data, $id);
+            setMsg('success', 'Generic Image has been deleted successfully.');
+            redirect(ADMIN . '/generics', 'refresh');
+            exit;
+        } else
+            show_404();
+    }
+
     function remove_file($id)
     {
         $arr = $this->generics_model->get_row($id);
 
-        $filepath = "./" . UPLOAD_PATH . "/generics/" . $arr->icon;
-        $filepath_thumb = "./" . UPLOAD_PATH . "/generics/thumb_" . $arr->icon;
+        $filepath = "./" . UPLOAD_PATH . "/generics/" . $arr->image;
+        $filepath_thumb = "./" . UPLOAD_PATH . "/generics/thumb_" . $arr->image;
         if (is_file($filepath)) {
             unlink($filepath);
         }

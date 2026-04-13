@@ -214,6 +214,20 @@ class Master extends CI_Model{
         else
             return $query->result();
     }
+    
+    public function getNewTypeFromInventoryDetails($id){
+        $this->db->select('code.new_type, COUNT(tbl_code.new_type) as count');
+        $this->db->from('add_code_to_lot');
+        $this->db->join('code', 'add_code_to_lot.inventory_id = code.id'); // Assuming the join condition
+        $this->db->where('add_code_to_lot.mem_id', $this->session->mem_id);
+        $this->db->where('add_code_to_lot.site_id', $this->session->web_id);
+        $this->db->where('add_code_to_lot.lot_id', $id);
+        $this->db->group_by('code.new_type');
+        $query = $this->db->get();
+
+        return $query->result();
+
+    }
 }
 
 ?>

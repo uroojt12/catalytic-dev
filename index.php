@@ -1,5 +1,8 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
+ini_set('pcre.backtrack_limit', '30000000');
+
+
 
 /**
  * CodeIgniter

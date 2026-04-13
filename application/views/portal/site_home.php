@@ -108,15 +108,15 @@
                         <div class="clearfix"></div>
                         <?php $sec_banner = 0;
                         for ($i = 1; $i <= 3; $i++) : ++$sec_banner; ?>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="ban_title<?= $i ?>" class="control-label"> Genere Title <?= $sec_banner ?><span class="symbol required">*</span></label>
                                 <input type="text" name="ban_title<?= $i ?>" class="form-control" value="<?= $row['ban_title' . $i] ?>" />
                             </div>
-                            <div class="col-md-4">
+                            <!-- <div class="col-md-4">
                                 <label for="ban_price<?= $i ?>" class="control-label"> Price <?= $sec_banner ?><span class="symbol required">*</span></label>
                                 <input type="text" name="ban_price<?= $i ?>" class="form-control" value="<?= $row['ban_price' . $i] ?>" />
-                            </div>
-                            <div class="col-md-4">
+                            </div> -->
+                            <div class="col-md-6">
                                 <label for="ban_fullness<?= $i ?>" class="control-label"> Fullness <?= $sec_banner ?><span class="symbol required">*</span></label>
                                 <input type="text" name="ban_fullness<?= $i ?>" class="form-control" value="<?= $row['ban_fullness' . $i] ?>" />
                             </div>

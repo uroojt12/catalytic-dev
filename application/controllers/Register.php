@@ -45,15 +45,13 @@ class Register extends MY_Controller
             } else {
                 $post = html_escape($this->input->post());
                 //  pr($post);
+                
+                 $site_id = $this->session->web_id;
+                
+                
                 $mem_row = [];
-                $mem_row = (array)$this->Member_model->emailExists($post['email']);
-                //$str = $this->db->last_query();
-                //echo $str;
-                //pr($mem_row); 
-                // echo count($mem_row);
-
-                //  $mem_row=(array)$mem_row;
-                // var_dump($mem_row);
+                $mem_row = (array)$this->Member_model->emailExists($post['email'], $site_id);
+                // $mem_row = (array)$this->Member_model->emailExists($post['email']);
                 if ((int)count($mem_row) == 0) {
                     $rando = doEncode(rand(99, 999) . '-' . $post['email']);
                     $rando = strlen($rando) > 225 ? substr($rando, 0, 225) : $rando;
@@ -64,11 +62,8 @@ class Register extends MY_Controller
                         'mem_pswd' => md5($post['password']),
                         'mem_code' => $rando,
                         'site_id' => $this->session->web_id,
-
-
                         'mem_status' => 1
                     );
-                    // pr($save_data);
                     $mem_id = $this->Member_model->save($save_data);
                     $this->session->set_userdata('mem_id', $mem_id);
                     $this->session->set_userdata('mem_type', 'member');
@@ -77,11 +72,10 @@ class Register extends MY_Controller
                     $verify_link = site_url('verification/' . $rando);
                     $mem_data = array('name' => ucfirst($post['fname']) . ' ' . ucfirst($post['lname']), "email" => $post['email'], "link" => $verify_link);
                     // pr($verify_link);
-                    $q = $this->send_signup_code($mem_data);
-                    // pr($q);
-                    $res['email_notofication'] = $q;
-                    $res['redirect_url'] = site_url('email-verification');
-
+                    // $q = $this->send_signup_code($mem_data);
+                    // $res['email_notofication'] = $q;
+                    // $res['redirect_url'] = site_url('email-verification');
+                    $res['redirect_url'] = site_url('code');
                     $res['status'] = 1;
                     $res['frm_reset'] = 1;
                 } else {
@@ -90,15 +84,7 @@ class Register extends MY_Controller
             }
             exit(json_encode($res));
         }
-        //   else{
-        //     $this->data['right_row'] = $this->master->getRow('sitecontent', array('ckey' => 'right_section'));
-
-        //     $this->data['content_row'] = $this->master->getRow('sitecontent', array('ckey' => 'signup'));
-        //     $this->data['site_content'] = unserialize($this->data['content_row']->code);
-        //     $this->data['pageView']='pages/signup';
-        //     $this->data['captcha']=true;
-        //     $this->load->view("includes/site-master", $this->data);
-        //   }
+        
     }
 
     function signin()
@@ -125,15 +111,8 @@ class Register extends MY_Controller
             } else {
 
                 $data = html_escape($this->input->post());
-
-                // pr(md5($data['password']));
-
-                $row = $this->Member_model->authenticate($data['email'], $data['password']);
-
-                // pr($row);
-
-                // var_dump($row);
-
+                $site_id = $this->session->web_id;
+                $row = $this->Member_model->authenticate($data['email'], $data['password'],$site_id);
                 if (!empty($row)) {
 
                     if ($row->mem_status == 0) {
@@ -148,22 +127,17 @@ class Register extends MY_Controller
                         if (isset($data['remeberMe'])) {
 
                             $remember_token = doEncode('member-' . $row->mem_id);
-                            $cookie = array('name'   => 'remember', 'value'  => $remember_token, 'expire' => (86400 * 7));
+                            $cookie = array('name'   => 'remember', 'value'  => $remember_token, 'expire' => (86400 * 30));
 
                             $this->input->set_cookie($cookie);
                         }
 
 
                         // $this->Member_model->update_last_login($row->id,$remember_token);
-
-
                         $this->session->set_userdata('mem_id', $row->mem_id);
                         $this->session->set_userdata('mem_type', $row->mem_type);
-
-                        $res['redirect_url'] = site_url('dashboard');
-
+                        $res['redirect_url'] = site_url('code');
                         $this->session->unset_userdata('redirect_url');
-
                         $res['msg'] = 'Sign in successful! Please wait.';
                         $res['status'] = 1;
                         $res['frm_reset'] = 1;
@@ -177,21 +151,7 @@ class Register extends MY_Controller
             exit(json_encode($res));
         }
 
-        // else{
-
-        //     $this->data['right_row'] = $this->master->getRow('sitecontent', array('ckey' => 'right_section'));
-
-
-
-        //     $this->data['content_row'] = $this->master->getRow('sitecontent', array('ckey' => 'signin'));
-
-        //     $this->data['site_content'] = unserialize($this->data['content_row']->code);
-
-        //     $this->data['pageView']='pages/signin';
-
-        //     $this->load->view("includes/site-master", $this->data);
-
-        // }
+        
 
     }
 
@@ -200,27 +160,15 @@ class Register extends MY_Controller
     function verification($vcode = '')
 
     {
-        // pr('asd');
         $row = $this->Member_model->getMemCode($vcode);
-        // pr($row);
-
         if ($row = $this->Member_model->getMemCode($vcode)) {
-
             // pr($this->db->last_query());
             $this->Member_model->save(array('mem_verified' => 1, 'mem_email_verified' => 1, 'mem_code' => ''), $row->mem_id);
-
             setMsg('success', "Account has been verified!!!");
-
             redirect('dashboard', 'refresh');
-
-
             exit;
         } else {
-
             redirect('', 'refresh');
-
-
-
             exit;
         }
     }
@@ -231,11 +179,7 @@ class Register extends MY_Controller
 
     {
 
-
-
         // $this->MemLogged();
-
-
 
         if ($this->input->post()) {
 
@@ -262,7 +206,7 @@ class Register extends MY_Controller
 
                 $post = html_escape($this->input->post());
 
-                if ($mem = $this->Member_model->forgotEmailExists($post['email'])) {
+                if ($mem = $this->Member_model->forgotEmailExists($post['email'],$this->session->web_id)) {
 
                     // $settings = $this->data['site_settings'];
 
@@ -273,9 +217,6 @@ class Register extends MY_Controller
                     $reset_link = site_url('reset/' . $rando);
 
                     $mem_data = array('name' => $mem->mem_fname . ' ' . $mem->mem_lname, "email" => $mem->mem_email, "link" => $reset_link);
-
-
-
                     send_site_email($mem_data, 'forgot_password');
 
                     $res['msg'] = 'We’ve sent a reset password link to the email address you entered to reset your password. If you don’t see the email, check your spam folder or email!';

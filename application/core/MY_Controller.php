@@ -20,34 +20,22 @@ class MY_Controller extends CI_Controller
 
         parent::__construct();
 
+// pr("standby website");
+
         $this->data['site_settings'] = $this->getSiteSettings();
-
         $main_domain =  base_url();
-
         if ($main_domain == $this->data['site_settings']->site_domain) {
-
             $this->data['site_settings'] = $this->getSiteSettings();
-
             redirect(base_url());
         } else {
-
-
-
             $chk_domain = $this->master->getRow('add_domains', array('status' => 1, 'domain_name' => $main_domain));
-
-
-
             if (!empty($chk_domain)) {
-
                 $this->session->set_userdata('web_id', $chk_domain->site_id);
-
                 $this->data['site_settings'] = $this->getsubSiteSettings();
             } else {
-
                 show_404();
             }
         }
-
 
         $this->data['site_colors']  = $this->master->getRow('colors', array('site_id' => $this->session->web_id));
 
@@ -55,36 +43,37 @@ class MY_Controller extends CI_Controller
 
         $this->data['page']          = $this->uri->segment(1);
         // $this->getActiveMem();
-        $this->private_data['email_config'] = array(
+        // $this->private_data['email_config'] = array(
+        //     'protocol'   => 'smtp',
+        //     'smtp_host'  => 'mail.smtp2go.com',
+        //     'smtp_port'  => 2525,              // SSL port
+        //     'smtp_user'  => 'pgminvoice',
+        //     'smtp_pass'  => 'pu2WUXKum48Jwq5t',
+        //     'mailtype'   => 'html',
+        //     'charset'    => 'utf-8',
+        //     'smtp_crypto' => 'ssl',           // Use SSL encryption
+        // );
+        
+        $this->private_data_email['email_config']['protocol'] = 'smtp';
+        $this->private_data_email['email_config']['smtp_host'] = 'mail.smtp2go.com';
+        $this->private_data_email['email_config']['smtp_user'] = 'pgminvoice'; // replace with your SMTP2GO username
+        $this->private_data_email['email_config']['smtp_pass'] = 'pu2WUXKum48Jwq5t'; // replace with your SMTP2GO password
+        $this->private_data_email['email_config']['smtp_port'] = 25; // or use 2525, 8025, 80, or 25 for TLS
+        $this->private_data_email['email_config']['smtp_crypto'] = 'tls'; // use 'ssl' for SSL on ports 465, 8465, or 443
+        $this->private_data_email['email_config']['mailtype'] = 'html'; // or 'text' if you prefer plain text emails
+        $this->private_data_email['email_config']['charset'] = 'utf-8';
+        $this->private_data_email['email_config']['wordwrap'] = TRUE;
+        $this->private_data_email['email_config']['newline'] = "\r\n"; // For some servers, including SMTP2GO, this may be necessary
 
-            'protocol'   => 'smtp',
-
-            'smtp_host'  => 'ssl://mail.herosolutions.com.pk',
-
-            'smtp_port'  => 465,
-
-            'smtp_user'  => trim($this->data['site_settings']->site_noreply_email),
-
-            'smtp_pass'  => 'B2sBcS^##C1z',
-
-            'mailtype'   => 'html',
-
-            'charset'   => 'utf-8',
-
-            'starttls'  => true
-
-        );
 
 
-
-        $this->private_data['email_from'] = trim($this->data['site_settings']->site_noreply_email);
+        $this->private_data['email_from'] = $this->data['site_settings']->site_noreply_email;
 
         $this->private_data['admin_email'] = trim($this->data['site_settings']->site_email);
 
 
 
         $this->private_data['JWT_PRIVATE_KEY'] = 'my-safety_____jwt_private_key';
-
         $this->private_data['JWT_ALGO_METHOD'] = 'HS256';
         $this->data['member_data'] = $this->getActiveMem();
     }
@@ -100,9 +89,6 @@ class MY_Controller extends CI_Controller
     {
 
         $row = $this->master->getRow('members', array('mem_id' => $this->session->mem_id));
-
-        // pr($row);
-
         return $row;
     }
 
@@ -159,18 +145,26 @@ class MY_Controller extends CI_Controller
 
 
 
-    function send_photo_grade_status_email($mem_data)
+    function send_photo_grade_status_email($mem_data,$emailto='')
+
+    {
+        // pr($emailto);
+        $emailto  = !empty($emailto) ?  $emailto : $mem_data['email'];
+        $subject  = $this->data['site_settings']->site_name . " - Photo Grade";
+        $this->data['mem_data'] = $mem_data;
+        $msg_body = $this->load->view('includes/emails/send_grade_email_template', $this->data, TRUE);
+        $this->send_email($msg_body, $emailto, $subject);
+    }
+
+
+    function send_finish_lot_pdf_email($mem_data)
 
     {
 
         $emailto  = $mem_data['email'];
-
-        $subject  = $this->data['site_settings']->site_name . " - Photo Grade";
-
+        $subject  = $this->data['site_settings']->site_name . " - Inventory Closed";
         $this->data['mem_data'] = $mem_data;
-
-        $msg_body = $this->load->view('includes/emails/send_grade_email_template', $this->data, TRUE);
-
+        $msg_body = $this->load->view('includes/emails/send_inventory_closed_email_template', $this->data, TRUE);
         $this->send_email($msg_body, $emailto, $subject);
     }
 
@@ -485,15 +479,38 @@ class MY_Controller extends CI_Controller
         $this->send_email($msg_body, $emailto, $subject);
     }
 
+// private function send_email($msg_body, $emailto, $subject)
+// {
+//     $email_from = $this->private_data['email_from'];
+//     pr($email_from);
+//     $site_name = $this->data['site_settings']->site_name;
+    
+//     $headers = "From: " . $site_name . " <" . $email_from . ">\r\n";
+//     $headers .= "Reply-To: " . $email_from . "\r\n";
+//     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+//     $this->data['email_body'] = $msg_body;
+//     $this->data['email_subject'] = $subject;
+
+//     // Load and capture the HTML email template content
+//     $message = $this->load->view('includes/emails/email_template_base', $this->data, TRUE);
+
+//     // Send email using PHP's mail function
+//     if (mail($emailto, $subject, $message, $headers)) {
+//         return true;
+//     } else {
+//         return error_get_last()['message'] ?? "Failed to send email";
+//     }
+// }
 
 
     private function send_email($msg_body, $emailto, $subject)
 
     {
-
+        // pr($this->private_data['email_from']);
         $this->load->library('email');
 
-        $this->email->initialize($this->private_data['email_config']);
+        // $this->email->initialize($this->private_data_email['email_config']);
 
         $this->email->set_mailtype("html");
 
@@ -522,13 +539,13 @@ class MY_Controller extends CI_Controller
             return true;
         } else {
 
-            return true;
+            // return true;
 
-            // $error=$this->email->print_debugger();
+            $error=$this->email->print_debugger();
 
-            // print_r($this->email->print_debugger());die;
+            print_r($this->email->print_debugger());die;
 
-            // return $error;
+            return $error;
 
         }
     }

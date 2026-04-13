@@ -655,7 +655,52 @@ function saveMultiMediaFieldsImgs($path, $files, $fieldname, $section, $pics, $c
     }
     return $success;
 }
+function savePicture($ref_id, $pic,$type) {
+    $vals = array(
+        'ref_id' => $ref_id,
+        'image' => $pic,
+        'type'=>$type
+    );
+    $CI = get_instance();
+    $CI->db->set($vals);
+    $CI->db->insert('multiple_images');
+}
+function getPictures($id,$type) {
+    $CI = get_instance();
+    $CI->db->where('ref_id', $id);
+    $CI->db->where('type',$type);
+    $query = $CI->db->get('multiple_images');
+    return $query->result();
+}
+function upload_multiple_images($path, $files, $fieldname, $ref_id,$type) {
+    // pr($files[$fieldname]);
+    $success = 0;
+    $CI = & get_instance();
+    $cpt = count($files[$fieldname]['name']);
+    for ($i = 0; $i < $cpt; $i++) {
+        $_FILES[$fieldname]['name'] = $files[$fieldname]['name'][$i];
+        $_FILES[$fieldname]['type'] = $files[$fieldname]['type'][$i];
+        $_FILES[$fieldname]['tmp_name'] = $files[$fieldname]['tmp_name'][$i];
+        $_FILES[$fieldname]['error'] = $files[$fieldname]['error'][$i];
+        $_FILES[$fieldname]['size'] = $files[$fieldname]['size'][$i];
 
+        $config['upload_path'] = $path;
+        $config['allowed_types'] = 'jpg|png|jpeg|gif';
+        $config['max_size'] = 2100000;
+        $stamp = time() . '_' . rand(1111, 9999);
+        $file_name = "image_" . $stamp;
+        $config['file_name'] = $file_name;
+
+        $CI->load->library('upload', $config);
+
+        if ($CI->upload->do_upload($fieldname)) {
+            $image = $CI->upload->data();
+            savePicture($ref_id, $image['file_name'],$type);
+            $success++;
+        }
+    }
+    return $success;
+}
 function saveAnyPic($path, $pic_name, $pic_type, $pic_tmp, $pic_error, $pic_size, $fieldname)
 {
     $CI = get_instance();
@@ -1088,6 +1133,22 @@ function total_favorites($ref_id, $ref_type)
     $CI->db->where('ref_type', $ref_type);
     $query = $CI->db->get('favorites');
     return short_number_format(intval($query->num_rows()));
+}
+
+function detectDay() {
+    // Get the current day of the week (1 for Monday, 7 for Sunday)
+    $dayOfWeek = date('N');
+    
+    if ($dayOfWeek >= 1 && $dayOfWeek <= 5) {
+        // Weekdays (Monday to Friday)
+        return "1 minute ago";
+    } elseif ($dayOfWeek == 6) {
+        // Saturday
+        return "1 day ago";
+    } elseif ($dayOfWeek == 7) {
+        // Sunday
+        return "2 days ago";
+    }
 }
 
 function get_delivey_proof($order_id)
@@ -1694,7 +1755,8 @@ function chk_code_price($site_id, $code_id)
 function count_codes_for_cat_id($cat_id, $lot_id)
 {
     global $CI;
-    $CI->db->select('COUNT(DISTINCT inventory_id) as num_codes');
+    // $CI->db->select('COUNT(DISTINCT inventory_id) as num_codes');
+    $CI->db->select('COUNT(inventory_id) as num_codes');
     $CI->db->from('add_code_to_lot');
     $CI->db->join('code', 'add_code_to_lot.inventory_id = code.id');
     $CI->db->where('code.cat_id', $cat_id);
@@ -1705,10 +1767,25 @@ function count_codes_for_cat_id($cat_id, $lot_id)
     if ($query->num_rows() > 0) {
         $result = $query->row();
         return $result->num_codes;
+        // return $CI->db->last_query() . 'counted == ' . $result->num_codes;
     } else {
         return 0;
     }
 }
+
+function sum_amount_for_cat_id($cat_id, $lot_id)
+{
+    global $CI;
+    $CI->db->select('SUM(tbl_add_code_to_lot.amount * tbl_add_code_to_lot.qty) AS total_sum');
+    $CI->db->from('tbl_add_code_to_lot');
+    $CI->db->join('tbl_code AS code', 'tbl_add_code_to_lot.inventory_id = code.id');
+    $CI->db->where('code.cat_id', $cat_id);
+    $CI->db->where('tbl_add_code_to_lot.lot_id', $lot_id);
+
+    $query = $CI->db->get();
+    return $query->row()->total_sum;
+}
+
 function get_code_name($id)
 {
     global $CI;
@@ -1754,7 +1831,8 @@ function get_lot_name_options($type, $selected = '')
     $options = "";
     $contition = array('mem_id' => $CI->session->mem_id, 'site_id' => $CI->session->web_id, 'status' => 0);
 
-    $rows = $CI->master->getRows("lot_name", $contition, '', '', 'asc', 'lot_name');
+    // $rows = $CI->master->getRows("lot_name", $contition, '', '', 'desc', 'created_date');
+    $rows = $CI->master->getRows("lot_name", $contition, '', '', 'desc', 'last_updated_date');
 
     foreach ($rows as $key => $row) {
 
@@ -1806,4 +1884,25 @@ function get_photo_grade($id)
     $CI->db->where('id', $id);
     $query = $CI->db->get('add_photo_grade');
     return $query->row();
+}
+
+function get_template($template_id)
+{
+    global $CI;
+    $CI = get_instance();
+    $row = $CI->master->getRow('templates', array('id' => $template_id));
+    return $row->template_file;
+}
+
+
+function get_brand_name($id)
+{
+    global $CI;
+    $CI = get_instance();
+    $row = $CI->master->getRow('categories', array('id' => $id));
+    if (!empty($row)) {
+        return ($row->name);
+    } else {
+        return 'N/A';
+    }
 }

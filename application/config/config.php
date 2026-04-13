@@ -392,7 +392,7 @@ $config['sess_cookie_name'] = 'aireloom_session';
 $config['sess_expiration'] = 0;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = TRUE;
-$config['sess_time_to_update'] = 86400;
+$config['sess_time_to_update'] = 2592000;
 $config['sess_regenerate_destroy'] = FALSE;
 
 /*

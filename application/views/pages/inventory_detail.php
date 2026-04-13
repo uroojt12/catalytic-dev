@@ -25,73 +25,162 @@
                             <div class="up_grid">
                                 <div class="flex">
                                     <div class="logo_m">
-                                        <img src="<?= base_url() ?>assets/images/logo-m.svg" alt="">
+                                        <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>" alt="<?= $site_settings->site_name ?>">
                                     </div>
                                     <div class="logo_detail">
                                         <!-- <p><?= $inventory_detail->lot_name ?></p> -->
                                     </div>
                                 </div>
+
                             </div>
+                            <br>
+                            <?php if ($inventory_detail->status == 0) : ?>
+                                <a href="javascript:void(0)" class="webBtn brightBtn popBtn" data-popup="custom_codes">Add
+                                    Custom Codes</a>
+                            <?php endif; ?>
                             <div class="img_grid" id="inventory_update">
                                 <?php
+                                // pr($codes_arr);
                                 $count_avg = count($codes_arr);
+                                // pr($count_avg);
                                 $grand_total = 0; // Initialize grand total
                                 // pr($count_avg);
                                 if (!empty($codes_arr)) :
+                                    // pr($codes_arr);
+
                                 ?>
                                     <?php foreach ($codes_arr as $code_row) :
-                                        // pr($code_row);
-                                        $price_pump = !empty($sub_admin_row->price_pump) ? $sub_admin_row->price_pump :  2;
-                                        $cal_price = calculatedPrice($admin_site_settings->site_o_pt_price, $admin_site_settings->site_live_pt_price, $admin_site_settings->site_o_pd_price, $admin_site_settings->site_live_pd_price, $admin_site_settings->site_o_rh_price, $admin_site_settings->site_live_rh_price, $code_row->o_price, $code_row->pt_price, $code_row->pd_price, $code_row->rh_price);
-                                        $cal_price = $cal_price + (($cal_price * $price_pump) / 100);
-                                        $amount = $cal_price;
-                                        // pr($code_row);
-                                        $price = $cal_price * $code_row->qty;
-                                        $grand_total += $price; // Add to grand total
+                                        if ($code_row->id) {
+                                            $pump_cal_price = calculatedAllPrice($admin_site_settings->site_o_pt_price, $admin_site_settings->site_live_pt_price, $admin_site_settings->site_o_pd_price, $admin_site_settings->site_live_pd_price, $admin_site_settings->site_o_rh_price, $admin_site_settings->site_live_rh_price, $this->session->web_id, $code_row->id, $this->session->mem_id);
+                                            // $amount = $pump_cal_price;
+                                            $price = $code_row->amount * $code_row->qty;
+                                            // $price = $code_row->amount;
+                                            $grand_total += $price; // Add to grand total
 
-                                        // pr($grand_total);
+                                            // pr($grand_total);
                                     ?>
-                                        <div class="flex">
-                                            <div class="content">
-                                                <ul class="in_listing">
-                                                    <li>
-                                                        <p><strong>Title</strong></p>
-                                                        <p><?= $code_row->title ?><br /><?= $code_row->lot_type ?></p>
-                                                    </li>
-                                                    <li>
-                                                        <p><strong>Fullness</strong></p>
-                                                        <p><?= $code_row->fullness ?>%</p>
-                                                    </li>
-                                                    <li>
-                                                        <p><strong>Price</strong></p>
-                                                        <p><?= format_amount(number_format($price, 2, '.', '')) ?></p>
-                                                    </li>
-                                                    <li>
-                                                        <p><strong>Quantity</strong></p>
-                                                        <div class="qty_cart">
-                                                            <div class="qtyBtn">
-                                                                <?php if ($inventory_detail->status == 0) : ?>
-                                                                    <input type="button" value="-" class="qtyminus readBtn">
-                                                                <?php endif; ?>
-                                                                <input type="text" name="quantity" value="<?= $code_row->qty ?>" class="qty">
-                                                                <?php if ($inventory_detail->status == 0) : ?>
-                                                                    <input type="button" value="+" class="qtyplus readBtn">
-                                                                    <input type="hidden" name="row_id" class="row_id" value="<?= $code_row->row_id ?>">
-                                                                <?php endif; ?>
+                                            <div class="flex">
+                                                <div class="content">
+                                                    <ul class="in_listing custom_in_listing">
+                                                        <li class="first_para">
+                                                            <p class="none_p"><strong>Title</strong></p>
+                                                            <?php $folder = $code_row->type === 'Code' ? 'code' : 'generics'; ?>
+                                                            <div class="code_area mobile_accordian_custom">
+                                                                <div class="image-2">
+                                                                    <img src="<?= get_site_code_image_src($folder, $code_row->image, $site_settings) ?>" alt="<?= $site_settings->site_name ?>">
+                                                                </div>
+                                                                <p>
+
+                                                                    <?= $code_row->code ?><span class="cell_show_imp"><?= format_amount($price) ?></span></p>
                                                             </div>
-                                                            <?php if ($inventory_detail->status == 0) : ?>
-                                                                <!-- <a href="</?= base_url('delete-cart/' . $code_row->row_id . "/" . urlencode(doEncode($inventory_detail->id))) ?>" class="delete">
+                                                        </li>
+                                                        <li class="mobile_brand2 acc_ordian">
+                                                            <p class="none_p"><strong>Type</strong></p>
+                                                            <p class="brand_para2">
+                                                                <?= (!empty($code_row->new_type)) ? strtoupper($code_row->new_type) : 'N/A' ?>
+                                                            </p>
+                                                        </li>
+                                                        <li class="mobile_brand acc_ordian">
+                                                            <p class="none_p"><strong>Brand</strong></p>
+                                                            <p class="brand_para"><?= get_brand_name($code_row->cat_id) ?></p>
+                                                        </li>
+                                                        <li class="full-mobile acc_ordian">
+                                                            <p><strong>Fullness</strong></p>
+                                                            <p><?= $code_row->fullness ?>%</p>
+                                                        </li>
+                                                        <li class="acc_ordian">
+                                                            <p><strong>Price</strong></p>
+                                                            <p><?= format_amount($price) ?></p>
+                                                        </li>
+                                                        <li class="delete_list acc_ordian">
+                                                            <p><strong>Quantity</strong></p>
+                                                            <div class="qty_cart">
+                                                                <div class="qtyBtn">
+                                                                    <?php if ($inventory_detail->status == 0) : ?>
+                                                                        <input type="button" value="-" class="qtyminus readBtn">
+                                                                    <?php endif; ?>
+                                                                    <input type="text" name="quantity" min="1" value="<?= $code_row->qty ?>" class="qty">
+                                                                    <?php if ($inventory_detail->status == 0) : ?>
+                                                                        <input type="button" value="+" class="qtyplus readBtn">
+                                                                        <input type="hidden" name="row_id" class="row_id" value="<?= $code_row->row_id ?>">
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                                <?php if ($inventory_detail->status == 0) : ?>
+                                                                    <!-- <a href="</?= base_url('delete-cart/' . $code_row->row_id . "/" . urlencode(doEncode($inventory_detail->id))) ?>" class="delete">
                                                                     <img src="</?= base_url() ?>assets/images/delete.svg" alt="">
                                                                 </a> -->
-                                                                <a href="javascript:void(0)" class="delete" id="del_row" data-row_id="<?= $code_row->row_id ?>">
-                                                                    <img src="<?= base_url() ?>assets/images/delete.svg" alt="">
-                                                                </a>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                                                    <a href="javascript:void(0)" class="delete" id="del_row" data-row_id="<?= $code_row->row_id ?>">
+                                                                        <img src="<?= base_url() ?>assets/images/delete.svg" alt="">
+                                                                    </a>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
+
+                                        <?php  } else {
+                                            $price = $code_row->code_price * $code_row->qty;
+                                            $grand_total += $price; // Add to grand total
+                                        ?>
+                                            <div class="flex">
+                                                <div class="content">
+                                                    <ul class="in_listing custom_in_listing">
+                                                        <li class="first_para">
+                                                            <p class="none_p"><strong>Title</strong></p>
+                                                            <div class="code_area mobile_accordian_custom">
+                                                                <div class="image-2">
+                                                                    <img src="<?= get_site_code_image_src('code', $code_row->code_image, $site_settings) ?>" alt="<?= $site_settings->site_name ?>">
+                                                                </div>
+                                                                <p>
+
+                                                                    <?= $code_row->code_name ?><span class="cell_show_imp"><?= format_amount($price) ?></span></p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="mobile_brand acc_ordian">
+                                                            <p class="none_p"><strong>Type</strong></p>
+                                                            <p class="brand_para">N/A</p>
+                                                        </li>
+                                                        <li class="mobile_brand acc_ordian">
+                                                            <p class="none_p"><strong>Brand</strong></p>
+                                                            <p class="brand_para">N/A</p>
+
+                                                        </li>
+                                                        <li class="full-mobile acc_ordian">
+                                                            <p><strong>Fullness</strong></p>
+                                                            <p><?= $code_row->fullness ?>%</p>
+                                                        </li>
+                                                        <li class="acc_ordian">
+                                                            <p><strong>Price</strong></p>
+                                                            <p><?= format_amount($price)  ?></p>
+                                                        </li>
+                                                        <li class="delete_list acc_ordian">
+                                                            <p><strong>Quantity</strong></p>
+                                                            <div class="qty_cart">
+                                                                <div class="qtyBtn">
+                                                                    <?php if ($inventory_detail->status == 0) : ?>
+                                                                        <input type="button" value="-" class="qtyminus readBtn">
+                                                                    <?php endif; ?>
+                                                                    <input type="text" name="quantity" min="1" value="<?= $code_row->qty ?>" class="qty">
+                                                                    <?php if ($inventory_detail->status == 0) : ?>
+                                                                        <input type="button" value="+" class="qtyplus readBtn">
+                                                                        <input type="hidden" name="row_id" class="row_id" value="<?= $code_row->row_id ?>">
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                                <?php if ($inventory_detail->status == 0) : ?>
+                                                                    <!-- <a href="</?= base_url('delete-cart/' . $code_row->row_id . "/" . urlencode(doEncode($inventory_detail->id))) ?>" class="delete">
+                                                                    <img src="</?= base_url() ?>assets/images/delete.svg" alt="">
+                                                                </a> -->
+                                                                    <a href="javascript:void(0)" class="delete" id="del_row" data-row_id="<?= $code_row->row_id ?>">
+                                                                        <img src="<?= base_url() ?>assets/images/delete.svg" alt="">
+                                                                    </a>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                     <div class="alert alert-danger">No code added!</div>
@@ -103,25 +192,42 @@
                 <div class="coll">
                     <div class="total_blk">
                         <div class="total_flex">
-                            <div><strong>Market Price</strong></div>
-                            <div class="grand_total"><?= format_amount($grand_total) ?></div>
+                            <div><strong>TOTAL CONVERTERS:</strong></div>
+                            <?php
+                            $total_converters = 0;
+                            foreach ($codes_arr as $code_row_qty) :
+                                $total_converters += $code_row_qty->qty;
+                            endforeach;
+                            ?>
+                            <div class="total_converters"><?= $total_converters ?></div>
                         </div>
                         <div class="total_flex">
-                            <div><strong>Average Price</strong></div>
-                            <div class="average_price"><?= format_amount($count_avg > 0 ? $grand_total / $count_avg : 0) ?></div>
+                            <div><strong>AVERAGE PRICE:</strong></div>
+                            <div class="average_price">
+                                <?= format_amount_decimal($total_converters > 0 ? $grand_total / $total_converters : 0,2) ?></div>
+                        </div>
+                        <div class="total_flex">
+                            <div><strong>GRAND TOTAL:</strong></div>
+                            <div class="grand_total"><?= format_amount($grand_total) ?></div>
                         </div>
                         <div class="devide_line"></div>
-                        <?php foreach ($categories as $category) : ?>
-                            <?php if (count_codes_for_cat_id($category->id, $inventory_detail->id) > 0) : ?>
-                                <div class="total_flex">
-                                    <div><strong><?= $category->name ?></strong></div>
-                                    <div><?= count_codes_for_cat_id($category->id, $inventory_detail->id) ?></div>
-                                </div>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+                        <div class="new_count">
+                            <?php foreach ($categories as $category) : ?>
+                                <?php if (count_codes_for_cat_id($category->id, $inventory_detail->id) > 0) : ?>
+                                    <div class="total_flex">
+                                        <div><strong><?= $category->name ?></strong></div>
+                                        <div><?= count_codes_for_cat_id($category->id, $inventory_detail->id) . ' __ ' . format_amount(sum_amount_for_cat_id($category->id, $inventory_detail->id)) ?></div>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
                         <div class="text-center">
                             <?php if ($inventory_detail->status == 0) : ?>
                                 <a href="javascript:void(0)" class="webBtn brightBtn popBtn" data-popup="submit_lot">Submit</a>
+                            <?php endif; ?>
+                            <?php if ($inventory_detail->status == 1) : ?>
+                                <a href="javascript:void(0)" class="webBtn brightBtn" id="inventory_export" data-id="<?= doEncode($inventory_detail->id) ?>"><i class="fa fa-download"></i> Export
+                                    PDF <i class="spinner hidden"></i></a>
                             <?php endif; ?>
                         </div>
                     </div>

@@ -89,14 +89,14 @@
                         </div>
                         <div class="clearfix"></div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="banner_btn_text" class="control-label">Button text <span class="symbol required">*</span></label>
                             <input type="text" name="banner_btn_text" value="<?= $row['banner_btn_text'] ?>" class="form-control" required>
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <label for="banner_btn_url" class="control-label">Button url <span class="symbol required">*</span></label>
                             <input type="text" name="banner_btn_url" value="<?= $row['banner_btn_url'] ?>" class="form-control" required>
-                        </div>
+                        </div> -->
                         <div class="clearfix"></div>
                         <br>
 

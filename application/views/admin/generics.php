@@ -58,10 +58,10 @@
                         <label class="control-label" for="rh_price"> RH Price <span class="symbol required">*</span></label>
                         <input type="number" min="0" step="any" name="rh_price" id="rh_price" value="<?php if (isset($row->rh_price)) echo $row->rh_price; ?>" class="form-control" placeholder="Price" required />
                     </div>
-                    <?php $cal_price = calculatedPrice($adminsite_setting->site_o_pt_price, $adminsite_setting->site_live_pt_price, $adminsite_setting->site_o_pd_price, $adminsite_setting->site_live_pd_price, $adminsite_setting->site_o_rh_price, $adminsite_setting->site_live_rh_price, $row->o_price, $row->pt_price, $row->pd_price, $row->rh_price); ?>
+                    <?php $cal_price = calculatedAllPrice($adminsite_setting->site_o_pt_price, $adminsite_setting->site_live_pt_price, $adminsite_setting->site_o_pd_price, $adminsite_setting->site_live_pd_price, $adminsite_setting->site_o_rh_price, $adminsite_setting->site_live_rh_price, '-1', $row->id) ?>
                     <div class="col-md-6">
                         <label class="control-label" for="price"> Calculated Price <span class="symbol required">*</span></label>
-                        <input type="number" min="0" step="any" name="price" id="price" value="<?= $cal_price ?>" class="form-control" placeholder="Price" readonly />
+                        <input type="number" min="0" step="any" name="price" id="price" value="<?= number_format($cal_price, 2, '.', '') ?>" class="form-control" placeholder="Price" readonly />
                     </div>
                     <!-- <div class="col-md-6">
                         <label class="control-label" for="price"> Calculated Price <span class="symbol required">*</span></label>
@@ -90,6 +90,40 @@
                                                     echo 'selected';
                                                 }
                                                 ?>>Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="col-md-6">
+                        <label class="control-label" for="new_type"> Type <span class="symbol required">*</span></label>
+                        <select name="new_type" id="new_type" class="form-control">
+                            <option value="">---Select Type----</option>
+                            <option value="DOMESTIC" <?php
+                                                        if (isset($row->new_type) && 'DOMESTIC' == $row->new_type) {
+                                                            echo 'selected';
+                                                        }
+                                                        ?>>DOMESTIC</option>
+                            <option value="FOREIGN" <?php
+                                                    if (isset($row->new_type) && 'FOREIGN' == $row->new_type) {
+                                                        echo 'selected';
+                                                    }
+                                                    ?>>FOREIGN</option>
+                            <option value="DIESEL" <?php
+                                                    if (isset($row->new_type) && 'DIESEL' == $row->new_type) {
+                                                        echo 'selected';
+                                                    }
+                                                    ?>>DIESEL</option>
+                            <option value="WIRE" <?php
+                                                    if (isset($row->new_type) && 'WIRE' == $row->new_type) {
+                                                        echo 'selected';
+                                                    }
+                                                    ?>>WIRE</option>
+                            <option value="AFTERMARKET" <?php
+                                                        if (isset($row->new_type) && 'AFTERMARKET' == $row->new_type) {
+                                                            echo 'selected';
+                                                        }
+                                                        ?>>AFTERMARKET</option>
                         </select>
                     </div>
 
@@ -125,13 +159,42 @@
                                         <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
                                     </div>
                                 </div>
+                                <br>
+                                <?php if (!empty($row->id) && !empty($row->image)) { ?>
+                                    <a href="<?= site_url(ADMIN . '/generics/delete_image/' . $row->id); ?>" onclick="return confirm('Are you sure?');" class="btn btn-danger">Delete Image</a>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
 
 
                 </div>
+                <div class="row">
+                        <div class="col-md-12 margin-bottom-10">
+                            <input type="file" name="upload_file[]" id="upload_file" class="form-control file2 inline btn btn-primary" multiple data-label="<i class='fa fa-upload'></i> Upload Multiple Images" />
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <?php
+                                $pics = getPictures($row->id,'generics');
+                                if (count($pics) > 0) {
+                                    foreach ($pics as $pic) {
+                                        ?>
+                                        <div class="col-md-3 text-center margin-bottom-10">
+                                            <div class="stickerPicBox">
+                                                <img src="<?= get_site_image_src('images', $pic->image); ?>" style="height:100px;margin-bottom: 10px;"><br>
 
+                                                <button type="button" class="deleteStickerPic btn btn-danger btn-sm" data-id="<?php echo $pic->id; ?>"><i class="fa fa-times"></i> Delete</button>
+
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div> 
                 <div class="col-md-12">
                     <hr class="hr-short">
                     <div class="form-group text-right">
@@ -144,6 +207,29 @@
         </div>
         <div class="clearfix"></div>
     </div>
+    <script>
+        jQuery(document).on('click','.deleteStickerPic',function(e){
+        var id = jQuery(this).data('id');
+        var ref_id = <?= $this->uri->segment('4') ?>;
+        var btn = jQuery(this);
+        btn.parent('.stickerPicBox').find('btn-info').removeClass();
+        jQuery.ajax({
+            url:base_url+'admin/generics/delete_single_image',
+            data:{id:id,ref_id:ref_id},
+            method:'POST',
+            dataType:'JSON',
+            error:function(er){
+                console.log(er)
+            },
+            success:function(sc){
+                console.log(sc);
+                if(sc.status==1){
+                    window.location.reload('<?= current_url()?>') ;
+                }
+            }
+        })
+    })
+    </script>
 <?php else : ?>
     <?= showMsg(); ?>
     <?= getBredcrum(ADMIN, array('#' => 'Manage generics')); ?>
@@ -167,12 +253,11 @@
             <tr>
                 <th width="5%" class="text-center">Sr#</th>
                 <th width="10%">image</th>
+                <th>Type</th>
                 <th>Code</th>
-                <th>Calculated Price</th>
+                <th>Price</th>
+                <th>Add %</th>
                 <th>Status</th>
-                <!-- <th>Featured</th> -->
-                <!-- <th>Most Searched</th> -->
-
                 <th width="12%" class="text-center">&nbsp;</th>
             </tr>
         </thead>
@@ -186,12 +271,21 @@
                                 <img src="<?= get_site_image_src('generics', $row->image, '', false); ?>" height="60" style="background-color:#eee">
                             </div>
                         </td>
+                        <td><b><?= !empty($row->new_type) ? strtoupper($row->new_type) : ' ' ?></b></td>
                         <td><b><?= strtoupper($row->code) ?></b></td>
-                        <?php $cal_price = calculatedPrice($adminsite_setting->site_o_pt_price, $adminsite_setting->site_live_pt_price, $adminsite_setting->site_o_pd_price, $adminsite_setting->site_live_pd_price, $adminsite_setting->site_o_rh_price, $adminsite_setting->site_live_rh_price, $row->o_price, $row->pt_price, $row->pd_price, $row->rh_price); ?>
-                        <td><b><?= format_amount($cal_price, 2)  ?></b></td>
+                        <?php $pump_cal_price = calculatedAllPrice($adminsite_setting->site_o_pt_price, $adminsite_setting->site_live_pt_price, $adminsite_setting->site_o_pd_price, $adminsite_setting->site_live_pd_price, $adminsite_setting->site_o_rh_price, $adminsite_setting->site_live_rh_price, '-1', $row->id) ?>
+                        <td><b><?= format_amount($pump_cal_price, 2) ?></b></td>
+                        <?php $chk_code = chk_code_price_percentage(-1, $row->id) ?>
+                        <form action="<?= site_url(ADMIN . '/generics/update_price/' . $row->id); ?>" method="POST">
+                            <input type="hidden" name="new_price" value="0">
+                            <td>
+                                <input type="number" step="any" name="percentage" id="percentage" value="<?= (!empty($chk_code)) ? $chk_code->percentage : $adminsite_setting->price_pump ?>" class="form-control" style="margin-right: 10px;" />
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-primary"> Update </button>
+                                </div>
+                            </td>
+                        </form>
                         <td class="text-center"><?= getStatus($row->status); ?></td>
-                        <!-- <td class="text-center"></?= getFeatured($row->featured); ?></td>
-                        <td class="text-center"></?= getFeatured($row->searched); ?></td> -->
                         <td class="text-center">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Action <span class="caret"></span></button>

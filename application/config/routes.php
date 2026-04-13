@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 $route['default_controller'] = 'index';
+// $route['default_controller'] = 'page/code';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
@@ -21,7 +22,7 @@ $route['portal/logout'] = 'portal/index/logout';
 # API ROUTES
 
 $route['api/site-settings']    = 'api/pages/site_settings';
-$route['code']                        = 'page/code';
+$route['code']                        = 'account/code';
 $route['code/(:num)'] = 'page/code/$1';
 $route['code-detail/(:any)']          = 'page/code_detail/$1';
 $route['inventory']                   = 'page/inventory';
@@ -36,7 +37,7 @@ $route['photo-detail/(:any)']         = 'page/photo_detail/$1';
 $route['newsletter']           = 'ajax/newsletter';
 
 
-$route['signup']               = 'page/signup';
+$route['create-account-new']               = 'page/signup';
 $route['login']                = 'page/login';
 $route['signout']              = 'page/signout';
 
@@ -57,6 +58,7 @@ $route['reset-pass'] = 'Register/reset_password';
 
 
 $route['dashboard'] = 'account/dashboard';
+$route['margin'] = 'account/margin';
 $route['profile_settings'] = 'account/profile_settings';
 $route['notifications']                 = 'account/notifications';
 $route['notifications-details/(:any)']                 = 'account/notifications_detail/$1';

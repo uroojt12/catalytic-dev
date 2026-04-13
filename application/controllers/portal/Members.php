@@ -39,6 +39,7 @@ class Members extends SUBADMIN_Controller
                 }
             }
             // pr($vals);
+            $vals['created_date'] = date('Y-m-d h:i:s');
             $mem_id = $this->member->save($vals, $this->uri->segment(4));
             setMsg('success', 'Member has been saved successfully.');
             redirect(SUBADMIN . '/members', 'refresh');

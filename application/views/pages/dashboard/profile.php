@@ -36,6 +36,12 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+                            <div class="txtGrp">
+                                <label for="mem_image">Profile Image</label> <br>
+                                <input type="file" name="mem_image" >
+                            </div>
+                        </div>
+                        <div class="col-md-12">
                             <div class="butn">
                                 <button class="webBtn">
                                     Save Changes

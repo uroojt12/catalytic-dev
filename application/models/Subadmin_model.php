@@ -19,9 +19,26 @@ class Subadmin_model extends CRUD_model
         return $query->row();
     }
 
-    function authenticate($username = '', $password = '')
+    // function authenticate($username = '', $password = '')
+    // {
+    //     if (!empty($username) && !empty($password)) {
+    //         $this->db->where('email', $username);
+    //         $this->db->where('password', md5($password));
+
+    //         $query = $this->db->get($this->table_name);
+    //         $rs = $query->row();
+    //         // print_r($rs);
+    //         // if($rs)
+    //         //     $this->updateStats();
+    //         return $rs;
+    //     }
+    //     return false;
+    // }
+    
+     function authenticate($site_id = '', $username = '', $password = '')
     {
-        if (!empty($username) && !empty($password)) {
+        if (!empty($site_id) && !empty($username) && !empty($password)) {
+            $this->db->where('site_id', $site_id);
             $this->db->where('email', $username);
             $this->db->where('password', md5($password));
 

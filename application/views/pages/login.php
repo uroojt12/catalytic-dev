@@ -44,9 +44,9 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="new_link">
+                               <!-- <div class="new_link">
                                     <p>Don’t have an account? <a href="<?= base_url('signup') ?>">Sign up</a></p>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </form>

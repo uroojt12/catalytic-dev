@@ -16,11 +16,11 @@
             <div class="col">
                 <h4>Useful Links</h4>
                 <ul class="lst">
-                    <li class="<?php if ($page == "index") {
+                     <!-- <li class="<?php if ($page == "index") {
                                     echo 'active';
                                 } ?>">
                         <a href="<?= base_url() ?>">Home</a>
-                    </li>
+                    </li> -->
                     <li class="<?php if ($page == "code") {
                                     echo 'active';
                                 } ?>">
@@ -69,7 +69,13 @@
                         <div class="alertMsg" style="display:none"></div>
                     </div>
                 </form>
+                <?php
+                    if (!empty($site_settings->site_facebook) || !empty($site_settings->site_twitter) || !empty($site_settings->site_instagram) || !empty($site_settings->site_linkedin)) :
+                ?>
                 <h5>Follow Us</h5>
+                <?php
+                    endif;
+                ?>
                 <ul class="social flex">
                     <?php
                     if (!empty($site_settings->site_facebook)) :
@@ -107,3 +113,18 @@
         </div>
     </div>
 </footer>
+    <div class="footer_fixed">
+        <!--<div class="blk_btn_footer">-->
+        <!--    <a href="" class="webBtn">View Testing Lot</a>-->
+        <!--</div>-->
+        <?php if (!empty($this->session->mem_id) && $member_data->mem_verified > 0 ) { ?>
+            <div class="footer_icons">
+                <a href="<?= base_url('code') ?>"><img src="<?= base_url() ?>assets/images/footer4.svg" alt=""><span>Code</span></a>
+                <a href="<?= base_url('generics') ?>"><img src="<?= base_url() ?>assets/images/footer3.svg" alt=""><span>Generics</span></a>
+                <a href="<?= base_url('inventory') ?>"><img src="<?= base_url() ?>assets/images/inventory_icon_foot.svg" alt=""><span>Inventory</span></a>
+                <a href="<?= base_url('photo-grade') ?>"><img src="<?= base_url() ?>assets/images/footer5.svg" alt=""><span>Photo Grade</span></a>
+                <a href="<?= base_url('dashboard') ?>"><img src="<?= base_url() ?>assets/images/footer1.svg" alt=""><span>Profile</span></a>
+              
+            </div>
+         <?php } ?>
+    </div>

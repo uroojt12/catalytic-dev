@@ -28,10 +28,10 @@
                             <td><strong>Buisness Name : </strong></td>
                             <td><?php echo $row->buisness_name; ?></td>
                         </tr>
-                        <tr>
-                            <td><strong>Total : </strong></td>
-                            <td><?php echo format_amount($total_price); ?></td>
-                        </tr>
+                        <!--<tr>-->
+                        <!--    <td><strong>Total : </strong></td>-->
+                        <!--    <td></?//php echo format_amount($total_price); ?></td>-->
+                        <!--</tr>-->
                         <?php if(!empty($row->identification_file)): ?>
                         <tr>
                             <td><strong>Attachment : </strong></td>
@@ -44,25 +44,66 @@
             <br>
             <br>
             <br>
+           
             <table class="table table-bordered datatable" id="table-1">
                 <thead>
                     <tr>
                         <th width="5%" class="text-center">Sr#</th>
-                        <th>Full</th>
+                        <th>Fullness</th>
                         <th>Price</th>
                         <th>Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $count = 0; foreach($codes_arr as $code_row):?>
-                        <tr>
-                            <td><?= ++$count; ?></td>
-                            <td><?= $code_row->code_fullness; ?></td>
-                            <td><?= format_amount($code_row->amount); ?></td>
-                            <td><?= $code_row->qty; ?></td>
-                        </tr>
+                    <?php $count = 0;
+                    $count_avg = count($codes_arr);
+                    $grand_total = 0;
+                    foreach ($codes_arr as $code_row): ?>
+                        <?php if ($code_row->id) {
+                            // pr($code_row);
+                            $pump_cal_price = calculatedAllPrice($mainadminsite_setting->site_o_pt_price, $mainadminsite_setting->site_live_pt_price, $mainadminsite_setting->site_o_pd_price, $mainadminsite_setting->site_live_pd_price, $mainadminsite_setting->site_o_rh_price, $mainadminsite_setting->site_live_rh_price, $this->subadmin->site_id, $code_row->id, $code_row->mem_id);
+                            $price = $code_row->amount * $code_row->qty;
+                            $grand_total += $price;
+                        ?>
+                            <tr>
+                                <td><?= ++$count; ?></td>
+                                <td><?= $code_row->fullness; ?>%</td>
+                                <td><?= format_amount($price); ?></td>
+                                <td><?= $code_row->qty; ?></td>
+                            </tr>
+                        <?php  } else {
+                            $price = $code_row->code_price * $code_row->qty;
+                            $grand_total += $price; // Add to grand total  
+                        ?>
+                            <tr>
+                                <td><?= ++$count; ?></td>
+                                <td><?= $code_row->fullness; ?>%</td>
+                                <td><?= format_amount($price); ?></td>
+                                <td><?= $code_row->qty; ?></td>
+                            </tr>
+                        <?php } ?>
                     <?php endforeach; ?>
                 </tbody>
+                <?php
+                $total_converters = 0;
+                foreach ($codes_arr as $code_row_qty) :
+                    $total_converters += $code_row_qty->qty;
+                endforeach;
+                ?>
+                <tfoot>
+                    <tr>
+                        <th colspan="3" class="text-right"><b>TOTAL CONVERTERS</b></th>
+                        <td class="text-right"><b><?= $total_converters ?></b></td>
+                    </tr>
+                    <tr>
+                        <th colspan="3" class="text-right"><b>AVERAGE PRICE</b></th>
+                        <td class="text-right"><b><?= format_amount_decimal($total_converters > 0 ? $grand_total / $total_converters : 0,2) ?></b></td>
+                    </tr>
+                    <tr>
+                        <th colspan="3" class="text-right"><b>GRAND TOTAL</b></th>
+                        <td class="text-right"><b><?= format_amount($grand_total); ?></b></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <div class="clearfix"></div>
@@ -85,7 +126,7 @@
                 <th>Lot Name</th>
                 <th>Email</th>
                 <th>Buisness Name</th>
-                <th width="12%" class="text-center">&nbsp;</th>
+                <th width="15%" class="text-center">&nbsp;</th>
             </tr>
         </thead>
         <tbody>

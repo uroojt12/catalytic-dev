@@ -195,12 +195,12 @@
                 </a>
             </li>
 
-            <li class="opened<?= $this->uri->segment('2') == 'colors' ? ' active' : '' ?>">
+            <!-- <li class="opened<?= $this->uri->segment('2') == 'colors' ? ' active' : '' ?>">
                 <a href="<?= site_url(SUBADMIN . '/colors') ?>">
                     <i class="fa fa-bell" aria-hidden="true"></i>
                     <span class="title"> Manage Colors</span>
                 </a>
-            </li>
+            </li> -->
 
             <li class="opened <?= ($this->uri->segment('2') == 'settings' && $this->uri->segment('3') == '') ? 'active' : '' ?>">
                 <a href="<?= site_url(SUBADMIN . '/settings') ?>">

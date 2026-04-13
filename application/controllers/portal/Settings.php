@@ -19,6 +19,7 @@ class Settings extends SUBADMIN_Controller
         // has_access();
         $this->data['page_title'] = 'Account Settings';
         $this->data['pageView'] = SUBADMIN . "/site_setting";
+        $this->data['templates'] = $this->master->getRows('templates', array('status' => 1));
         $this->load->view(SUBADMIN . "/includes/siteMaster", $this->data);
     }
     function save()
@@ -57,6 +58,8 @@ class Settings extends SUBADMIN_Controller
                 $vals['site_thumb'] = $this->subadmin->site_thumb;
             }
 
+            $vals['created_date'] = date('Y-m-d h:i:s');
+            // pr($vals);
             $this->subadmin_model->save($vals, $this->subadmin->site_id);
             setMsg("success", "Settings have been updated successfully");
             redirect(SUBADMIN . "/settings");
@@ -68,14 +71,30 @@ class Settings extends SUBADMIN_Controller
         $this->data['adminsite_setting']->page_title = 'Change Password';
         $this->load->view(SUBADMIN . '/admin_change', $this->data);
     }
-    function pass()
+    // function pass()
+    // {
+    //     if ($data = $this->input->post()) {
+    //         $row = $this->subadmin_model->authenticate($this->subadmin->email, $data['opwd']);
+    //         // pr($row);
+    //         // $row = $this->location->authenticate($this->input->post('username'), $this->input->post('password'));
+    //         if ($row) {
+    //             $this->master->save("add_domains", array('password' => md5($data['npwd'])), 'site_id', $this->session->subadmin_loged_in['site_id']);
+    //             $res['login_status'] = "success";
+    //             $res['redirect_url'] = site_url(SUBADMIN . '/dashboard');
+    //         } else {
+    //             $res['login_status'] = "invalid";
+    //             $res['invalid_respnse'] = "Old Password Does not Match";
+    //         }
+    //         echo json_encode($res);
+    //     }
+    // }
+     function pass()
     {
         if ($data = $this->input->post()) {
-            $row = $this->subadmin_model->authenticate($this->subadmin->email, $data['opwd']);
-            // pr($row);
-            // $row = $this->location->authenticate($this->input->post('username'), $this->input->post('password'));
+            $row = $this->subadmin_model->authenticate($this->subadmin->site_id, $this->subadmin->email, $data['opwd']);
             if ($row) {
-                $this->master->save("add_domains", array('password' => md5($data['npwd'])), 'site_id', $this->session->subadmin_loged_in['site_id']);
+                // $this->master->save("add_domains", array('password' => md5($data['npwd'])), 'site_id', $this->session->subadmin_loged_in['site_id']);
+                $this->master->save("add_domains", array('password' => md5($data['npwd'])), 'site_id', $this->subadmin->site_id);
                 $res['login_status'] = "success";
                 $res['redirect_url'] = site_url(SUBADMIN . '/dashboard');
             } else {

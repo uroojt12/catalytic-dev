@@ -7,14 +7,25 @@
                     <h2><?= $site_content['banner_heading'] ?></h2>
                 </div>
                 <div class="search">
-                    <form id="filter-form-gen" action="" method="post">
+                    <form id="filter-form-gen" action="" method="post" class="generic_form">
                         <input type="text" name="search_generics" id="search_generics" placeholder="Search Generics" class="txtBox">
                         <div class="button">
                             <button>
                                 <div class="image"><img src="<?= base_url() ?>assets/images/search.svg" alt=""></div>
                             </button>
                         </div>
+                        <div class="button">
+                            <a href="javascript:void(0)" class="close-image remove-data hidden">
+                                <div class="image"><img src="<?= base_url() ?>assets/images/close.svg" alt=""></div>
+                            </a>
+                        </div>
+                        <div class="hidden" id="search_items">
+
+
                     </form>
+                </div>
+                <div class="cta">
+                    <a href="<?= base_url('code') ?>" class="style_it">View Codes</a>
                 </div>
             </div>
         </div>
@@ -25,8 +36,8 @@
         <div class="contain">
             <div class="top_bar">
                 <div class="searches">
-                    <!-- <p><strong><?= $total_active_generics; ?></strong> searches found</p> -->
-                    <p><span id="total_gen_count"></span> searches found</p>
+                    <p><span><?= $total_active_generics; ?></span> searches found</p>
+                    <!-- <p><span id="total_gen_count"></span> searches found</p> -->
 
                 </div>
                 <div class="order">
@@ -49,27 +60,25 @@
                 <?php foreach ($generics as $generic) : ?>
                     <div class="cols">
                         <div class="inner">
-                            <!-- <div class="photo">
-                                <div class="image">
-                                    <img src="<?= get_site_image_src('generics', $generic->image); ?>" alt="">
-                                </div>
-                            </div> -->
+
                             <div class="bottom_content">
-                                <div class="image_2">
-                                    <img src="<?= base_url() . 'uploads/images/' . $site_settings->site_logo . '?v-' . $site_settings->site_version ?>" alt="<?= $site_settings->site_name ?>" alt="">
+                                <div class="image_2 popBtn " data-type='generics' data-generic-name="<?= $generic->code ?>"  data-images='<?=json_encode(getPictures($generic->id,'generics'))?>' data-popup="generic_image" data-image-url="<?= get_site_code_image_src("generics", $generic->image, $site_settings) ?>">
+                                    <img src="<?= get_site_code_image_src("generics", $generic->image, $site_settings) ?>" alt="<?= $site_settings->site_name ?>">
                                 </div>
                                 <div class="content">
                                     <h5><a href="<?= base_url('generic-detail/' . doEncode($generic->id)) ?>"><?= $generic->title ?></a>
                                     </h5>
                                     <p><?= $generic->code ?></p>
+                                     <?php if (!empty($this->session->mem_id) && $member_data->mem_verified > 0 ) { ?>
                                     <div class="cta_price">
                                         <h5><strong><?= format_amount($generic->total_price) ?></strong></h5>
                                         <div class="cta">
                                             <!-- <a href="javascript:void(0)" class="webBtn popBtn" data-popup="add_code">Add</a> -->
-                                            <a href="javascript:void(0)" class="webBtn popBtn" data-lot_type="<?= ($generic->type) ?>" data-inventory_id="<?= ($generic->id) ?>" data-popup="add_code">Add</a>
+                                            <a href="javascript:void(0)" class="webBtn popBtn" data-lot_type="<?= ($generic->type) ?>" data-inventory_id="<?= ($generic->id) ?>" data-options="get_lot_names" data-popup="add_code">Add</a>
 
                                         </div>
                                     </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 <?php echo showMsg(); ?>
 <div class="row">  
-    <div class="col-md-3 col-sm-3 col-xs-6">
+    <!-- <div class="col-md-3 col-sm-3 col-xs-6">
         <a href="<?= site_url(ADMIN.'/members') ?>">
             <div class="tile-stats tile-blue">
                 <div class="icon"><i class="fa fa-users"></i></div>
@@ -9,9 +9,9 @@
                 <p>Total Buyer Members in our website </p>
             </div>
         </a>
-    </div>
+    </div> -->
 
-    <div class="col-md-3 col-sm-3 col-xs-6">
+    <!-- <div class="col-md-3 col-sm-3 col-xs-6">
         <a href="<?= site_url(ADMIN.'/members') ?>">
             <div class="tile-stats tile-green">
                 <div class="icon"><i class="fa fa-users"></i></div>
@@ -20,9 +20,9 @@
                 <p>Total Professional Members in our website </p>
             </div>
         </a>
-    </div>
+    </div> -->
 
-    <div class="col-md-3 col-sm-3 col-xs-6">
+    <!-- <div class="col-md-3 col-sm-3 col-xs-6">
         <a href="<?= site_url(ADMIN.'/members') ?>">
             <div class="tile-stats tile-green">
                 <div class="icon"><i class="fa fa-cogs"></i></div>
@@ -31,9 +31,9 @@
                 <p>Total Services in our website </p>
             </div>
         </a>
-    </div>
+    </div> -->
 
-    <div class="col-md-3 col-sm-3 col-xs-6">
+    <!-- <div class="col-md-3 col-sm-3 col-xs-6">
         <a href="<?= site_url(ADMIN.'/contact') ?>">
             <div class="tile-stats tile-black">
                 <div class="icon"><i class="fa fa-cogs"></i></div>
@@ -42,7 +42,7 @@
                 <p>Total unread contact message in our website.</p>
             </div>
         </a>		
-    </div>
+    </div> -->
   
 
    

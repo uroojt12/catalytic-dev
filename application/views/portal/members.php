@@ -59,22 +59,22 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="control-label" for="mem_price_pump">Price Pump<span class="symbol required">*</span></label>
-                            <input type="number" min="0" step="any" name="mem_price_pump" value="<?php if (isset($row->mem_price_pump)) echo $row->mem_price_pump; ?>" class="form-control">
+                            <label class="control-label" for="mem_price_pump">Unit Margin<span class="symbol required">*</span></label>
+                            <input type="number" step="any" name="mem_price_pump" value="<?php if (isset($row->mem_price_pump)) echo $row->mem_price_pump; ?>" class="form-control" required>
                         </div>
                         <div class="clearfix"></div>
 
                         <div class="col-md-4">
                             <label class="control-label" for="mem_live_pt_price">Live PT Price<span class="symbol required">*</span></label>
-                            <input type="number" min="0" step="any" name="mem_live_pt_price" value="<?php if (isset($row->mem_live_pt_price)) echo $row->mem_live_pt_price; ?>" class="form-control">
+                            <input type="number" min="0" step="any" name="mem_live_pt_price" value="<?php if (isset($row->mem_live_pt_price)) echo $row->mem_live_pt_price; ?>" class="form-control" required>
                         </div>
                         <div class="col-md-4">
                             <label class="control-label" for="mem_live_pd_price">Live PD Price<span class="symbol required">*</span></label>
-                            <input type="number" min="0" step="any" name="mem_live_pd_price" value="<?php if (isset($row->mem_live_pd_price)) echo $row->mem_live_pd_price; ?>" class="form-control">
+                            <input type="number" min="0" step="any" name="mem_live_pd_price" value="<?php if (isset($row->mem_live_pd_price)) echo $row->mem_live_pd_price; ?>" class="form-control" required>
                         </div>
                         <div class="col-md-4">
                             <label class="control-label" for="mem_live_rh_price">Live RH Price<span class="symbol required">*</span></label>
-                            <input type="number" min="0" step="any" name="mem_live_rh_price" value="<?php if (isset($row->mem_live_rh_price)) echo $row->mem_live_rh_price; ?>" class="form-control">
+                            <input type="number" min="0" step="any" name="mem_live_rh_price" value="<?php if (isset($row->mem_live_rh_price)) echo $row->mem_live_rh_price; ?>" class="form-control" required>
                         </div>
                         <div class="clearfix"></div>
 

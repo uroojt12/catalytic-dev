@@ -4,59 +4,40 @@
     <div class="col-md-6">
         <h2 class="no-margin"><i class="entypo-list"></i> Manage <strong>code</strong></h2>
     </div>
-    <!-- <div class="col-md-6 text-right">
-
-        <a href="<?= site_url(SUBADMIN . '/code/manage'); ?>" class="btn btn-lg btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
-    </div> -->
 </div>
 
-<table class="table table-bordered datatable" id="table-1">
+<table class="table table-bordered" id="portal-table-codes">
     <thead>
         <tr>
             <th width="5%" class="text-center">Sr#</th>
-            <th width="10%" class="text-center">image</th>
-            <th>Title</th>
             <th>Code</th>
-            <th>Make</th>
             <th>Price</th>
-            <th>Add %</th>
+            <th>Tier Margin</th>
             <th>Status</th>
-
-            <th width="12%" class="text-center">&nbsp;</th>
         </tr>
     </thead>
-    <tbody>
-        <?php if (countlength($rows) > 0) : $count = 0; ?>
-            <?php foreach ($rows as $row) : ?>
-                <tr class="odd gradeX">
-                    <td class="text-center"><?= ++$count; ?></td>
-                    <td class="text-center">
-                        <div class="">
-                            <img src="<?= get_site_image_src('code', $row->image); ?>" height="60" style="background-color:#eee">
-                        </div>
-                    </td>
-                    <td><b><?= $row->title ?></b></td>
-                    <td><b><?= $row->code ?></b></td>
-                    <td><b><?= $row->make ?></b></td>
-                    <?php $pump_cal_price = calculatedAllPrice($mainadminsite_setting->site_o_pt_price, $mainadminsite_setting->site_live_pt_price, $mainadminsite_setting->site_o_pd_price, $mainadminsite_setting->site_live_pd_price, $mainadminsite_setting->site_o_rh_price, $mainadminsite_setting->site_live_rh_price, $this->subadmin->site_id, $row->id) ?>
-                    <td><b><?= format_amount($pump_cal_price, 2) ?></b></td>
-                    <?php $chk_code = chk_code_price_percentage($this->subadmin->site_id, $row->id) ?>
-                    <!-- <td><b><?= ($chk_code->percentage !== NULL && $chk_code->percentage > 0) ? format_amount($chk_code->new_price, 4) : format_amount($pump_cal_price, 4) ?></b></td> -->
-                    <form action="<?= site_url(SUBADMIN . '/code/update_price/' . $row->id); ?>" method="POST">
-                        <input type="hidden" name="new_price" value="0">
-                        <td>
-                            <input type="number" min="0" step="any" name="percentage" id="percentage" value="<?= (!empty($chk_code)) ? $chk_code->percentage : 0 ?>" class="form-control" />
-                        </td>
-                        <td><?= getStatus($row->status); ?></td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <button type="submit" class="btn btn-primary"> Update </button>
 
-                            </div>
-                        </td>
-                    </form>
-                </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </tbody>
 </table>
+
+
+<script>
+    $j(document).ready(function() {
+        $j('#portal-table-codes').DataTable({
+            "processing": true,
+            "language": {
+                processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+            },
+            "serverSide": true,
+            "order": [],
+            "ajax": {
+                "url": base_url + 'portal/code/portal_fetch_codes',
+                "type": "POST"
+            },
+            "stateSave": true,
+            "columnDefs": [{
+                // "targets": [0,2,3],
+                "orderable": false
+            }]
+        });
+    });
+</script>

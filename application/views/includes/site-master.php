@@ -30,11 +30,15 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>assets/css/responsive.css?v=<?= $site_settings->site_version ?>">
-    <link rel="stylesheet" href="<?= base_url() ?>assets/css/colors.css?v=<?= $site_settings->site_version ?>">
-    <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css?v=<?= $site_settings->site_version ?>">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/css/responsive.css?v=<?= $site_settings->site_version ?>26">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css?v=<?= $site_settings->site_version ?>26">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 
+    <?php if (!empty($site_settings->template_id)) { ?>
+        <link rel="stylesheet" href="<?= get_site_image_src("templates", get_template($site_settings->template_id)) ?>">
+    <?php } else { ?>
+        <link rel="stylesheet" href="<?= base_url() ?>assets/css/color_2.css?v=29">
+    <?php } ?>
 
     <!-- Media-Query Css -->
 
@@ -48,30 +52,7 @@
     <!-- Favicon -->
     <link type="image/png" rel="icon" href="<?= base_url() . 'uploads/images/' . $site_settings->site_icon . '?v-' . $site_settings->site_version ?>">
 
-    <style>
-        /* :root {
-            --body_bg: var(--section_bg);
-            --primary-color: <?= $site_colors->primary_color ?>;
-            --secondary-color: <?= $site_colors->secondary_color ?>;
-            --teritary-color: <?= $site_colors->teritary_color ?>;
-            --dark_bg: <?= $site_colors->dark_bg ?>;
-            --light-color: <?= $site_colors->light_color ?>;
-            --section_bg: <?= $site_colors->section_bg ?>;
-            --p-color: <?= $site_colors->p_color ?>;
-            --dark-a: <?= $site_colors->dark_a ?>;
-            --testi-linear-1: <?= $site_colors->testi_linear_1 ?>;
-            --testi-linear-2: <?= $site_colors->testi_linear_2 ?>;
-            --section-linear-1: <?= $site_colors->section_linear_1 ?>;
-            --textbox-bg: <?= $site_colors->textbox_bg ?>;
-            --textbox-border: <?= $site_colors->textbox_border ?>;
-            --light-btn-bg: <?= $site_colors->light_btn_bg ?>;
-            --readBtn-bg: <?= $site_colors->readBtn_bg ?>;
-            --dropdown-bg: <?= $site_colors->dropdown_bg ?>;
-            --inner-bg: <?= $site_colors->inner_bg ?>;
-            --qty-bg: <?= $site_colors->qty_bg ?>;
-            --dark-color: <?= $site_colors->dark_color ?>;
-        } */
-    </style>
+
 
 </head>
 

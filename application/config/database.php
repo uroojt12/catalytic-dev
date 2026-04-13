@@ -77,11 +77,11 @@ $query_builder = TRUE;
 if ($_SERVER['HTTP_HOST'] != 'localhost') {
 
 	$db['default'] = array(
-		'dsn'	   => '',
+		'dsn'	=> '',
 		'hostname' => 'localhost',
-		'username' => 'herosol_talal',
-		'password' => 'An~$!o#M]Q6$',
-		'database' => 'herosol_catalytic'
+		'username' => 'catalyticusr',
+		'password' => '_+CktV.J_Fid',
+		'database' => 'catalytic'
 	);
 } else {
 	$db['default'] = array(
@@ -89,7 +89,7 @@ if ($_SERVER['HTTP_HOST'] != 'localhost') {
 		'hostname' => 'localhost',
 		'username' => 'root',
 		'password' => '',
-		'database' => 'herosol_catalytic'
+		'database' => 'catalytic'
 	);
 }
 

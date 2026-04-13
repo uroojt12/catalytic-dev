@@ -15,11 +15,11 @@
                     </a>
                 </li>
             <?php endif?>
-            <li>
+            <!-- <li>
                 <a href="<?php echo base_url(); ?>" target="_blank">
                     <i class="entypo-globe right"></i> Website Preview 
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="<?php echo base_url(ADMIN.'/logout'); ?>">
                     <i class="entypo-logout right"></i> Logout 

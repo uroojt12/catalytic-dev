@@ -14,13 +14,17 @@
         <div class="row col-md-12">
             <form action="" name="frmTestimonial" role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="control-label" for="domain_name">Domain Name <span class="symbol required">*</span></label>
                         <input type="text" name="domain_name" id="domain_name" value="<?php if (isset($row->domain_name)) echo $row->domain_name; ?>" class="form-control" autofocus required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="control-label" for="name"> Name <span class="symbol required">*</span></label>
+                    <div class="col-md-4">
+                        <label class="control-label" for="name"> Sub-Admin Name <span class="symbol required">*</span></label>
                         <input type="text" name="name" id="name" value="<?php if (isset($row->name)) echo $row->name; ?>" class="form-control" autofocus required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label" for="site_name"> Site Name <span class="symbol required">*</span></label>
+                        <input type="text" name="site_name" id="site_name" value="<?php if (isset($row->site_name)) echo $row->site_name; ?>" class="form-control" autofocus required>
                     </div>
                     <div class="clearfix"></div>
 
@@ -35,7 +39,7 @@
                     </div>
 
                     <div class="clearfix"></div>
-                    
+
 
                     <div class="col-md-6">
                         <label class="control-label" for="status"> Status <span class="symbol required">*</span></label>
@@ -50,6 +54,17 @@
                                                     echo 'selected';
                                                 }
                                                 ?>>Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label" for="template_id">Template <span class="symbol required">*</span></label>
+                        <select name="template_id" id="template_id" class="catSub form-control" required>
+                            <option value=""> - Select - </option>
+                            <?php foreach ($templates as $key => $template) : ?>
+                                <option value="<?= $template->id ?>" <?= $template->id == $row->template_id ? ' selected' : '' ?>>
+                                    <?= $template->title ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
 
